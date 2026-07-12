@@ -1,0 +1,10 @@
+# Force LF line endings for files that must stay POSIX-shell compatible,
+# regardless of the contributor's platform / core.autocrlf setting.
+.husky/* text eol=lf
+*.sh text eol=lf
+
+# Avoid noisy diffs on generated/binary-ish assets.
+*.png binary
+*.webp binary
+*.ico binary
+package-lock.json -diff linguist-generated
