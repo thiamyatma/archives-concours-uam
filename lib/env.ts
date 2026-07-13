@@ -14,6 +14,16 @@ const envSchema = z.object({
   NEXT_PUBLIC_SITE_URL: z.string().url().optional().default("http://localhost:3000"),
   RESEND_API_KEY: z.string().min(1).optional(),
   ADMIN_NOTIFICATION_EMAIL: z.string().email().optional(),
+
+  // Assistant IA (RAG polytech.sn) — voir docs/RAG.md
+  GROQ_API_KEY: z.string().min(1, "GROQ_API_KEY manquant").optional(),
+  GROQ_MODEL: z.string().min(1).optional().default("llama-3.3-70b-versatile"),
+  RAG_MAX_QUESTIONS_PER_IP_PER_DAY: z.coerce
+    .number()
+    .int()
+    .positive()
+    .optional()
+    .default(30),
 });
 
 /** Une variable optionnelle laissée vide (`FOO=`) doit être traitée comme absente. */
@@ -29,6 +39,11 @@ function loadEnv() {
     NEXT_PUBLIC_SITE_URL: orUndefined(process.env.NEXT_PUBLIC_SITE_URL),
     RESEND_API_KEY: orUndefined(process.env.RESEND_API_KEY),
     ADMIN_NOTIFICATION_EMAIL: orUndefined(process.env.ADMIN_NOTIFICATION_EMAIL),
+    GROQ_API_KEY: orUndefined(process.env.GROQ_API_KEY),
+    GROQ_MODEL: orUndefined(process.env.GROQ_MODEL),
+    RAG_MAX_QUESTIONS_PER_IP_PER_DAY: orUndefined(
+      process.env.RAG_MAX_QUESTIONS_PER_IP_PER_DAY
+    ),
   });
 
   if (!parsed.success) {

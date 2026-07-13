@@ -1,0 +1,32 @@
+name: Scrape polytech.sn
+
+on:
+  schedule:
+    # Tous les lundis à 04:00 UTC (05:00/06:00 heure de Dakar selon la saison).
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+concurrency:
+  group: scrape-polytech
+  cancel-in-progress: false
+
+jobs:
+  scrape:
+    name: Re-indexer polytech.sn
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - run: npm ci
+
+      - name: Lancer le scraping
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npm run scrape:polytech
