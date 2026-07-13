@@ -201,6 +201,13 @@ export interface Database {
           total_contributors: number;
         }[];
       };
+      get_filiere_document_counts: {
+        Args: Record<string, never>;
+        Returns: {
+          filiere_id: string;
+          document_count: number;
+        }[];
+      };
       search_polytech_chunks: {
         Args: { search_query: string; match_count?: number };
         Returns: {
@@ -228,5 +235,27 @@ export type Contributor = Database["public"]["Tables"]["contributors"]["Row"];
 export type Report = Database["public"]["Tables"]["reports"]["Row"];
 
 export type DocumentWithFiliere = DocumentRow & {
+  filieres: Pick<Filiere, "id" | "code" | "nom"> | null;
+};
+
+/**
+ * Forme réduite retournée aux pages publiques (bibliothèque, page année) :
+ * seules les colonnes réellement affichées, pour ne pas laisser croire
+ * (via `DocumentWithFiliere`) que `file_url`/`uploaded_by`/... sont
+ * disponibles alors qu'elles ne sont pas sélectionnées côté serveur.
+ */
+export type PublicDocument = Pick<
+  DocumentRow,
+  | "id"
+  | "filiere_id"
+  | "annee"
+  | "matiere"
+  | "type"
+  | "description"
+  | "file_size"
+  | "downloads"
+  | "status"
+  | "created_at"
+> & {
   filieres: Pick<Filiere, "id" | "code" | "nom"> | null;
 };

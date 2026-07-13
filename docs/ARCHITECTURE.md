@@ -58,10 +58,13 @@ Le projet sépare strictement **lecture** et **écriture** :
 - **`lib/data/*.ts`** — lecture seule, appelée uniquement depuis des Server
   Components (pages, layouts). Chaque fichier correspond à une "ressource" :
   - `filieres.ts` — filières + statistiques + complétude par année
+    (lectures globales mises en cache, voir `docs/PERFORMANCE.md`)
   - `documents.ts` — recherche/pagination bibliothèque, documents admin
-  - `stats.ts` — statistiques globales (RPC `get_global_stats`)
+  - `stats.ts` — statistiques globales (RPC `get_global_stats`, mise en cache)
   - `safe.ts` — `withBuildTimeFallback`, garde-fou pour le prerendering
     statique (voir plus bas)
+  - `cache-tags.ts` — tags `unstable_cache`/`revalidateTag` partagés entre
+    `lib/data/*.ts` et `lib/actions/admin.ts`
 
 - **`lib/actions/*.ts`** — toute mutation, marquée `"use server"` :
   - `contribute.ts` — `submitDocument` (upload + insert, statut `pending`)
@@ -71,11 +74,15 @@ Le projet sépare strictement **lecture** et **écriture** :
     `getAdminPreviewUrl`, `fetchAdminDocuments`
   - `auth.ts` — `signIn`, `signOut` (Supabase Auth)
 
-- **`lib/supabase/*.ts`** — les 4 façons de parler à Supabase :
+- **`lib/supabase/*.ts`** — les 5 façons de parler à Supabase :
   - `client.ts` — client browser (Client Components)
   - `server.ts` — client serveur lié aux cookies de session (RSC/Server
     Actions), avec repli automatique sans cookies hors requête HTTP
     (`generateStaticParams`, `sitemap.ts`)
+  - `public.ts` — client anonyme **sans** cookies, pour les lectures
+    publiques mises en cache inter-requêtes (`unstable_cache`) — voir
+    `docs/PERFORMANCE.md` (lire les cookies dans une fonction destinée à
+    être partagée entre tous les visiteurs est un anti-pattern)
   - `middleware.ts` — rafraîchit la session + protège `/admin/*`
   - `service.ts` — clé `service_role`, **jamais** importé côté client
     (protégé par le package `server-only`), utilisé uniquement pour générer

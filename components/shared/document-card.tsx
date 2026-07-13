@@ -5,9 +5,9 @@ import { DownloadButton } from "@/components/shared/download-button";
 import { PreviewDialog } from "@/components/shared/preview-dialog";
 import { formatDate, formatFileSize, formatNumber } from "@/lib/format";
 import { DOCUMENT_TYPE_LABELS, MATIERE_LABELS } from "@/lib/constants";
-import type { DocumentWithFiliere } from "@/types/database";
+import type { PublicDocument } from "@/types/database";
 
-export function DocumentCard({ document }: { document: DocumentWithFiliere }) {
+export function DocumentCard({ document }: { document: PublicDocument }) {
   const title = `${document.filieres?.nom ?? ""} ${document.annee} — ${MATIERE_LABELS[document.matiere]} (${DOCUMENT_TYPE_LABELS[document.type]})`;
 
   return (

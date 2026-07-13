@@ -8,6 +8,11 @@ import { getGlobalStats } from "@/lib/data/stats";
 import { withBuildTimeFallback } from "@/lib/data/safe";
 import { SITE_SLOGAN } from "@/lib/constants";
 
+// Filet de sécurité seulement : la vraie fraîcheur vient de revalidatePath/
+// revalidateTag appelés par les actions admin (approve/reject/delete) dans
+// lib/actions/admin.ts, pas de ce TTL — voir docs/PERFORMANCE.md.
+export const revalidate = 3600;
+
 export default async function HomePage() {
   const [filieres, stats] = await Promise.all([
     withBuildTimeFallback(() => getFilieresWithStats(), []),

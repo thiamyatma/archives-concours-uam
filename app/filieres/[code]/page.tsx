@@ -7,7 +7,10 @@ import { CompletenessBadge } from "@/components/shared/completeness-badge";
 import { getAllFilieres, getFiliereArchive, getFiliereByCode } from "@/lib/data/filieres";
 import { formatNumber } from "@/lib/format";
 
-export const revalidate = 120;
+// Filet de sécurité seulement : lib/actions/admin.ts appelle déjà
+// revalidatePath(`/filieres/${code}`) à la validation/refus/suppression
+// d'un document de cette filière — voir docs/PERFORMANCE.md.
+export const revalidate = 3600;
 
 export async function generateStaticParams() {
   try {

@@ -17,9 +17,12 @@ import { getFiliereByCode } from "@/lib/data/filieres";
 import { getDocumentsByFiliereAnnee } from "@/lib/data/documents";
 import { formatDate, formatFileSize, formatNumber } from "@/lib/format";
 import { DOCUMENT_TYPE_LABELS, MATIERES, MATIERE_LABELS } from "@/lib/constants";
-import type { DocumentWithFiliere } from "@/types/database";
+import type { PublicDocument } from "@/types/database";
 
-export const revalidate = 60;
+// Filet de sécurité seulement : lib/actions/admin.ts appelle déjà
+// revalidatePath(`/filieres/${code}/${annee}`) à la validation/refus/
+// suppression d'un document de cette session — voir docs/PERFORMANCE.md.
+export const revalidate = 3600;
 
 export async function generateMetadata({
   params,
@@ -48,7 +51,7 @@ export default async function FiliereAnneePage({
   if (!filiere || !Number.isInteger(annee)) notFound();
 
   const documents = await getDocumentsByFiliereAnnee(filiere.id, annee);
-  const byMatiere = new Map<string, DocumentWithFiliere[]>();
+  const byMatiere = new Map<string, PublicDocument[]>();
   for (const doc of documents) {
     const list = byMatiere.get(doc.matiere) ?? [];
     list.push(doc);

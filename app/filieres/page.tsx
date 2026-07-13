@@ -9,7 +9,10 @@ export const metadata: Metadata = {
     "Découvrez les 5 filières du concours d'entrée UAM et accédez à leur bibliothèque d'épreuves : DSTI, DGAE, DSTAN, DU2ADT, DGO.",
 };
 
-export const revalidate = 300;
+// Filet de sécurité seulement : l'action admin approve/reject/delete
+// invalide déjà cette page à la demande (revalidateTag) — voir
+// docs/PERFORMANCE.md.
+export const revalidate = 3600;
 
 export default async function FilieresPage() {
   const filieres = await withBuildTimeFallback(() => getFilieresWithStats(), []);

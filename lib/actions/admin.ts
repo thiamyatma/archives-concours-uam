@@ -1,9 +1,10 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { adminRejectSchema } from "@/lib/validations/document";
+import { CACHE_TAGS } from "@/lib/data/cache-tags";
 import {
   getAdminDocuments,
   type AdminDocumentQuery,
@@ -69,22 +70,45 @@ export async function getAdminPreviewUrl(
   }
 }
 
+/**
+ * Invalide précisément les pages publiques concernées par un document
+ * (plutôt qu'un `revalidatePath("/bibliotheque")` seul) + les caches
+ * globaux (stats, comptage par filière) tagués `unstable_cache` — voir
+ * docs/PERFORMANCE.md. Sans ça, `/filieres/[code]` et `/filieres/[code]/
+ * [annee]` resteraient périmés jusqu'à l'expiration de leur `revalidate`
+ * (jusqu'à quelques minutes) après une validation/refus/suppression.
+ */
+function revalidateDocumentSurfaces(filiereCode: string | null, annee: number | null) {
+  revalidatePath("/admin");
+  revalidatePath("/bibliotheque");
+  revalidatePath("/");
+  revalidateTag(CACHE_TAGS.globalStats);
+  revalidateTag(CACHE_TAGS.filieres);
+
+  if (filiereCode) {
+    revalidatePath(`/filieres/${filiereCode}`);
+    if (annee) revalidatePath(`/filieres/${filiereCode}/${annee}`);
+  }
+}
+
 export async function approveDocument(documentId: string): Promise<AdminActionResult> {
   try {
     const supabase = await requireAdmin();
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("documents")
       .update({
         status: "approved",
         reviewed_at: new Date().toISOString(),
         rejection_reason: null,
       })
-      .eq("id", documentId);
+      .eq("id", documentId)
+      .select("annee, filieres ( code )")
+      .single();
 
     if (error) return { success: false, error: error.message };
 
-    revalidatePath("/admin");
-    revalidatePath("/bibliotheque");
+    const filiereCode = (data?.filieres as { code: string } | null)?.code ?? null;
+    revalidateDocumentSurfaces(filiereCode, data?.annee ?? null);
     return { success: true };
   } catch {
     return { success: false, error: "Non autorisé." };
@@ -105,18 +129,23 @@ export async function rejectDocument(
 
   try {
     const supabase = await requireAdmin();
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("documents")
       .update({
         status: "rejected",
         reviewed_at: new Date().toISOString(),
         rejection_reason: parsed.data.reason,
       })
-      .eq("id", documentId);
+      .eq("id", documentId)
+      .select("annee, filieres ( code )")
+      .single();
 
     if (error) return { success: false, error: error.message };
 
-    revalidatePath("/admin");
+    // Refuser un document déjà approuvé (cas rare mais permis côté UI) le
+    // retire aussi des surfaces publiques : on invalide de la même façon.
+    const filiereCode = (data?.filieres as { code: string } | null)?.code ?? null;
+    revalidateDocumentSurfaces(filiereCode, data?.annee ?? null);
     return { success: true };
   } catch {
     return { success: false, error: "Non autorisé." };
@@ -129,7 +158,7 @@ export async function deleteDocument(documentId: string): Promise<AdminActionRes
 
     const { data: document, error: fetchError } = await supabase
       .from("documents")
-      .select("file_url")
+      .select("file_url, annee, filieres ( code )")
       .eq("id", documentId)
       .maybeSingle();
 
@@ -146,8 +175,8 @@ export async function deleteDocument(documentId: string): Promise<AdminActionRes
 
     await supabase.storage.from("documents").remove([document.file_url]);
 
-    revalidatePath("/admin");
-    revalidatePath("/bibliotheque");
+    const filiereCode = (document.filieres as { code: string } | null)?.code ?? null;
+    revalidateDocumentSurfaces(filiereCode, document.annee);
     return { success: true };
   } catch {
     return { success: false, error: "Non autorisé." };
