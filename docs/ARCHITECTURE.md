@@ -38,8 +38,14 @@ Les seules routes générées par convention de fichiers Next.js sont :
 | `/sitemap.xml`     | `app/sitemap.ts`          | Sitemap dynamique (filières + années) |
 | `/robots.txt`      | `app/robots.ts`           | Règles robots + lien vers le sitemap  |
 | `/opengraph-image` | `app/opengraph-image.tsx` | Image Open Graph générée à la volée   |
-| `/twitter-image`   | `app/twitter-image.tsx`   | Réutilise `opengraph-image.tsx`       |
-| `/icon.png`        | `app/icon.png`            | Favicon (mark du logo UAM)            |
+
+**Exception : `app/api/chat/route.ts`**. L'assistant IA (voir
+[`docs/RAG.md`](./RAG.md)) streame sa réponse token par token (SSE) pendant
+qu'elle est générée par Groq — un format de réponse que les Server Actions,
+conçues pour un aller-retour requête/réponse classique, ne permettent pas
+nativement. C'est la seule route API du projet dédiée à de la logique métier.
+| `/twitter-image` | `app/twitter-image.tsx` | Réutilise `opengraph-image.tsx` |
+| `/icon.png` | `app/icon.png` | Favicon (mark du logo UAM) |
 
 Si un besoin futur nécessite une vraie route HTTP (webhook externe, endpoint
 appelé par un service tiers), elle irait dans `app/api/<nom>/route.ts` — mais

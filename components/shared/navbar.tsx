@@ -20,6 +20,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/bibliotheque", label: "Bibliothèque" },
   { href: "/filieres", label: "Filières" },
+  { href: "/assistant", label: "Assistant IA" },
 ];
 
 export function Navbar() {
