@@ -260,6 +260,8 @@ Détail complet du schéma : [docs/DATABASE.md](docs/DATABASE.md).
   storage, RPC
 - [docs/COMPONENTS.md](docs/COMPONENTS.md) — composants réutilisables et
   quand les utiliser
+- [docs/PERFORMANCE.md](docs/PERFORMANCE.md) — cache, index SQL, pagination,
+  lazy loading : chaque optimisation de scalabilité et sa justification
 
 ## Contribuer
 

@@ -166,14 +166,68 @@ stable
 security definer
 set search_path = public
 as $$
+  -- Un seul scan (index-only sur documents_status_idx) au lieu de 3
+  -- sous-requêtes séparées : les agrégats conditionnels calculent tout
+  -- en une passe.
   select
-    (select count(*) from public.documents where status = 'approved'),
-    (select coalesce(sum(downloads), 0) from public.documents where status = 'approved'),
-    (select count(distinct uploaded_by) from public.documents
-       where status = 'approved' and uploaded_by is not null);
+    count(*),
+    coalesce(sum(downloads), 0),
+    count(distinct uploaded_by)
+  from public.documents
+  where status = 'approved';
 $$;
 
 grant execute on function public.get_global_stats() to anon, authenticated;
+
+-- ---------------------------------------------------------------------
+-- RPC: nombre de documents approuvés par filière (page d'accueil, index filières)
+-- Remplace un fetch de toutes les lignes `documents.filiere_id` côté
+-- application (compté ensuite en JS) par un group by exécuté en base :
+-- le résultat reste borné (une ligne par filière) quel que soit le nombre
+-- de documents, au lieu de transférer et parcourir la table entière.
+-- ---------------------------------------------------------------------
+
+create or replace function public.get_filiere_document_counts()
+returns table (
+  filiere_id uuid,
+  document_count bigint
+)
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select filiere_id, count(*)
+  from public.documents
+  where status = 'approved'
+  group by filiere_id;
+$$;
+
+grant execute on function public.get_filiere_document_counts() to anon, authenticated;
+
+-- ---------------------------------------------------------------------
+-- Index additionnels pour les chemins de lecture les plus fréquents.
+-- Index partiels (where status = 'approved') : seules les lignes
+-- publiquement visibles y entrent, donc leur taille — et le coût de
+-- maintenance à l'écriture — reste stable même si le volume de
+-- documents `pending`/`rejected` grossit beaucoup.
+-- ---------------------------------------------------------------------
+
+-- Sert get_filiere_document_counts() et le filtre par filière de la bibliothèque.
+create index if not exists documents_approved_filiere_idx
+  on public.documents (filiere_id)
+  where status = 'approved';
+
+-- Sert le tri par défaut de la bibliothèque (annee desc, matiere) sans
+-- tri en mémoire une fois le volume de documents important.
+create index if not exists documents_approved_browse_idx
+  on public.documents (annee desc, matiere)
+  where status = 'approved';
+
+-- Sert le count(distinct uploaded_by) de get_global_stats() et les
+-- futures pages "mes contributions".
+create index if not exists documents_uploaded_by_idx
+  on public.documents (uploaded_by);
 
 -- =====================================================================
 -- Row Level Security

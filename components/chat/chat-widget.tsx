@@ -1,9 +1,28 @@
 "use client";
 
 import { useState } from "react";
-import { MessageCircle, X } from "lucide-react";
+import dynamic from "next/dynamic";
+import { Loader2, MessageCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { ChatPanel } from "@/components/chat/chat-panel";
+
+/**
+ * `ChatWidget` est monté dans le layout racine, donc présent sur *toutes*
+ * les pages du site — mais la grande majorité des visiteurs ne l'ouvrira
+ * jamais. Charger `ChatPanel` (logique de chat, parsing SSE) en import
+ * dynamique retire son JS du bundle initial de chaque page ; il n'est
+ * récupéré que si quelqu'un clique réellement sur la bulle.
+ */
+const ChatPanel = dynamic(
+  () => import("@/components/chat/chat-panel").then((mod) => mod.ChatPanel),
+  {
+    ssr: false,
+    loading: () => (
+      <div className="text-muted-foreground flex h-full items-center justify-center">
+        <Loader2 className="size-5 animate-spin" aria-hidden="true" />
+      </div>
+    ),
+  }
+);
 
 export function ChatWidget() {
   const [open, setOpen] = useState(false);
