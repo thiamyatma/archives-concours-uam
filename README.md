@@ -111,15 +111,21 @@ fonctionne sans aucune base de données) :
 
 Aucun compte admin ni upload : déposer un fichier Markdown puis déployer.
 
-1. Repérer le dossier de contenu du département (voir `lib/departements.ts`
+1. **Partir du modèle** [`content/archives/_TEMPLATE.md`](content/archives/_TEMPLATE.md)
+   — il fixe la structure exacte à respecter pour que le rendu (titres en
+   bleu logo UAM, en-tête centré, sections agrandies, formules KaTeX) soit
+   identique à toutes les autres épreuves. Le style est appliqué
+   automatiquement : **ne rien styliser à la main dans le `.md`**.
+2. Le copier vers le dossier du département (voir `lib/departements.ts`
    pour la table code → dossier) : `content/archives/<groupe-ou-code>/<année>.md`.
    Ex. une épreuve partagée par DSTI/DGAE/DSTAAN va dans
    `content/archives/dsti-dgae-dstaan/<année>.md` ; une épreuve propre à
    DU2ADT va dans `content/archives/du2adt/<année>.md`.
-2. Le fichier doit commencer par un titre `# ...` puis une section par
-   matière sous la forme `## ÉPREUVE DE <matière>` (voir
-   `content/archives/dsti-dgae-dstaan/2025.md` pour un exemple complet).
-3. Committer, pousser, déployer — l'application détecte automatiquement le
+3. Remplir le contenu en gardant la structure : un titre `# ...`, un
+   en-tête (école/durée/départements), puis une section `## ÉPREUVE DE
+<matière>` par matière (voir `content/archives/dsti-dgae-dstaan/2025.md`
+   pour un exemple rempli).
+4. Committer, pousser, déployer — l'application détecte automatiquement le
    département (dossier), l'année (nom de fichier) et le titre (premier
    titre du fichier), sans aucune modification de code.
 
