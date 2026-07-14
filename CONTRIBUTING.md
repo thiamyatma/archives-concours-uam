@@ -62,9 +62,9 @@ Ce projet suit [Conventional Commits](https://www.conventionalcommits.org/fr/).
 Exemples :
 
 ```
-feat(bibliotheque): ajouter le filtre par matière
-fix(admin): corriger le compteur de documents en attente
-docs(readme): clarifier les variables d'environnement Resend
+feat(departements): ajouter la liste des années par département
+fix(content): corriger le découpage des sections d'une épreuve
+docs(readme): clarifier la procédure d'ajout d'une épreuve
 chore(deps): monter next vers 15.5.20
 ```
 

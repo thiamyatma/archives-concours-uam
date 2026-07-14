@@ -2,9 +2,9 @@
 
 ## Signaler une vulnérabilité
 
-Si vous découvrez une faille de sécurité (accès non autorisé aux documents
-non approuvés, contournement des policies RLS, fuite de la clé service role,
-faille XSS/injection, etc.), merci de **ne pas** ouvrir d'issue publique.
+Si vous découvrez une faille de sécurité (contournement des policies RLS,
+fuite de la clé service role, faille XSS/injection, etc.), merci de **ne
+pas** ouvrir d'issue publique.
 
 Contactez plutôt directement : **thiamibrahimayatus@gmail.com**
 
@@ -19,24 +19,24 @@ critiques sous 7 jours.
 
 ## Périmètre
 
-Sont notamment concernés :
+Les pages départements/archives (`/`, `/departements/**`) sont du contenu
+statique généré au build, sans base de données, sans compte utilisateur et
+sans formulaire — leur surface d'attaque est minimale. Sont concernés :
 
 - `lib/supabase/service.ts` et toute fuite de la clé `service_role`
-- Les policies RLS de `supabase/schema.sql` (accès aux documents `pending`/
-  `rejected`, aux emails de `contributors`, etc.)
-- Les Server Actions (`lib/actions/*`) — validation, autorisation, injection
-- L'authentification admin (`/admin/login`, middleware)
+  (utilisée uniquement par l'assistant IA)
+- Les policies RLS de `supabase/schema.sql` (tables de l'assistant IA)
+- `app/api/chat/route.ts` — validation des entrées, rate-limiting
+- Le rendu Markdown des épreuves (`components/shared/markdown-renderer.tsx`)
+  — injection via un fichier `content/archives/**` malveillant
 
 ## Bonnes pratiques déjà en place
 
-- Bucket Storage privé : tout accès passe par une URL signée à courte durée
-  générée côté serveur (jamais d'URL publique directe).
-- RLS activé sur toutes les tables ; seuls les documents `approved` sont
-  lisibles publiquement.
-- Validation Zod côté client **et** serveur sur toutes les entrées
-  utilisateur.
+- RLS activé sur toutes les tables Supabase restantes (assistant IA).
 - Clé `service_role` isolée dans un module `server-only`, jamais exposée au
   client.
+- Le contenu Markdown des épreuves n'est modifiable que par commit git
+  (revue de code), pas par un formulaire public.
 
 ## Dépendances
 

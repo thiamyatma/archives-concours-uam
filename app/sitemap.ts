@@ -1,42 +1,30 @@
 import type { MetadataRoute } from "next";
 import { env } from "@/lib/env";
-import { getAllFilieres, getFiliereArchive } from "@/lib/data/filieres";
+import { getContentManifest } from "@/lib/data/departements";
 
-export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+export default function sitemap(): MetadataRoute.Sitemap {
   const base = env.NEXT_PUBLIC_SITE_URL;
+  const manifest = getContentManifest();
 
   const staticRoutes: MetadataRoute.Sitemap = [
     { url: base, changeFrequency: "weekly", priority: 1 },
-    { url: `${base}/bibliotheque`, changeFrequency: "daily", priority: 0.9 },
-    { url: `${base}/filieres`, changeFrequency: "weekly", priority: 0.8 },
-    { url: `${base}/contribuer`, changeFrequency: "monthly", priority: 0.5 },
+    { url: `${base}/departements`, changeFrequency: "weekly", priority: 0.8 },
+    { url: `${base}/assistant`, changeFrequency: "monthly", priority: 0.5 },
   ];
 
-  try {
-    const filieres = await getAllFilieres();
+  const departementRoutes: MetadataRoute.Sitemap = manifest.departements.map((d) => ({
+    url: `${base}/departements/${d.code}`,
+    changeFrequency: "monthly",
+    priority: 0.7,
+  }));
 
-    const filiereRoutes: MetadataRoute.Sitemap = filieres.map((f) => ({
-      url: `${base}/filieres/${f.code}`,
-      changeFrequency: "weekly",
-      priority: 0.7,
-    }));
+  const anneeRoutes: MetadataRoute.Sitemap = manifest.departements.flatMap((d) =>
+    d.annees.map((annee) => ({
+      url: `${base}/departements/${d.code}/${annee}`,
+      changeFrequency: "yearly" as const,
+      priority: 0.6,
+    }))
+  );
 
-    const yearRoutes: MetadataRoute.Sitemap = (
-      await Promise.all(
-        filieres.map(async (f) => {
-          const archive = await getFiliereArchive(f.id);
-          return archive.years.map((y) => ({
-            url: `${base}/filieres/${f.code}/${y.annee}`,
-            changeFrequency: "monthly" as const,
-            priority: 0.6,
-          }));
-        })
-      )
-    ).flat();
-
-    return [...staticRoutes, ...filiereRoutes, ...yearRoutes];
-  } catch {
-    // Supabase indisponible au build : on retombe sur les routes statiques uniquement.
-    return staticRoutes;
-  }
+  return [...staticRoutes, ...departementRoutes, ...anneeRoutes];
 }
