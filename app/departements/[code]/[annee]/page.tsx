@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { DownloadPdfButton } from "@/components/shared/download-pdf-button";
 import { TrackEpreuveView } from "@/components/analytics/track-epreuve-view";
 import {
   DEPARTEMENTS,
@@ -59,12 +60,15 @@ export default async function DepartementAnneePage({
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
       <TrackEpreuveView department={departement.code} year={annee} />
-      <Button asChild variant="ghost" size="sm" className="mb-4 -ml-2">
-        <Link href={`/departements/${departement.code}`}>
-          <ChevronLeft className="size-4" aria-hidden="true" />
-          Retour à {departement.nom}
-        </Link>
-      </Button>
+      <div className="mb-4 flex items-center justify-between gap-2">
+        <Button asChild variant="ghost" size="sm" className="-ml-2">
+          <Link href={`/departements/${departement.code}`}>
+            <ChevronLeft className="size-4" aria-hidden="true" />
+            Retour à {departement.nom}
+          </Link>
+        </Button>
+        <DownloadPdfButton departementCode={departement.code} annee={annee} />
+      </div>
 
       <MarkdownRenderer className="text-center [&_ol]:list-inside [&_ul]:list-inside">
         {content.enTete}

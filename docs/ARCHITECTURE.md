@@ -3,11 +3,14 @@
 ## Vue d'ensemble
 
 Archives Concours UAM est une application **Next.js 15 App Router**. Les
-pages départements/archives sont du contenu **statique** : aucune base de
-données, aucune Server Action, aucun état utilisateur — le contenu est
-résolu depuis le système de fichiers (`content/archives/**`) au moment du
-build et servi tel quel. Seul l'assistant IA (voir
-[`docs/RAG.md`](./RAG.md)) parle à une vraie base de données.
+pages départements/archives sont du contenu **statique** : le texte des
+épreuves est résolu depuis le système de fichiers (`content/archives/**`)
+au moment du build et servi tel quel, sans base de données ni état
+utilisateur. Deux fonctionnalités annexes touchent Supabase : l'assistant
+IA (voir [`docs/RAG.md`](./RAG.md)) et le téléchargement PDF des épreuves
+(voir [`docs/pdf-downloads.md`](./pdf-downloads.md)) — toutes deux via des
+Server Actions/Route Handlers dédiés, jamais depuis les pages statiques
+elles-mêmes.
 
 ```
 Navigateur
@@ -15,9 +18,14 @@ Navigateur
    ├─ app/departements/**  (Server Components, 100% statiques)
    │     lib/data/departements.ts ──► lib/content/*.ts ──► content/archives/**
    │     rendu HTML au build, aucun appel réseau à l'exécution
+   │     └─ DownloadPdfButton (Client Component isolé)
+   │           lib/actions/download-pdf.ts ──► lib/supabase/service.ts ──► Supabase (PDF)
    │
-   └─ app/assistant + app/api/chat/route.ts
-         lib/rag/*.ts ──► lib/supabase/service.ts ──► Supabase (RAG uniquement)
+   ├─ app/assistant + app/api/chat/route.ts
+   │     lib/rag/*.ts ──► lib/supabase/service.ts ──► Supabase (RAG)
+   │
+   └─ app/admin/**  (mot de passe, force-dynamic)
+         lib/data/download-stats.ts ──► lib/supabase/service.ts ──► Supabase (stats PDF)
 ```
 
 ## Départements et archives : résolution de contenu
@@ -79,16 +87,22 @@ fichiers Next.js sont :
 **Exception : `app/api/chat/route.ts`**. L'assistant IA (voir
 [`docs/RAG.md`](./RAG.md)) streame sa réponse token par token (SSE) pendant
 qu'elle est générée par Groq — un format qu'un Server Component ne permet
-pas. C'est la seule route API du projet dédiée à de la logique métier, et
-le seul point du site qui parle à Supabase.
+pas. C'est la seule route API du projet dédiée à de la logique métier.
+
+Le téléchargement PDF et le dashboard admin n'ont pas non plus besoin de
+route API : ce sont des Server Actions (`lib/actions/download-pdf.ts`,
+`lib/actions/admin-auth.ts`) appelées directement depuis des Client
+Components, et une page `force-dynamic` (`app/admin`) — voir
+[`docs/pdf-downloads.md`](./pdf-downloads.md).
 
 ## `lib/supabase/`
 
-Un seul client Supabase reste dans le projet, réservé à l'assistant IA :
+Un seul client Supabase reste dans le projet :
 
 - **`service.ts`** — clé `service_role`, **jamais** importé côté client
-  (protégé par le package `server-only`), utilisé par `lib/rag/search.ts`
-  et `lib/rag/rate-limit.ts`.
+  (protégé par le package `server-only`). Utilisé par l'assistant IA
+  (`lib/rag/search.ts`, `lib/rag/rate-limit.ts`) et par le téléchargement
+  PDF (`lib/actions/download-pdf.ts`, `lib/data/download-stats.ts`).
 
 ## Composants
 
@@ -96,9 +110,11 @@ Voir [COMPONENTS.md](COMPONENTS.md) pour le détail. En résumé :
 
 - `components/ui/` — généré par shadcn/ui, ne pas éditer à la main (relancer
   `npx shadcn@latest add <composant>` pour mettre à jour)
-- `components/shared/` — Navbar, Footer, cartes département, rendu Markdown
+- `components/shared/` — Navbar, Footer, cartes département, rendu Markdown,
+  bouton de téléchargement PDF
 - `components/chat/` — widget de l'assistant IA
 - `components/analytics/` — intégration Google Analytics 4 (voir plus bas)
+- `components/admin/` — graphiques du dashboard de statistiques PDF
 
 ## Google Analytics 4
 
@@ -111,9 +127,20 @@ d'événements (`lib/analytics/`, `useAnalytics()`) est toujours sûre à
 appeler : no-op si GA n'est pas chargé. Détail complet, création de la
 propriété GA4 et ajout d'événements : [`docs/google-analytics.md`](./google-analytics.md).
 
+## Téléchargement PDF des épreuves
+
+`components/shared/download-pdf-button.tsx` est un **Client Component**
+isolé, monté sur les pages `/departements/[code]/[annee]` par ailleurs
+100% statiques. La vérification de disponibilité et la génération de l'URL
+signée se font uniquement au montage/clic du bouton, jamais dans le Server
+Component de la page — condition pour ne pas réintroduire de dépendance
+Supabase sur des pages qui n'en avaient jamais eu besoin. Détail complet :
+[`docs/pdf-downloads.md`](./pdf-downloads.md).
+
 ## Hooks
 
-Les hooks React personnalisés vont dans `lib/hooks/use-<nom>.ts`. Le seul à
-ce jour est `useAnalytics()` (`lib/hooks/use-analytics.ts`), qui expose des
-émetteurs d'événements GA4 typés utilisables depuis n'importe quel Client
-Component.
+Les hooks React personnalisés vont dans `lib/hooks/use-<nom>.ts` :
+
+- `useAnalytics()` — émetteurs d'événements GA4 typés.
+- `useDownloadPdf(departementCode, annee)` — cycle de vie du téléchargement
+  PDF (vérification, état, déclenchement, toast, événement GA4).

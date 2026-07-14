@@ -42,6 +42,8 @@ export function useAnalytics() {
         trackEvent(ANALYTICS_EVENTS.REPORT_DOCUMENT, params),
       trackShareSubject: (params?: AnalyticsEventParams) =>
         trackEvent(ANALYTICS_EVENTS.SHARE_SUBJECT, params),
+      trackDownloadSubject: (params?: AnalyticsEventParams) =>
+        trackEvent(ANALYTICS_EVENTS.DOWNLOAD_SUBJECT, params),
     }),
     []
   );
