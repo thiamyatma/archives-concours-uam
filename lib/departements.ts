@@ -44,14 +44,14 @@ export const DEPARTEMENTS: Departement[] = [
     code: "du2adt",
     nom: "DU2ADT",
     description:
-      "Département Urbanisme, Aménagement du Territoire et Développement Territorial.",
+      "Département Urbanisme, Architecture et Aménagement Durable des Territoires — urbanisme et aménagement, architecture.",
     contentGroup: "dgo-du2adt",
   },
   {
     code: "dgo",
     nom: "DGO",
     description:
-      "Département Gouvernance et Organisations — sciences politiques, droit et gouvernance publique.",
+      "Département Gestion des Organisations — finance et comptabilité, management des organisations.",
     contentGroup: "dgo-du2adt",
   },
 ];
