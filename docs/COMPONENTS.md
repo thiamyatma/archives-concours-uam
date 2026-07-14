@@ -33,6 +33,13 @@ Widget de l'assistant IA (voir [RAG.md](RAG.md)), monté globalement dans
 `next/dynamic({ ssr: false })` : son JS n'est récupéré que si quelqu'un
 clique réellement sur la bulle.
 
+## `components/analytics/`
+
+Intégration Google Analytics 4, montée globalement dans `app/layout.tsx`
+via `<Analytics />` (île client). GA n'est chargé qu'en production, après
+consentement (bannière cookies). Voir [google-analytics.md](google-analytics.md)
+pour l'architecture complète et l'ajout d'événements.
+
 ## `MarkdownRenderer`
 
 `components/shared/markdown-renderer.tsx` est un **Server Component** :

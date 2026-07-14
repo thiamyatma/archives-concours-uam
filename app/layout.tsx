@@ -5,6 +5,7 @@ import { Toaster } from "@/components/ui/sonner";
 import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { ChatWidget } from "@/components/chat/chat-widget";
+import { Analytics } from "@/components/analytics/analytics";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_SLOGAN } from "@/lib/constants";
 import { env } from "@/lib/env";
 
@@ -78,6 +79,7 @@ export default function RootLayout({
         <Footer />
         <Toaster position="top-center" />
         <ChatWidget />
+        <Analytics />
       </body>
     </html>
   );
