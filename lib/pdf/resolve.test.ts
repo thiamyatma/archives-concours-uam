@@ -17,10 +17,10 @@ describe("candidatePdfPaths", () => {
 
 describe("buildDownloadFileName", () => {
   it("uppercases the department code and appends the year", () => {
-    expect(buildDownloadFileName("dsti", 2025)).toBe("DSTI_2025.pdf");
+    expect(buildDownloadFileName("dsti", 2025)).toBe("Concours-UAM_DSTI_2025.pdf");
   });
 
   it("handles an already-uppercase code", () => {
-    expect(buildDownloadFileName("DGO", 2024)).toBe("DGO_2024.pdf");
+    expect(buildDownloadFileName("DGO", 2024)).toBe("Concours-UAM_DGO_2024.pdf");
   });
 });
