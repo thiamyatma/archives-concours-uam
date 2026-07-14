@@ -83,6 +83,22 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["pdf_downloads"]["Insert"]>;
         Relationships: [];
       };
+      action_rate_limits: {
+        Row: {
+          id: string;
+          key_hash: string;
+          action: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          key_hash: string;
+          action: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["action_rate_limits"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -117,6 +133,19 @@ export interface Database {
           file_name: string;
           downloads: number;
         }[];
+      };
+      check_and_record_rag_rate_limit: {
+        Args: { p_ip_hash: string; p_limit: number };
+        Returns: { allowed: boolean; remaining: number }[];
+      };
+      check_action_rate_limit: {
+        Args: {
+          p_key_hash: string;
+          p_action: string;
+          p_limit: number;
+          p_window_seconds: number;
+        };
+        Returns: boolean;
       };
     };
     Enums: Record<string, never>;
