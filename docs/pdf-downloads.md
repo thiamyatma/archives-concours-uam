@@ -71,7 +71,7 @@ contribution publique dans l'architecture actuelle.
    dans l'allow-list `DEPARTEMENTS`, année plausible), résout le chemin,
    génère une **URL signée** de 60 secondes via le client service-role
    (`createSignedUrl(path, 60, { download: fileName })` — le paramètre
-   `download` fixe le nom proposé au navigateur, ex. `DSTI_2025.pdf`),
+   `download` fixe le nom proposé au navigateur, ex. `Concours-UAM_DSTI_2025.pdf`),
    enregistre un événement dans `pdf_downloads` (best-effort : un échec du
    log ne bloque jamais un téléchargement déjà validé), puis renvoie l'URL.
    Le navigateur télécharge directement depuis Supabase Storage — jamais

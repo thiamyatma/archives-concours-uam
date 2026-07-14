@@ -13,7 +13,7 @@ export function candidatePdfPaths(
   return candidateContentPaths(dep).map((dir) => `${dir}/${annee}.pdf`);
 }
 
-/** Nom de fichier proposé au téléchargement, ex. `DSTI_2025.pdf`. */
+/** Nom de fichier proposé au téléchargement, ex. `Concours-UAM_DSTI_2025.pdf`. */
 export function buildDownloadFileName(departementCode: string, annee: number): string {
-  return `${departementCode.toUpperCase()}_${annee}.pdf`;
+  return `Concours-UAM_${departementCode.toUpperCase()}_${annee}.pdf`;
 }
