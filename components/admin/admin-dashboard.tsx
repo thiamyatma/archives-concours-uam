@@ -1,11 +1,17 @@
 "use client";
 
 import { useState } from "react";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { CheckCircle2, Loader2, Search } from "lucide-react";
+import {
+  keepPreviousData,
+  useMutation,
+  useQuery,
+  useQueryClient,
+} from "@tanstack/react-query";
+import { CheckCircle2, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   Table,
@@ -15,11 +21,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { PaginationControlsLocal } from "@/components/admin/pagination-controls-local";
+import { Pagination } from "@/components/shared/pagination";
 import { StatusBadge } from "@/components/admin/status-badge";
 import { PdfPreviewDialog } from "@/components/admin/pdf-preview-dialog";
 import { RejectDialog } from "@/components/admin/reject-dialog";
 import { DeleteDialog } from "@/components/admin/delete-dialog";
+import { usePagination } from "@/lib/hooks/use-pagination";
+import { DEFAULT_PAGE_SIZE } from "@/lib/pagination";
 import {
   approveDocument,
   deleteDocument,
@@ -37,28 +45,54 @@ const TABS: { value: DocumentStatus | "all"; label: string }[] = [
   { value: "all", label: "Tous" },
 ];
 
+const SKELETON_ROWS = 6;
+const TABLE_COLUMN_COUNT = 8;
+
 export function AdminDashboard({ initialPendingCount }: { initialPendingCount: number }) {
   const [status, setStatus] = useState<DocumentStatus | "all">("pending");
   const [q, setQ] = useState("");
   const [searchInput, setSearchInput] = useState("");
-  const [page, setPage] = useState(1);
   const queryClient = useQueryClient();
+  const queryKeyBase = ["admin-documents", status, q] as const;
 
-  const queryKey = ["admin-documents", status, q, page] as const;
+  // Le total exact n'est redemandé qu'à la page 1 d'une combinaison
+  // statut/recherche donnée (voir AdminDocumentQuery.withCount ci-dessous).
+  // Pour les pages suivantes, on lit directement le total déjà mis en
+  // cache par React Query pour la page 1 de ce même filtre — pas besoin
+  // d'un state/ref séparé rien que pour "se souvenir" d'une valeur que le
+  // cache de la query contient déjà.
+  const page1Data = queryClient.getQueryData<
+    Awaited<ReturnType<typeof fetchAdminDocuments>>
+  >([...queryKeyBase, 1]);
+  const knownTotal = page1Data?.total ?? 0;
+
+  const pagination = usePagination({ total: knownTotal, pageSize: DEFAULT_PAGE_SIZE });
 
   const { data, isLoading, isFetching } = useQuery({
-    queryKey,
+    queryKey: [...queryKeyBase, pagination.page] as const,
     queryFn: () =>
       fetchAdminDocuments({
         status: status === "all" ? undefined : status,
         q: q || undefined,
-        page,
+        page: pagination.page,
+        withCount: pagination.page === 1,
       }),
-    placeholderData: (previous) => previous,
+    placeholderData: keepPreviousData,
   });
 
   function invalidate() {
     queryClient.invalidateQueries({ queryKey: ["admin-documents"] });
+  }
+
+  function handleStatusChange(value: string) {
+    setStatus(value as DocumentStatus | "all");
+    pagination.resetPage();
+  }
+
+  function handleSearchSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setQ(searchInput);
+    pagination.resetPage();
   }
 
   const approveMutation = useMutation({
@@ -108,14 +142,7 @@ export function AdminDashboard({ initialPendingCount }: { initialPendingCount: n
             attente de validation.
           </p>
         </div>
-        <form
-          className="flex gap-2"
-          onSubmit={(e) => {
-            e.preventDefault();
-            setPage(1);
-            setQ(searchInput);
-          }}
-        >
+        <form className="flex gap-2" onSubmit={handleSearchSubmit}>
           <div className="relative">
             <Search className="text-muted-foreground pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2" />
             <Input
@@ -131,13 +158,7 @@ export function AdminDashboard({ initialPendingCount }: { initialPendingCount: n
         </form>
       </div>
 
-      <Tabs
-        value={status}
-        onValueChange={(value) => {
-          setStatus(value as DocumentStatus | "all");
-          setPage(1);
-        }}
-      >
+      <Tabs value={status} onValueChange={handleStatusChange}>
         <TabsList>
           {TABS.map((tab) => (
             <TabsTrigger key={tab.value} value={tab.value}>
@@ -164,25 +185,18 @@ export function AdminDashboard({ initialPendingCount }: { initialPendingCount: n
             </TableHeader>
             <TableBody>
               {isLoading ? (
+                <AdminTableSkeleton />
+              ) : data?.items.length === 0 ? (
                 <TableRow>
                   <TableCell
-                    colSpan={8}
-                    className="text-muted-foreground h-32 text-center"
-                  >
-                    <Loader2 className="mx-auto size-6 animate-spin" />
-                  </TableCell>
-                </TableRow>
-              ) : data?.documents.length === 0 ? (
-                <TableRow>
-                  <TableCell
-                    colSpan={8}
+                    colSpan={TABLE_COLUMN_COUNT}
                     className="text-muted-foreground h-32 text-center"
                   >
                     Aucun document dans cette catégorie.
                   </TableCell>
                 </TableRow>
               ) : (
-                data?.documents.map((doc) => (
+                data?.items.map((doc) => (
                   <TableRow key={doc.id}>
                     <TableCell>
                       <StatusBadge status={doc.status} />
@@ -240,17 +254,32 @@ export function AdminDashboard({ initialPendingCount }: { initialPendingCount: n
         </div>
       </div>
 
-      {isFetching && !isLoading && (
-        <p className="text-muted-foreground text-xs">Actualisation...</p>
-      )}
-
-      {data && data.pageCount > 1 && (
-        <PaginationControlsLocal
-          page={data.page}
-          pageCount={data.pageCount}
-          onPageChange={setPage}
+      <div className="flex items-center justify-between gap-4">
+        <p className="text-muted-foreground text-xs" aria-live="polite">
+          {isFetching && !isLoading ? "Actualisation..." : " "}
+        </p>
+        <Pagination
+          page={pagination.page}
+          pageCount={pagination.pageCount}
+          onPageChange={pagination.setPage}
         />
-      )}
+      </div>
     </div>
+  );
+}
+
+function AdminTableSkeleton() {
+  return (
+    <>
+      {Array.from({ length: SKELETON_ROWS }, (_, i) => (
+        <TableRow key={i}>
+          {Array.from({ length: TABLE_COLUMN_COUNT }, (_, col) => (
+            <TableCell key={col}>
+              <Skeleton className="h-4 w-full max-w-24" />
+            </TableCell>
+          ))}
+        </TableRow>
+      ))}
+    </>
   );
 }

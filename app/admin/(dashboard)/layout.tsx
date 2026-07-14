@@ -44,6 +44,23 @@ export default async function AdminDashboardLayout({
             </span>
             <span>{SITE_NAME} — Admin</span>
           </Link>
+          <nav
+            aria-label="Navigation admin"
+            className="hidden items-center gap-1 md:flex"
+          >
+            <Link
+              href="/admin"
+              className="hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 text-sm font-medium"
+            >
+              Documents
+            </Link>
+            <Link
+              href="/admin/contributeurs"
+              className="hover:bg-accent hover:text-accent-foreground rounded-md px-3 py-2 text-sm font-medium"
+            >
+              Contributeurs
+            </Link>
+          </nav>
           <div className="flex items-center gap-3">
             <span className="text-muted-foreground hidden text-sm sm:inline">
               {user.email}

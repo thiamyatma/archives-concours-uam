@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ArrowRight, CalendarDays, Download, FileStack } from "lucide-react";
+import { CalendarDays, Download, FileStack } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { CompletenessBadge } from "@/components/shared/completeness-badge";
+import { FiliereYearsList } from "@/components/shared/filiere-years-list";
 import { getAllFilieres, getFiliereArchive, getFiliereByCode } from "@/lib/data/filieres";
 import { formatNumber } from "@/lib/format";
 
@@ -108,27 +108,7 @@ export default async function FiliereDetailPage({
           </Link>
         </p>
       ) : (
-        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-          {archive.years.map((year) => (
-            <li key={year.annee}>
-              <Link
-                href={`/filieres/${filiere.code}/${year.annee}`}
-                className="group bg-card flex items-center justify-between rounded-xl border px-5 py-4 transition-shadow hover:shadow-md"
-              >
-                <div>
-                  <p className="text-lg font-semibold">{year.annee}</p>
-                  <div className="mt-1">
-                    <CompletenessBadge count={year.count} total={year.total} />
-                  </div>
-                </div>
-                <ArrowRight
-                  className="text-muted-foreground group-hover:text-primary size-5 transition-transform group-hover:translate-x-1"
-                  aria-hidden="true"
-                />
-              </Link>
-            </li>
-          ))}
-        </ul>
+        <FiliereYearsList years={archive.years} filiereCode={filiere.code} />
       )}
     </div>
   );
