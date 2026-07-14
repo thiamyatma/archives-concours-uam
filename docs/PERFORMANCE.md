@@ -189,15 +189,115 @@ corrigé par le `group by`.
 
 ## Pagination
 
-Déjà en place avant ce passage (`LIBRARY_PAGE_SIZE = 12`,
-`ADMIN_PAGE_SIZE = 20`, `.range(from, to)` + `count: "exact"`) — confirmée
-correcte et documentée ici pour être complet. `count: "exact"` reste le bon
-choix tant que la table `documents` reste de l'ordre de quelques milliers
-de lignes (le domaine — des épreuves d'examen — ne grossit pas vite) :
-Postgres répond via l'index de statut sans scan complet. Si elle devait un
-jour atteindre plusieurs millions de lignes, l'étape suivante serait de
-passer `count: "planned"` (estimation via les statistiques du planificateur,
-approximative mais O(1)) plutôt que `"exact"`.
+Pagination unifiée sur toutes les listes de l'application (bibliothèque,
+années d'une filière, tableau admin des documents, liste admin des
+contributeurs) autour d'un socle commun : `lib/pagination.ts` (types +
+utilitaires purs), `components/shared/pagination.tsx` (UI) et
+`lib/hooks/use-pagination.ts` (état côté client). Chaque choix ci-dessous
+est justifié pour une table `documents` de l'ordre de **plusieurs milliers
+de lignes** — pas des millions — ce qui est l'échelle réaliste pour un
+dépôt d'épreuves d'examen.
+
+### LIMIT/OFFSET plutôt qu'une pagination par curseur
+
+L'UI cible (`← Précédent 1 2 3 4 5 … 20 Suivant →`) exige de pouvoir sauter
+directement à une page arbitraire. Un curseur n'encode que "la ligne après
+celle-ci" : il permet un défilement séquentiel (page suivante/précédente)
+mais pas de calculer où se trouve la page 7 sans avoir parcouru les pages
+1 à 6. Le curseur serait le bon choix pour un flux infini sans numéros de
+page ; ce n'est pas le besoin exprimé ici, donc `.range(from, to)`
+(LIMIT/OFFSET via PostgREST) reste le choix adapté.
+
+La faiblesse connue d'OFFSET — le coût de la requête croît avec la valeur
+de l'offset, Postgres devant parcourir (puis jeter) les lignes précédentes
+— ne se manifeste qu'à partir de dizaines/centaines de milliers de lignes
+**par combinaison de filtres**. Au volume attendu (quelques milliers de
+lignes au total, encore moins une fois filtrées par filière/année/matière),
+`OFFSET 5000` reste de l'ordre du milliseconde sur un index adapté. Si le
+volume venait à grossir de plusieurs ordres de grandeur, l'étape suivante
+serait une pagination par curseur seek (`WHERE (annee, matiere, id) < (...)`)
+combinée à une UI "page suivante" sans numéros — un changement d'UX, pas
+seulement d'implémentation, donc délibérément hors scope ici.
+
+### Compter seulement quand nécessaire
+
+`count: "exact"` coûte un scan (même index-only) à chaque appel, en plus du
+`SELECT` des lignes de la page — un coût payé pour chaque page consultée
+alors que le total ne change qu'à l'approbation/au refus/à la suppression
+d'un document. Deux stratégies distinctes selon le contexte :
+
+- **Bibliothèque publique** (`lib/data/documents.ts`,
+  `fetchApprovedDocumentsCount`) : le compte est un Server Component sans
+  état — impossible de "se souvenir" du total d'une requête à l'autre côté
+  serveur. Il est donc mis en cache via `unstable_cache`, par combinaison de
+  filtres (`q`, `filiereCode`, `annee`, `matiere`), tagué
+  `CACHE_TAGS.documents` et invalidé à la demande (`revalidateTag`) dans
+  `revalidateDocumentSurfaces` (`lib/actions/admin.ts`) — donc à la seconde
+  près après une décision admin, avec un TTL de 5 minutes en filet de
+  sécurité. Le fetch des lignes, lui, n'est jamais mis en cache (déjà
+  documenté plus haut : trop de combinaisons filtres × page pour que ce
+  soit rentable).
+- **Tableaux admin pilotés par React Query** (`AdminDashboard`,
+  `ContributorsTable`) : le client garde l'état entre les pages, donc pas
+  besoin de cache serveur. `count: "exact"` n'est demandé que pour la
+  **page 1** d'une combinaison de filtres donnée (`withCount: page === 1`).
+  Les pages suivantes lisent le total déjà connu directement dans le cache
+  de React Query (`queryClient.getQueryData([...queryKeyBase, 1])`) plutôt
+  que de le redemander — une lecture synchrone, sans effet de bord, donc
+  compatible avec les contraintes du React Compiler du projet (voir
+  ci-dessous).
+
+`count: "exact"` reste adapté tant que la table reste de l'ordre de
+quelques milliers de lignes : Postgres répond via l'index de statut sans
+scan complet. À plusieurs millions de lignes, l'étape suivante serait
+`count: "planned"` (estimation via les statistiques du planificateur,
+approximative mais O(1)) — prématuré ici.
+
+### Index ajoutés pour la pagination
+
+`contributors_created_at_idx on public.contributors (created_at desc)`
+(`supabase/migrations/20260715000000_pagination.sql`) : la liste admin des
+contributeurs trie par date de contribution décroissante à chaque page ;
+sans cet index, chaque page au-delà de la première déclenche un tri complet
+de la table. Les index déjà en place pour la bibliothèque
+(`documents_approved_browse_idx`, voir plus haut) couvrent déjà son tri par
+défaut — aucun index supplémentaire n'était nécessaire là.
+
+### UX : pas de vide pendant le chargement
+
+Les tableaux admin utilisent `placeholderData: keepPreviousData` (React
+Query v5) : en changeant de page, l'ancien contenu reste affiché (au lieu
+d'un état de chargement vide) jusqu'à ce que la nouvelle page arrive — pas
+de saut de mise en page, pas de flash. Les pages publiques (Server
+Components) obtiennent l'équivalent gratuitement via le fichier de
+convention `loading.tsx` (`app/bibliotheque/loading.tsx`,
+`app/filieres/[code]/loading.tsx`) : Next.js affiche un squelette identique
+à la mise en page réelle pendant la navigation, sans code de gestion d'état
+supplémentaire.
+
+### Pourquoi `queryClient.getQueryData` plutôt qu'un `useState`/`useRef`
+
+Le React Compiler de ce projet interdit `setState` dans un `useEffect` pour
+de l'état dérivé (`react-hooks/set-state-in-effect`) et interdit même la
+lecture/écriture de `useRef.current` pendant le rendu
+(`react-hooks/refs`) — donc ni l'un ni l'autre ne pouvait servir à "se
+souvenir" du total de la page 1 pendant qu'on navigue vers la page 2.
+`queryClient.getQueryData(...)` est une lecture pure et synchrone du cache
+déjà maintenu par React Query : aucun état parallèle à synchroniser, aucun
+effet de bord pendant le rendu.
+
+### Cas particulier : pagination en mémoire (années d'une filière)
+
+`components/shared/filiere-years-list.tsx` pagine `years.length` (≤ quelques
+dizaines d'années) **en mémoire** via `usePagination` +
+`years.slice(from, to)`, et non par `.range()` côté Supabase. La donnée
+provient de `getFiliereArchive`, qui a déjà agrégé toutes les années d'une
+filière en une seule requête pour calculer la complétude de chacune (voir
+`lib/data/filieres.ts`) — le travail coûteux (l'agrégation) est déjà fait
+avant même de savoir quelle page afficher. Repaginer côté serveur
+obligerait soit à ragréger par page (plus de requêtes, pas moins), soit à
+étendre l'agrégat pour qu'il sache aussi paginer (complexité qui ne se
+justifie pas pour, au grand maximum, quelques dizaines d'éléments).
 
 ## Téléchargement des PDF
 
@@ -268,11 +368,14 @@ directe sur une plateforme serverless (Vercel) sans changement de code.
 
 ## Ce qui n'a délibérément pas été fait
 
-- **Pas de cache sur `getApprovedDocuments` (bibliothèque)** : trop de
-  combinaisons de filtres/recherche/pagination pour un cache efficace, et
-  la page est déjà dynamique par nature (`searchParams`). Les index
-  existants suffisent à garder chaque requête rapide (≤ 12 lignes
-  retournées, filtrage sur colonnes indexées).
+- **Pas de cache sur les lignes de `getApprovedDocuments` (bibliothèque)** :
+  trop de combinaisons de filtres/recherche/pagination pour un cache
+  efficace, et la page est déjà dynamique par nature (`searchParams`). Les
+  index existants suffisent à garder chaque requête rapide (20 lignes
+  retournées au plus, filtrage sur colonnes indexées). Seul le **compte**
+  associé à chaque combinaison de filtres est mis en cache (voir
+  [Pagination](#pagination)) — le total change beaucoup moins souvent que
+  la page consultée.
 - **Pas de cache sur les données admin** (`getAdminDocuments`,
   `getPendingCount`) : dépendent de l'utilisateur connecté et doivent
   refléter l'état réel immédiatement — les mettre en cache introduirait un

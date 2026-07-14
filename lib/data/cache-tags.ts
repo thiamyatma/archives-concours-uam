@@ -7,4 +7,6 @@
 export const CACHE_TAGS = {
   filieres: "filieres",
   globalStats: "global-stats",
+  /** Compte total de documents approuvés par combinaison de filtres (bibliothèque) — voir lib/data/documents.ts. */
+  documents: "documents-count",
 } as const;

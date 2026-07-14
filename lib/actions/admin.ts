@@ -5,11 +5,8 @@ import { createClient } from "@/lib/supabase/server";
 import { createServiceClient } from "@/lib/supabase/service";
 import { adminRejectSchema } from "@/lib/validations/document";
 import { CACHE_TAGS } from "@/lib/data/cache-tags";
-import {
-  getAdminDocuments,
-  type AdminDocumentQuery,
-  type PaginatedDocuments,
-} from "@/lib/data/documents";
+import { getAdminDocuments, type AdminDocumentQuery } from "@/lib/data/documents";
+import { getContributors, type ContributorQuery } from "@/lib/data/contributors";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -32,9 +29,17 @@ export interface AdminActionResult {
 /** Utilisé par le tableau admin côté client (React Query) pour charger les documents. */
 export async function fetchAdminDocuments(
   filters: AdminDocumentQuery
-): Promise<PaginatedDocuments> {
+): Promise<Awaited<ReturnType<typeof getAdminDocuments>>> {
   await requireAdmin();
   return getAdminDocuments(filters);
+}
+
+/** Utilisé par la liste admin des contributeurs (React Query). */
+export async function fetchContributors(
+  filters: ContributorQuery
+): Promise<Awaited<ReturnType<typeof getContributors>>> {
+  await requireAdmin();
+  return getContributors(filters);
 }
 
 const PREVIEW_URL_TTL_SECONDS = 120;
@@ -84,6 +89,7 @@ function revalidateDocumentSurfaces(filiereCode: string | null, annee: number | 
   revalidatePath("/");
   revalidateTag(CACHE_TAGS.globalStats);
   revalidateTag(CACHE_TAGS.filieres);
+  revalidateTag(CACHE_TAGS.documents);
 
   if (filiereCode) {
     revalidatePath(`/filieres/${filiereCode}`);

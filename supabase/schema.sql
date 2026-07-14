@@ -55,6 +55,11 @@ create table if not exists public.contributors (
 
 comment on table public.contributors is 'Contributeurs ayant partagé au moins une épreuve.';
 
+-- Sert le tri "plus récents d'abord" de la liste admin des contributeurs
+-- (pagination LIMIT/OFFSET) sans scan complet + sort en mémoire.
+create index if not exists contributors_created_at_idx
+  on public.contributors (created_at desc);
+
 -- ---------------------------------------------------------------------
 -- Table: documents
 -- ---------------------------------------------------------------------

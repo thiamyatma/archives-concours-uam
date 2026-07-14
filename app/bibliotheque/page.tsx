@@ -3,7 +3,7 @@ import { Suspense } from "react";
 import { FileSearch } from "lucide-react";
 import { LibraryFilters } from "@/components/shared/library-filters";
 import { DocumentCard } from "@/components/shared/document-card";
-import { PaginationControls } from "@/components/shared/pagination-controls";
+import { Pagination } from "@/components/shared/pagination";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getApprovedDocuments } from "@/lib/data/documents";
 import { getAllFilieres } from "@/lib/data/filieres";
@@ -42,6 +42,19 @@ export default async function BibliothequePage({
     }),
   ]);
 
+  // Conserve les filtres/la recherche en changeant de page : on ne touche
+  // que le paramètre `page` de l'URL courante, tout le reste (q, filiere,
+  // annee, matiere) reste tel quel.
+  function hrefForPage(page: number) {
+    const params = new URLSearchParams();
+    if (filters.q) params.set("q", filters.q);
+    if (filters.filiere) params.set("filiere", filters.filiere);
+    if (filters.annee) params.set("annee", String(filters.annee));
+    if (filters.matiere) params.set("matiere", filters.matiere);
+    params.set("page", String(page));
+    return `/bibliotheque?${params.toString()}`;
+  }
+
   return (
     <div className="mx-auto max-w-6xl px-4 py-14 sm:px-6">
       <div className="mb-8 space-y-2">
@@ -56,7 +69,7 @@ export default async function BibliothequePage({
         <LibraryFilters filieres={filieres} />
       </Suspense>
 
-      {result.documents.length === 0 ? (
+      {result.items.length === 0 ? (
         <div className="mt-10 flex flex-col items-center gap-3 rounded-xl border border-dashed p-16 text-center">
           <FileSearch className="text-muted-foreground size-10" aria-hidden="true" />
           <p className="text-lg font-medium">Aucun document trouvé</p>
@@ -67,14 +80,16 @@ export default async function BibliothequePage({
       ) : (
         <>
           <div className="mt-8 grid grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3">
-            {result.documents.map((doc) => (
+            {result.items.map((doc) => (
               <DocumentCard key={doc.id} document={doc} />
             ))}
           </div>
           <div className="mt-10 flex justify-center">
-            <Suspense fallback={null}>
-              <PaginationControls page={result.page} pageCount={result.pageCount} />
-            </Suspense>
+            <Pagination
+              page={result.page}
+              pageCount={result.pageCount}
+              renderHref={hrefForPage}
+            />
           </div>
         </>
       )}

@@ -58,6 +58,8 @@ français sur `description`.
 | `email`      | `text`        | optionnel |
 | `created_at` | `timestamptz` |           |
 
+Index : `created_at desc` (pagination de la liste admin des contributeurs).
+
 ### `reports`
 
 | Colonne          | Type                  | Notes               |
