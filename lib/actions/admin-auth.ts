@@ -1,9 +1,14 @@
 "use server";
 
 import { createHmac, timingSafeEqual } from "node:crypto";
-import { cookies } from "next/headers";
+import { cookies, headers } from "next/headers";
 import { redirect } from "next/navigation";
 import { env } from "@/lib/env";
+import { getClientIp } from "@/lib/http/client-ip";
+import { checkActionRateLimit } from "@/lib/rate-limit";
+
+const LOGIN_RATE_LIMIT = 5;
+const LOGIN_RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
 
 /**
  * Accès admin minimal : un unique mot de passe (pas de comptes, pas de
@@ -52,6 +57,20 @@ export interface AdminLoginResult {
 export async function loginAdmin(password: string): Promise<AdminLoginResult> {
   if (!env.ADMIN_PASSWORD) {
     return { success: false, error: "Accès admin non configuré." };
+  }
+
+  const ip = getClientIp(await headers());
+  const allowed = await checkActionRateLimit(
+    ip,
+    "admin_login",
+    LOGIN_RATE_LIMIT,
+    LOGIN_RATE_LIMIT_WINDOW_SECONDS
+  );
+  if (!allowed) {
+    return {
+      success: false,
+      error: "Trop de tentatives. Réessayez dans quelques minutes.",
+    };
   }
 
   const expectedBuf = Buffer.from(env.ADMIN_PASSWORD);

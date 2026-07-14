@@ -1,12 +1,17 @@
 "use server";
 
 import { z } from "zod";
+import { headers } from "next/headers";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getDepartementByCode } from "@/lib/departements";
 import { buildDownloadFileName, candidatePdfPaths } from "@/lib/pdf/resolve";
+import { getClientIp } from "@/lib/http/client-ip";
+import { checkActionRateLimit } from "@/lib/rate-limit";
 
 const PDF_BUCKET = "exam-pdfs";
 const SIGNED_URL_TTL_SECONDS = 60;
+const DOWNLOAD_RATE_LIMIT = 30;
+const DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 
 const requestSchema = z.object({
   departementCode: z.string().min(1),
@@ -84,6 +89,17 @@ export async function getExamPdfDownloadUrl(
   const departement = getDepartementByCode(parsed.data.departementCode);
   if (!departement) {
     return { error: "Département introuvable." };
+  }
+
+  const ip = getClientIp(await headers());
+  const allowed = await checkActionRateLimit(
+    ip,
+    "pdf_download",
+    DOWNLOAD_RATE_LIMIT,
+    DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS
+  );
+  if (!allowed) {
+    return { error: "Trop de téléchargements. Réessayez dans quelques minutes." };
   }
 
   let supabase: ReturnType<typeof createServiceClient>;

@@ -314,3 +314,85 @@ $$;
 
 revoke all on function public.get_top_downloaded_pdfs(integer) from public;
 grant execute on function public.get_top_downloaded_pdfs(integer) to service_role;
+
+-- Rate-limiting durci : RPC atomique pour le RAG (remplace le check-then-insert
+-- applicatif, racy sous requêtes concurrentes) + limiteur générique par
+-- IP+action pour la connexion admin et la génération de lien PDF, qui
+-- n'avaient auparavant aucune protection.
+
+create or replace function public.check_and_record_rag_rate_limit(
+  p_ip_hash text,
+  p_limit integer
+) returns table (allowed boolean, remaining integer)
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_count integer;
+begin
+  perform pg_advisory_xact_lock(hashtext('rag_rate_limit:' || p_ip_hash));
+
+  select count(*) into v_count
+  from public.rag_query_log
+  where ip_hash = p_ip_hash
+    and created_at >= now() - interval '24 hours';
+
+  if v_count >= p_limit then
+    return query select false, 0;
+  end if;
+
+  insert into public.rag_query_log (ip_hash) values (p_ip_hash);
+  return query select true, greatest(p_limit - v_count - 1, 0);
+end;
+$$;
+
+revoke all on function public.check_and_record_rag_rate_limit(text, integer) from public;
+grant execute on function public.check_and_record_rag_rate_limit(text, integer) to service_role;
+
+create table if not exists public.action_rate_limits (
+  id uuid primary key default gen_random_uuid(),
+  key_hash text not null,
+  action text not null,
+  created_at timestamptz not null default now()
+);
+
+create index if not exists action_rate_limits_lookup_idx
+  on public.action_rate_limits (action, key_hash, created_at);
+
+alter table public.action_rate_limits enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role via
+-- check_action_rate_limit, même principe que rag_query_log/pdf_downloads.
+
+create or replace function public.check_action_rate_limit(
+  p_key_hash text,
+  p_action text,
+  p_limit integer,
+  p_window_seconds integer
+) returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_count integer;
+begin
+  perform pg_advisory_xact_lock(hashtext(p_action || ':' || p_key_hash));
+
+  select count(*) into v_count
+  from public.action_rate_limits
+  where action = p_action
+    and key_hash = p_key_hash
+    and created_at >= now() - (p_window_seconds::text || ' seconds')::interval;
+
+  if v_count >= p_limit then
+    return false;
+  end if;
+
+  insert into public.action_rate_limits (key_hash, action) values (p_key_hash, p_action);
+  return true;
+end;
+$$;
+
+revoke all on function public.check_action_rate_limit(text, text, integer, integer) from public;
+grant execute on function public.check_action_rate_limit(text, text, integer, integer) to service_role;

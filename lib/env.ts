@@ -33,7 +33,7 @@ const envSchema = z.object({
   RAG_MAX_QUESTIONS_PER_IP_PER_DAY: z.coerce
     .number()
     .int()
-    .positive()
+    .nonnegative()
     .optional()
     .default(30),
 });
@@ -65,6 +65,16 @@ function loadEnv() {
     );
     throw new Error(
       "Configuration Supabase invalide. Vérifiez votre fichier .env.local (voir .env.example)."
+    );
+  }
+
+  // Avertissement seulement (jamais bloquant) : un ADMIN_PASSWORD trop court
+  // est brute-forçable. Ne pas planter le site pour un secret déjà en place
+  // en production — c'est à l'opérateur de le renforcer.
+  const adminPassword = parsed.data.ADMIN_PASSWORD;
+  if (adminPassword && adminPassword.length < 12) {
+    console.warn(
+      "ADMIN_PASSWORD fait moins de 12 caractères — recommandé de le renforcer (voir docs/pdf-downloads.md)."
     );
   }
 
