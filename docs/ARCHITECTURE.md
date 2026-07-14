@@ -98,9 +98,22 @@ Voir [COMPONENTS.md](COMPONENTS.md) pour le détail. En résumé :
   `npx shadcn@latest add <composant>` pour mettre à jour)
 - `components/shared/` — Navbar, Footer, cartes département, rendu Markdown
 - `components/chat/` — widget de l'assistant IA
+- `components/analytics/` — intégration Google Analytics 4 (voir plus bas)
+
+## Google Analytics 4
+
+Île client isolée, montée une fois dans `app/layout.tsx` via `<Analytics />`
+(`components/analytics/analytics.tsx`). N'affecte pas la génération statique
+des pages. GA (gtag) n'est chargé **que** si : production **ET**
+`NEXT_PUBLIC_GA_MEASUREMENT_ID` présent **ET** consentement accordé — jamais
+en dev, jamais avant acceptation de la bannière cookies. L'API d'envoi
+d'événements (`lib/analytics/`, `useAnalytics()`) est toujours sûre à
+appeler : no-op si GA n'est pas chargé. Détail complet, création de la
+propriété GA4 et ajout d'événements : [`docs/google-analytics.md`](./google-analytics.md).
 
 ## Hooks
 
-Le projet n'a pas de hooks React personnalisés (`lib/hooks/` n'existe pas) —
-aucune page n'a d'état client complexe à gérer. Si un hook personnalisé
-devient nécessaire, le placer dans `lib/hooks/use-<nom>.ts`.
+Les hooks React personnalisés vont dans `lib/hooks/use-<nom>.ts`. Le seul à
+ce jour est `useAnalytics()` (`lib/hooks/use-analytics.ts`), qui expose des
+émetteurs d'événements GA4 typés utilisables depuis n'importe quel Client
+Component.

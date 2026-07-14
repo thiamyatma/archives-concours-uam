@@ -5,6 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
+import { TrackEpreuveView } from "@/components/analytics/track-epreuve-view";
 import {
   DEPARTEMENTS,
   getConcoursContent,
@@ -57,6 +58,7 @@ export default async function DepartementAnneePage({
 
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
+      <TrackEpreuveView department={departement.code} year={annee} />
       <Button asChild variant="ghost" size="sm" className="mb-4 -ml-2">
         <Link href={`/departements/${departement.code}`}>
           <ChevronLeft className="size-4" aria-hidden="true" />

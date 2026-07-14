@@ -87,13 +87,14 @@ Copier `.env.example` vers `.env.local`. Aucune variable n'est requise pour
 parcourir les départements/archives ; les variables Supabase/Groq
 n'activent que l'assistant IA (voir [docs/RAG.md](docs/RAG.md)).
 
-| Variable                        | Requise             | Rôle                                                               |
-| ------------------------------- | ------------------- | ------------------------------------------------------------------ |
-| `NEXT_PUBLIC_SUPABASE_URL`      | pour l'assistant IA | URL du projet Supabase                                             |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pour l'assistant IA | Clé publique (RLS appliqué)                                        |
-| `SUPABASE_SERVICE_ROLE_KEY`     | pour l'assistant IA | Clé serveur (⚠️ secret) — recherche RAG, rate-limiting             |
-| `NEXT_PUBLIC_SITE_URL`          | non                 | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`) |
-| `GROQ_API_KEY`                  | pour l'assistant IA | Génération des réponses de l'assistant                             |
+| Variable                        | Requise             | Rôle                                                                                                |
+| ------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------- |
+| `NEXT_PUBLIC_SUPABASE_URL`      | pour l'assistant IA | URL du projet Supabase                                                                              |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pour l'assistant IA | Clé publique (RLS appliqué)                                                                         |
+| `SUPABASE_SERVICE_ROLE_KEY`     | pour l'assistant IA | Clé serveur (⚠️ secret) — recherche RAG, rate-limiting                                              |
+| `NEXT_PUBLIC_SITE_URL`          | non                 | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`)                                  |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | non                 | Active Google Analytics 4 en production (voir [docs/google-analytics.md](docs/google-analytics.md)) |
+| `GROQ_API_KEY`                  | pour l'assistant IA | Génération des réponses de l'assistant                                                              |
 
 ## Configuration Supabase
 
@@ -180,6 +181,7 @@ components/
   ui/                               Composants shadcn/ui (générés, éviter de modifier à la main)
   shared/                           Navbar, Footer, cartes département, rendu Markdown
   chat/                             Widget assistant IA
+  analytics/                        Google Analytics 4 (chargement, consentement, trackers)
 
 content/
   archives/<groupe-ou-code>/<année>.md      Épreuves (voir "Ajouter une nouvelle épreuve")
@@ -188,6 +190,8 @@ lib/
   departements.ts                   Config statique des 5 départements
   content/                          Résolution de contenu, parsing, réparation LaTeX (fonctions pures + tests)
   data/departements.ts              Point d'entrée pour les pages (React cache())
+  analytics/                        API GA4 typée (événements, consentement, trackEvent) — voir docs/google-analytics.md
+  hooks/use-analytics.ts            Hook useAnalytics()
   rag/, supabase/service.ts         Assistant IA
   constants.ts, format.ts, env.ts
 

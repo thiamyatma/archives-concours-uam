@@ -17,6 +17,11 @@ const envSchema = z.object({
     .optional(),
   NEXT_PUBLIC_SITE_URL: z.string().url().optional().default("http://localhost:3000"),
 
+  // Google Analytics 4 — voir docs/google-analytics.md. Optionnel : sans ID,
+  // aucun script GA n'est chargé (et jamais en dev). Lu aussi directement via
+  // process.env dans lib/analytics/gtag.ts pour le code client.
+  NEXT_PUBLIC_GA_MEASUREMENT_ID: z.string().min(1).optional(),
+
   // Assistant IA (RAG polytech.sn) — voir docs/RAG.md
   GROQ_API_KEY: z.string().min(1, "GROQ_API_KEY manquant").optional(),
   GROQ_MODEL: z.string().min(1).optional().default("llama-3.3-70b-versatile"),
@@ -39,6 +44,7 @@ function loadEnv() {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: orUndefined(process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY),
     SUPABASE_SERVICE_ROLE_KEY: orUndefined(process.env.SUPABASE_SERVICE_ROLE_KEY),
     NEXT_PUBLIC_SITE_URL: orUndefined(process.env.NEXT_PUBLIC_SITE_URL),
+    NEXT_PUBLIC_GA_MEASUREMENT_ID: orUndefined(process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID),
     GROQ_API_KEY: orUndefined(process.env.GROQ_API_KEY),
     GROQ_MODEL: orUndefined(process.env.GROQ_MODEL),
     RAG_MAX_QUESTIONS_PER_IP_PER_DAY: orUndefined(
