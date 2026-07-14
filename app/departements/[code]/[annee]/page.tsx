@@ -64,13 +64,17 @@ export default async function DepartementAnneePage({
         </Link>
       </Button>
 
-      <MarkdownRenderer>{content.enTete}</MarkdownRenderer>
+      <MarkdownRenderer className="text-center [&_ol]:list-inside [&_ul]:list-inside">
+        {content.enTete}
+      </MarkdownRenderer>
 
       <div className="mt-10 space-y-6">
         {content.sections.map((section) => (
           <Card key={section.title}>
             <CardHeader>
-              <CardTitle>{section.title}</CardTitle>
+              <CardTitle className="text-brand-blue text-center text-xl sm:text-2xl">
+                {section.title}
+              </CardTitle>
             </CardHeader>
             <CardContent>
               <MarkdownRenderer>{section.markdown}</MarkdownRenderer>
