@@ -65,6 +65,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["rag_query_log"]["Insert"]>;
         Relationships: [];
       };
+      pdf_downloads: {
+        Row: {
+          id: string;
+          departement_code: string;
+          annee: number;
+          file_name: string;
+          downloaded_at: string;
+        };
+        Insert: {
+          id?: string;
+          departement_code: string;
+          annee: number;
+          file_name: string;
+          downloaded_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["pdf_downloads"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -77,6 +95,27 @@ export interface Database {
           section: string;
           content: string;
           rank: number;
+        }[];
+      };
+      get_pdf_download_stats: {
+        Args: Record<string, never>;
+        Returns: { total_downloads: number; total_files_downloaded: number }[];
+      };
+      get_pdf_downloads_by_departement: {
+        Args: Record<string, never>;
+        Returns: { departement_code: string; downloads: number }[];
+      };
+      get_pdf_downloads_by_annee: {
+        Args: Record<string, never>;
+        Returns: { annee: number; downloads: number }[];
+      };
+      get_top_downloaded_pdfs: {
+        Args: { limit_count?: number };
+        Returns: {
+          departement_code: string;
+          annee: number;
+          file_name: string;
+          downloads: number;
         }[];
       };
     };

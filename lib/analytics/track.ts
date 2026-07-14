@@ -48,3 +48,6 @@ export const trackReportDocument = (params?: AnalyticsEventParams) =>
 
 export const trackShareSubject = (params?: AnalyticsEventParams) =>
   trackEvent(ANALYTICS_EVENTS.SHARE_SUBJECT, params);
+
+export const trackDownloadSubject = (params?: AnalyticsEventParams) =>
+  trackEvent(ANALYTICS_EVENTS.DOWNLOAD_SUBJECT, params);

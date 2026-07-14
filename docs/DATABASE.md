@@ -3,8 +3,10 @@
 Les archives de concours (départements/années/épreuves) ne vivent **pas**
 en base de données — ce sont des fichiers Markdown git-versionnés sous
 `content/archives/**` (voir [ARCHITECTURE.md](ARCHITECTURE.md#départements-et-archives--résolution-de-contenu)).
-La seule donnée persistée dans Supabase sert l'assistant IA (RAG sur
-polytech.sn, voir [RAG.md](RAG.md)).
+Les PDF correspondants vivent dans Supabase Storage, pas en base non plus
+(voir [pdf-downloads.md](pdf-downloads.md)). Les données persistées ici
+servent l'assistant IA (RAG sur polytech.sn, voir [RAG.md](RAG.md)) et le
+log des téléchargements PDF.
 
 ## `polytech_pages`
 
@@ -36,12 +38,29 @@ polytech.sn, voir [RAG.md](RAG.md)).
 | `ip_hash`    | `text`        | SHA-256 de l'IP, pas l'IP en clair      |
 | `created_at` | `timestamptz` | rate-limiting uniquement, aucun contenu |
 
+## `pdf_downloads`
+
+| Colonne            | Type          | Notes                         |
+| ------------------ | ------------- | ----------------------------- |
+| `id`               | `uuid` (PK)   |                               |
+| `departement_code` | `text`        | ex. `dsti`                    |
+| `annee`            | `integer`     | 2000-2100                     |
+| `file_name`        | `text`        | nom proposé au téléchargement |
+| `downloaded_at`    | `timestamptz` |                               |
+
+Log insert-only, un événement par téléchargement réussi — voir
+[pdf-downloads.md](pdf-downloads.md).
+
 ## RPC
 
-`search_polytech_chunks(search_query, match_count)` — retrieval du RAG :
-recherche full-text (`french_unaccent`, essai strict via
-`websearch_to_tsquery` puis repli en OR sur les lexèmes) sur
-`polytech_chunks`, classé par `ts_rank`.
+- `search_polytech_chunks(search_query, match_count)` — retrieval du RAG :
+  recherche full-text (`french_unaccent`, essai strict via
+  `websearch_to_tsquery` puis repli en OR sur les lexèmes) sur
+  `polytech_chunks`, classé par `ts_rank`.
+- `get_pdf_download_stats()`, `get_pdf_downloads_by_departement()`,
+  `get_pdf_downloads_by_annee()`, `get_top_downloaded_pdfs(limit_count)` —
+  agrégats pour le dashboard admin, calculés en base (`group by` +
+  `count(*)`) plutôt que rapatriés ligne par ligne côté application.
 
 ## RLS
 
@@ -50,5 +69,8 @@ recherche full-text (`french_unaccent`, essai strict via
   de scraping, `lib/rag/*.ts`) peut modifier ces tables.
 - `rag_query_log` : aucune policy publique, lu/écrit uniquement par
   `app/api/chat/route.ts` via le service role.
+- `pdf_downloads` : aucune policy publique (ni lecture ni écriture) — lu/écrit
+  uniquement par le service role, depuis `lib/actions/download-pdf.ts` et
+  `lib/data/download-stats.ts`.
 
 Schéma complet : [`supabase/schema.sql`](../supabase/schema.sql).

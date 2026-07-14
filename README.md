@@ -87,14 +87,15 @@ Copier `.env.example` vers `.env.local`. Aucune variable n'est requise pour
 parcourir les départements/archives ; les variables Supabase/Groq
 n'activent que l'assistant IA (voir [docs/RAG.md](docs/RAG.md)).
 
-| Variable                        | Requise             | Rôle                                                                                                |
-| ------------------------------- | ------------------- | --------------------------------------------------------------------------------------------------- |
-| `NEXT_PUBLIC_SUPABASE_URL`      | pour l'assistant IA | URL du projet Supabase                                                                              |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pour l'assistant IA | Clé publique (RLS appliqué)                                                                         |
-| `SUPABASE_SERVICE_ROLE_KEY`     | pour l'assistant IA | Clé serveur (⚠️ secret) — recherche RAG, rate-limiting                                              |
-| `NEXT_PUBLIC_SITE_URL`          | non                 | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`)                                  |
-| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | non                 | Active Google Analytics 4 en production (voir [docs/google-analytics.md](docs/google-analytics.md)) |
-| `GROQ_API_KEY`                  | pour l'assistant IA | Génération des réponses de l'assistant                                                              |
+| Variable                        | Requise                   | Rôle                                                                                                         |
+| ------------------------------- | ------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`      | pour l'assistant IA       | URL du projet Supabase                                                                                       |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pour l'assistant IA       | Clé publique (RLS appliqué)                                                                                  |
+| `SUPABASE_SERVICE_ROLE_KEY`     | pour l'assistant IA / PDF | Clé serveur (⚠️ secret) — recherche RAG, rate-limiting, téléchargement PDF                                   |
+| `NEXT_PUBLIC_SITE_URL`          | non                       | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`)                                           |
+| `NEXT_PUBLIC_GA_MEASUREMENT_ID` | non                       | Active Google Analytics 4 en production (voir [docs/google-analytics.md](docs/google-analytics.md))          |
+| `ADMIN_PASSWORD`                | non                       | Mot de passe de `/admin` — stats de téléchargement PDF (voir [docs/pdf-downloads.md](docs/pdf-downloads.md)) |
+| `GROQ_API_KEY`                  | pour l'assistant IA       | Génération des réponses de l'assistant                                                                       |
 
 ## Configuration Supabase
 
@@ -179,27 +180,33 @@ app/
 
 components/
   ui/                               Composants shadcn/ui (générés, éviter de modifier à la main)
-  shared/                           Navbar, Footer, cartes département, rendu Markdown
+  shared/                           Navbar, Footer, cartes département, rendu Markdown, bouton PDF
   chat/                             Widget assistant IA
   analytics/                        Google Analytics 4 (chargement, consentement, trackers)
+  admin/                            Graphiques du dashboard de statistiques PDF
 
 content/
   archives/<groupe-ou-code>/<année>.md      Épreuves (voir "Ajouter une nouvelle épreuve")
+
+app/admin/                          Login (mot de passe) + stats de téléchargement PDF
 
 lib/
   departements.ts                   Config statique des 5 départements
   content/                          Résolution de contenu, parsing, réparation LaTeX (fonctions pures + tests)
   data/departements.ts              Point d'entrée pour les pages (React cache())
+  pdf/                              Résolution des chemins PDF (miroir de lib/content/resolve.ts)
+  actions/download-pdf.ts           Server Actions : disponibilité + URL signée + log
+  actions/admin-auth.ts             Authentification admin (mot de passe + cookie signé)
   analytics/                        API GA4 typée (événements, consentement, trackEvent) — voir docs/google-analytics.md
-  hooks/use-analytics.ts            Hook useAnalytics()
-  rag/, supabase/service.ts         Assistant IA
+  hooks/use-analytics.ts, use-download-pdf.ts
+  rag/, supabase/service.ts         Assistant IA + accès Storage/DB service-role (PDF inclus)
   constants.ts, format.ts, env.ts
 
 supabase/
-  schema.sql                        Tables/RLS/RPC de l'assistant IA uniquement
+  schema.sql                        Tables/RLS/RPC : assistant IA + log de téléchargement PDF
   migrations/                       Historique des migrations appliquées (Supabase CLI)
 
-types/database.ts                   Types Supabase (assistant IA uniquement)
+types/database.ts                   Types Supabase (assistant IA + pdf_downloads)
 
 docs/                                Documentation technique (architecture, composants, performance)
 
@@ -211,9 +218,11 @@ docs/                                Documentation technique (architecture, comp
 
 - Aucune donnée utilisateur n'est collectée par les pages départements/archives
   (contenu statique, pas de formulaire, pas de compte).
-- La clé `service_role` Supabase n'est utilisée que par l'assistant IA, dans
-  des modules serveur marqués `server-only` (`lib/supabase/service.ts`),
-  jamais exposée au client.
+- La clé `service_role` Supabase n'est utilisée que par l'assistant IA et le
+  téléchargement PDF, dans des modules serveur marqués `server-only`
+  (`lib/supabase/service.ts`), jamais exposée au client.
+- `/admin` (statistiques de téléchargement) est protégée par mot de passe
+  (`ADMIN_PASSWORD`) et exclue du sitemap/robots.txt.
 - Vulnérabilité trouvée ? Voir [SECURITY.md](SECURITY.md) pour la procédure de
   signalement responsable.
 
@@ -227,6 +236,8 @@ docs/                                Documentation technique (architecture, comp
 - [docs/PERFORMANCE.md](docs/PERFORMANCE.md) — rendu statique, cache,
   pagination (assistant IA) : chaque optimisation et sa justification
 - [docs/RAG.md](docs/RAG.md) — assistant IA (scraping, retrieval, génération)
+- [docs/google-analytics.md](docs/google-analytics.md) — intégration GA4, événements, consentement
+- [docs/pdf-downloads.md](docs/pdf-downloads.md) — téléchargement PDF, bucket Storage, stats, dashboard admin
 
 ## Contribuer
 

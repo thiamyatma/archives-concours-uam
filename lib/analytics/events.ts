@@ -17,6 +17,7 @@ export const ANALYTICS_EVENTS = {
   CONTACT: "contact",
   REPORT_DOCUMENT: "report_document",
   SHARE_SUBJECT: "share_subject",
+  DOWNLOAD_SUBJECT: "download_subject",
 } as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];
@@ -31,5 +32,6 @@ export interface AnalyticsEventParams {
   year?: number | string;
   subject?: string;
   document_type?: string;
+  file_name?: string;
   [key: string]: string | number | boolean | undefined;
 }
