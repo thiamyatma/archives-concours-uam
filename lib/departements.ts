@@ -4,8 +4,9 @@
  * lui-même est désormais git-versionné (content/archives/**), pas en base.
  *
  * `contentGroup` désigne le dossier de contenu réellement lu par
- * lib/content/resolve.ts : DSTI, DGAE et DSTAAN partagent les mêmes
- * épreuves certaines années, donc pointent vers le même groupe. Un
+ * lib/content/resolve.ts : DSTI/DGAE/DSTAAN partagent leurs épreuves
+ * (groupe "dsti-dgae-dstaan"), DGO/DU2ADT aussi (groupe "dgo-du2adt"),
+ * donc les départements d'un même groupe pointent vers le même dossier. Un
  * département peut néanmoins avoir SA PROPRE épreuve pour une année donnée
  * (voir la résolution "override d'abord, partagé ensuite") sans qu'aucun
  * code ne change — il suffit de déposer un fichier dans son propre dossier.
@@ -43,15 +44,15 @@ export const DEPARTEMENTS: Departement[] = [
     code: "du2adt",
     nom: "DU2ADT",
     description:
-      "Département Urbanisme, Aménagement du Territoire et Développement Territorial.",
-    contentGroup: "du2adt",
+      "Département Urbanisme, Architecture et Aménagement Durable des Territoires — urbanisme et aménagement, architecture.",
+    contentGroup: "dgo-du2adt",
   },
   {
     code: "dgo",
     nom: "DGO",
     description:
-      "Département Gouvernance et Organisations — sciences politiques, droit et gouvernance publique.",
-    contentGroup: "dgo",
+      "Département Gestion des Organisations — finance et comptabilité, management des organisations.",
+    contentGroup: "dgo-du2adt",
   },
 ];
 
