@@ -4,4 +4,4 @@ export const SITE_SLOGAN =
 export const SITE_DESCRIPTION =
   "Plateforme gratuite pour consulter les anciennes épreuves du concours d'entrée de l'Université Amadou Mahtar Mbow (UAM), classées par département et par année.";
 
-export const CONTACT_EMAIL = "contact@archives-concours-uam.sn";
+export const CONTACT_EMAIL = "thiamibrahimayatus@gmail.com";
