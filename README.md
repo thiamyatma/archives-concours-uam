@@ -3,8 +3,8 @@
 ![CI](https://github.com/thiamyatma/archives-concours-uam/actions/workflows/ci.yml/badge.svg)
 ![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)
 
-Plateforme communautaire et gratuite pour consulter, télécharger et partager les
-anciennes épreuves du concours d'entrée de l'Université Amadou Mahtar Mbow (UAM).
+Plateforme gratuite pour consulter les anciennes épreuves du concours d'entrée
+de l'Université Amadou Mahtar Mbow (UAM), classées par département et par année.
 
 > Retrouvez gratuitement les anciennes épreuves des concours d'entrée de l'UAM.
 
@@ -16,11 +16,10 @@ anciennes épreuves du concours d'entrée de l'Université Amadou Mahtar Mbow (U
 - [Lancement en développement](#lancement-en-développement)
 - [Variables d'environnement](#variables-denvironnement)
 - [Configuration Supabase](#configuration-supabase)
-- [Notification email (optionnel)](#notification-email-optionnel)
+- [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)
 - [Qualité du code](#qualité-du-code)
 - [Déploiement](#déploiement-sur-vercel)
 - [Structure du projet](#structure-du-projet)
-- [Modèle de données](#modèle-de-données)
 - [Sécurité](#sécurité)
 - [Documentation technique](#documentation-technique)
 - [Contribuer](#contribuer)
@@ -30,40 +29,41 @@ anciennes épreuves du concours d'entrée de l'Université Amadou Mahtar Mbow (U
 Archives Concours UAM permet aux futurs candidats du concours d'entrée de
 l'UAM de :
 
-- **Parcourir** les anciennes épreuves par filière, année et matière
-- **Télécharger** gratuitement les sujets et corrigés en PDF
-- **Prévisualiser** un document avant de le télécharger
-- **Partager** une nouvelle épreuve (soumise en modération avant publication)
-- Repérer d'un coup d'œil les **archives incomplètes** (badge "Documents
-  manquants" quand une session n'a pas ses 8 fichiers)
+- **Parcourir** les archives par département et par année
+- **Lire** directement une épreuve dans le navigateur (Markdown rendu, avec
+  formules scientifiques via KaTeX) — aucun téléchargement de fichier
+- Les matières d'une épreuve apparaissent chacune dans leur propre section
 
-Cinq filières sont couvertes : **DSTI, DGAE, DSTAN, DU2ADT, DGO**. Un
-tableau de bord admin (`/admin`) permet de valider, refuser ou supprimer les
-contributions, avec notification email à chaque nouvelle soumission.
+Cinq départements sont couverts : **DSTI, DGAE, DSTAAN, DU2ADT, DGO**. DSTI,
+DGAE et DSTAAN partagent certaines années la même épreuve — le contenu n'est
+alors stocké qu'une seule fois (voir [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)).
+
+Le contenu des archives est **git-versionné** (`content/archives/**`), pas
+stocké en base de données : ajouter une nouvelle session ne nécessite ni
+compte admin, ni upload, juste un fichier Markdown au bon endroit.
 
 Le site n'est **pas affilié officiellement** à l'administration de l'UAM —
 c'est une initiative communautaire.
 
 ## Technologies utilisées
 
-| Domaine              | Choix                                                                                   |
-| -------------------- | --------------------------------------------------------------------------------------- |
-| Framework            | [Next.js 15](https://nextjs.org) (App Router, Server Components, Server Actions)        |
-| Langage              | TypeScript strict                                                                       |
-| UI                   | [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (Radix) |
-| Backend / données    | [Supabase](https://supabase.com) (PostgreSQL, Auth, Storage, RLS)                       |
-| Données côté client  | [TanStack React Query](https://tanstack.com/query) (tableau de bord admin)              |
-| Formulaires          | [React Hook Form](https://react-hook-form.com) + [Zod](https://zod.dev)                 |
-| Email transactionnel | [Resend](https://resend.com)                                                            |
-| Icônes               | [Lucide](https://lucide.dev)                                                            |
-| Qualité de code      | ESLint, Prettier, Husky, lint-staged                                                    |
-| Tests                | [Vitest](https://vitest.dev)                                                            |
-| CI                   | GitHub Actions                                                                          |
+| Domaine         | Choix                                                                                                              |
+| --------------- | ------------------------------------------------------------------------------------------------------------------ |
+| Framework       | [Next.js 15](https://nextjs.org) (App Router, Server Components, rendu 100% statique)                              |
+| Langage         | TypeScript strict                                                                                                  |
+| UI              | [Tailwind CSS v4](https://tailwindcss.com) + [shadcn/ui](https://ui.shadcn.com) (Radix)                            |
+| Rendu Markdown  | [react-markdown](https://github.com/remarkjs/react-markdown) + remark-gfm/remark-math + [KaTeX](https://katex.org) |
+| Assistant IA    | [Supabase](https://supabase.com) (Postgres full-text) + [Groq](https://groq.com)                                   |
+| Icônes          | [Lucide](https://lucide.dev)                                                                                       |
+| Qualité de code | ESLint, Prettier, Husky, lint-staged                                                                               |
+| Tests           | [Vitest](https://vitest.dev)                                                                                       |
+| CI              | GitHub Actions                                                                                                     |
 
 ## Installation
 
-Prérequis : **Node.js ≥ 20**, un compte [Supabase](https://supabase.com)
-(gratuit).
+Prérequis : **Node.js ≥ 20**. Un compte [Supabase](https://supabase.com)
+(gratuit) est nécessaire uniquement pour l'assistant IA — le reste du site
+(départements, archives) ne dépend d'aucune base de données.
 
 ```bash
 git clone https://github.com/thiamyatma/archives-concours-uam.git
@@ -71,10 +71,6 @@ cd archives-concours-uam
 npm install
 cp .env.example .env.local
 ```
-
-Puis complétez `.env.local` (voir [Variables d'environnement](#variables-denvironnement))
-et suivez [Configuration Supabase](#configuration-supabase) — une fois fait,
-comptez moins de 5 minutes jusqu'au `npm run dev`.
 
 ## Lancement en développement
 
@@ -87,53 +83,48 @@ libre si 3000 est déjà pris — Next l'indique dans le terminal).
 
 ## Variables d'environnement
 
-Copier `.env.example` vers `.env.local` et renseigner :
+Copier `.env.example` vers `.env.local`. Aucune variable n'est requise pour
+parcourir les départements/archives ; les variables Supabase/Groq
+n'activent que l'assistant IA (voir [docs/RAG.md](docs/RAG.md)).
 
-```bash
-NEXT_PUBLIC_SUPABASE_URL=https://xxxxxxxxxxxx.supabase.co
-NEXT_PUBLIC_SUPABASE_ANON_KEY=eyJhbGciOi...
-SUPABASE_SERVICE_ROLE_KEY=eyJhbGciOi...
-NEXT_PUBLIC_SITE_URL=http://localhost:3000
-RESEND_API_KEY=re_...
-ADMIN_NOTIFICATION_EMAIL=admin@example.com
-```
-
-| Variable                        | Requise | Rôle                                                               |
-| ------------------------------- | ------- | ------------------------------------------------------------------ |
-| `NEXT_PUBLIC_SUPABASE_URL`      | oui     | URL du projet Supabase                                             |
-| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | oui     | Clé publique (RLS appliqué)                                        |
-| `SUPABASE_SERVICE_ROLE_KEY`     | oui     | Clé serveur (⚠️ secret) — URLs signées de téléchargement/aperçu    |
-| `NEXT_PUBLIC_SITE_URL`          | non     | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`) |
-| `RESEND_API_KEY`                | non     | Active la notification email admin                                 |
-| `ADMIN_NOTIFICATION_EMAIL`      | non     | Destinataire de la notification de nouvelle contribution           |
+| Variable                        | Requise             | Rôle                                                               |
+| ------------------------------- | ------------------- | ------------------------------------------------------------------ |
+| `NEXT_PUBLIC_SUPABASE_URL`      | pour l'assistant IA | URL du projet Supabase                                             |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | pour l'assistant IA | Clé publique (RLS appliqué)                                        |
+| `SUPABASE_SERVICE_ROLE_KEY`     | pour l'assistant IA | Clé serveur (⚠️ secret) — recherche RAG, rate-limiting             |
+| `NEXT_PUBLIC_SITE_URL`          | non                 | Base URL pour metadata/sitemap/OG (défaut `http://localhost:3000`) |
+| `GROQ_API_KEY`                  | pour l'assistant IA | Génération des réponses de l'assistant                             |
 
 ## Configuration Supabase
 
+Uniquement nécessaire pour activer l'assistant IA (le reste du site
+fonctionne sans aucune base de données) :
+
 1. Créer un projet sur [supabase.com](https://supabase.com).
-2. Dans l'éditeur SQL du projet, exécuter dans l'ordre :
-   - `supabase/schema.sql` (tables, enums, RLS, bucket Storage, fonctions RPC)
-   - `supabase/seed.sql` (les 5 filières)
-3. Créer au moins un compte administrateur : **Authentication → Users → Add user**
-   (email + mot de passe). Tout utilisateur authentifié est considéré admin par les
-   policies RLS de ce projet — ne créez que des comptes de confiance.
-4. Récupérer les clés dans **Project Settings → API** :
+2. Dans l'éditeur SQL du projet, exécuter `supabase/schema.sql`.
+3. Récupérer les clés dans **Project Settings → API** :
    - `Project URL` → `NEXT_PUBLIC_SUPABASE_URL`
    - `anon public` → `NEXT_PUBLIC_SUPABASE_ANON_KEY`
    - `service_role` → `SUPABASE_SERVICE_ROLE_KEY` (⚠️ secret, jamais côté client)
 
-## Notification email (optionnel)
+## Ajouter une nouvelle épreuve
 
-Quand un contributeur soumet un document, l'admin reçoit un email (via
-[Resend](https://resend.com)) l'invitant à valider/refuser dans `/admin`.
+Aucun compte admin ni upload : déposer un fichier Markdown puis déployer.
 
-1. Créer un compte sur [resend.com](https://resend.com) (gratuit, 3000 emails/mois).
-2. Récupérer une clé API : **API Keys → Create API Key**.
-3. En test, l'expéditeur `onboarding@resend.dev` fonctionne sans configuration
-   supplémentaire. En production, vérifiez votre propre domaine (**Domains →
-   Add Domain**) et mettez à jour l'adresse `from` dans `lib/email.ts`.
-4. Si `RESEND_API_KEY` ou `ADMIN_NOTIFICATION_EMAIL` est absent, la notification
-   est simplement ignorée (log console) — la contribution elle-même n'est jamais
-   bloquée par un échec d'email.
+1. Repérer le dossier de contenu du département (voir `lib/departements.ts`
+   pour la table code → dossier) : `content/archives/<groupe-ou-code>/<année>.md`.
+   Ex. une épreuve partagée par DSTI/DGAE/DSTAAN va dans
+   `content/archives/dsti-dgae-dstaan/<année>.md` ; une épreuve propre à
+   DU2ADT va dans `content/archives/du2adt/<année>.md`.
+2. Le fichier doit commencer par un titre `# ...` puis une section par
+   matière sous la forme `## ÉPREUVE DE <matière>` (voir
+   `content/archives/dsti-dgae-dstaan/2025.md` pour un exemple complet).
+3. Committer, pousser, déployer — l'application détecte automatiquement le
+   département (dossier), l'année (nom de fichier) et le titre (premier
+   titre du fichier), sans aucune modification de code.
+
+Détail de la résolution de contenu (override propre à un département vs
+partagé) et du rendu (réparation LaTeX, KaTeX) : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#départements-et-archives--résolution-de-contenu).
 
 ## Qualité du code
 
@@ -153,115 +144,79 @@ npm run build          # Build de production
   `.husky/pre-commit`).
 - **GitHub Actions** (`.github/workflows/ci.yml`) : à chaque Pull Request et
   push sur `main`, 4 jobs tournent en parallèle — lint, type-check, tests,
-  build. Le build utilise des identifiants Supabase factices (voir
-  `lib/data/safe.ts`) : aucun secret réel n'est nécessaire pour que la CI
-  passe.
+  build.
 
 ## Déploiement sur Vercel
 
 1. Pousser le dépôt sur GitHub/GitLab/Bitbucket.
 2. Sur [vercel.com/new](https://vercel.com/new), importer le dépôt.
-3. Renseigner les variables d'environnement (Project Settings → Environment
-   Variables) avec les mêmes valeurs que `.env.local`, pour les environnements
-   Production et Preview :
-   - `NEXT_PUBLIC_SUPABASE_URL`
-   - `NEXT_PUBLIC_SUPABASE_ANON_KEY`
-   - `SUPABASE_SERVICE_ROLE_KEY`
-   - `NEXT_PUBLIC_SITE_URL` (ex : `https://archives-concours-uam.vercel.app`)
-   - `RESEND_API_KEY` et `ADMIN_NOTIFICATION_EMAIL` (optionnel, notifications email)
-4. Déployer. Le schéma + seed SQL doivent déjà avoir été appliqués sur le
-   projet Supabase avant le déploiement (voir [Configuration Supabase](#configuration-supabase)).
-5. Vérifier après déploiement :
-   - `/sitemap.xml` et `/robots.txt` accessibles
-   - Connexion admin sur `/admin/login`
-   - Upload d'un document test via `/contribuer`, puis validation dans `/admin`
+3. Renseigner les variables d'environnement Supabase/Groq (optionnelles,
+   assistant IA uniquement) pour les environnements Production et Preview.
+4. Déployer. Toutes les pages départements/archives sont générées
+   statiquement au build à partir de `content/archives/**` — aucune
+   configuration de base de données n'est requise pour ces pages.
+5. Vérifier après déploiement : `/sitemap.xml` et `/robots.txt` accessibles,
+   navigation Départements → département → année.
 
 ## Structure du projet
 
 ```
 app/
-  page.tsx                          Accueil (hero, stats, filières)
-  bibliotheque/page.tsx             Recherche + filtres + pagination
-  filieres/page.tsx                 Index des 5 filières
-  filieres/[code]/page.tsx         Détail filière + années disponibles
-  filieres/[code]/[annee]/page.tsx Documents d'une session (4 matières)
-  contribuer/page.tsx               Formulaire de contribution (upload PDF)
-  admin/login/page.tsx              Connexion admin (Supabase Auth)
-  admin/(dashboard)/page.tsx        Tableau de bord (validation/refus/suppression)
-  sitemap.ts / robots.ts            SEO
-  opengraph-image.tsx               Image Open Graph générée dynamiquement
+  page.tsx                                  Accueil (hero, stats, départements)
+  departements/page.tsx                     Index des 5 départements
+  departements/[code]/page.tsx              Détail département + années disponibles
+  departements/[code]/[annee]/page.tsx      Épreuve rendue (Markdown), une section par matière
+  assistant/page.tsx, api/chat/route.ts     Assistant IA (RAG sur polytech.sn)
+  sitemap.ts / robots.ts                    SEO
+  opengraph-image.tsx                       Image Open Graph générée dynamiquement
 
 components/
   ui/                               Composants shadcn/ui (générés, éviter de modifier à la main)
-  shared/                           Navbar, Footer, cartes, filtres, formulaire, aperçu PDF
-  admin/                            Tableau, dialogues, aperçu PDF admin
+  shared/                           Navbar, Footer, cartes département, rendu Markdown
+  chat/                             Widget assistant IA
+
+content/
+  archives/<groupe-ou-code>/<année>.md      Épreuves (voir "Ajouter une nouvelle épreuve")
 
 lib/
-  supabase/                         Clients (browser, server, middleware, service role)
-  data/                             Lecture Supabase (Server Components uniquement)
-  actions/                          Server Actions (contribution, téléchargement, aperçu, admin, auth)
-  validations/                      Schémas Zod
-  email.ts                          Notification admin (Resend)
-  constants.ts, format.ts, completeness.ts, env.ts
+  departements.ts                   Config statique des 5 départements
+  content/                          Résolution de contenu, parsing, réparation LaTeX (fonctions pures + tests)
+  data/departements.ts              Point d'entrée pour les pages (React cache())
+  rag/, supabase/service.ts         Assistant IA
+  constants.ts, format.ts, env.ts
 
 supabase/
-  schema.sql                        Tables, enums, RLS, storage, RPC
-  seed.sql                          Les 5 filières (DSTI, DGAE, DSTAN, DU2ADT, DGO)
+  schema.sql                        Tables/RLS/RPC de l'assistant IA uniquement
   migrations/                       Historique des migrations appliquées (Supabase CLI)
 
-types/database.ts                   Types générés à la main (Database, Tables, Enums)
+types/database.ts                   Types Supabase (assistant IA uniquement)
 
-docs/                                Documentation technique (architecture, données, composants)
+docs/                                Documentation technique (architecture, composants, performance)
 
 .github/                             Workflows CI, templates issues/PR
 .husky/                              Git hooks (pre-commit)
 ```
 
-## Modèle de données
-
-| Table          | Rôle                                                          |
-| -------------- | ------------------------------------------------------------- |
-| `filieres`     | Les 5 filières du concours                                    |
-| `documents`    | Sujets/corrigés (`status`: `pending` → `approved`/`rejected`) |
-| `contributors` | Nom/email optionnels des contributeurs                        |
-| `reports`      | Signalements communautaires sur un document publié            |
-
-Un concours complet = 4 matières (Mathématiques, Physique-Chimie, Anglais, Logique)
-× 2 types (sujet, corrigé) = **8 fichiers**. Les années incomplètes affichent un
-badge « Documents manquants » (voir `lib/completeness.ts`).
-
-Les PDF sont stockés dans un **bucket Supabase Storage privé** (`documents`). Le
-téléchargement et l'aperçu publics passent systématiquement par une Server
-Action qui génère une URL signée de courte durée ; le téléchargement
-incrémente en plus le compteur de façon atomique (RPC
-`increment_document_downloads`, `SECURITY DEFINER`) — jamais d'accès direct
-au bucket.
-
-Détail complet du schéma : [docs/DATABASE.md](docs/DATABASE.md).
-
 ## Sécurité
 
-- RLS activé sur toutes les tables ; seuls les documents `approved` sont lisibles
-  publiquement, le reste nécessite une session authentifiée (admin).
-- Le bucket Storage est privé ; tout accès (téléchargement public, aperçu)
-  passe par une URL signée à courte durée de vie générée côté serveur.
-- La clé `service_role` n'est utilisée que dans des modules serveur marqués
-  `server-only` (`lib/supabase/service.ts`), jamais exposée au client.
-- Validation Zod côté client (UX) **et** côté serveur (Server Actions) — jamais de
-  confiance aveugle dans les données envoyées par le navigateur.
+- Aucune donnée utilisateur n'est collectée par les pages départements/archives
+  (contenu statique, pas de formulaire, pas de compte).
+- La clé `service_role` Supabase n'est utilisée que par l'assistant IA, dans
+  des modules serveur marqués `server-only` (`lib/supabase/service.ts`),
+  jamais exposée au client.
 - Vulnérabilité trouvée ? Voir [SECURITY.md](SECURITY.md) pour la procédure de
   signalement responsable.
 
 ## Documentation technique
 
-- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — vue d'ensemble, flux de
-  données Server Components / Server Actions, composants partagés
-- [docs/DATABASE.md](docs/DATABASE.md) — schéma Supabase détaillé, RLS,
-  storage, RPC
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — vue d'ensemble, résolution
+  de contenu Markdown, composants partagés
+- [docs/DATABASE.md](docs/DATABASE.md) — schéma Supabase (assistant IA)
 - [docs/COMPONENTS.md](docs/COMPONENTS.md) — composants réutilisables et
   quand les utiliser
-- [docs/PERFORMANCE.md](docs/PERFORMANCE.md) — cache, index SQL, pagination,
-  lazy loading : chaque optimisation de scalabilité et sa justification
+- [docs/PERFORMANCE.md](docs/PERFORMANCE.md) — rendu statique, cache,
+  pagination (assistant IA) : chaque optimisation et sa justification
+- [docs/RAG.md](docs/RAG.md) — assistant IA (scraping, retrieval, génération)
 
 ## Contribuer
 

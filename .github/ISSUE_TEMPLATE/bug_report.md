@@ -26,9 +26,8 @@ Ce qui se passe réellement (captures d'écran bienvenues).
 
 ## Environnement
 
-- Page concernée : `/bibliotheque`, `/admin`, etc.
+- Page concernée : `/departements`, `/departements/dsti/2025`, etc.
 - Navigateur / OS :
-- Connecté en tant qu'admin ? oui/non
 
 ## Contexte additionnel
 

@@ -9,9 +9,9 @@ import { env } from "@/lib/env";
  * téléchargement). Ne JAMAIS importer ce module depuis un composant client.
  */
 export function createServiceClient() {
-  if (!env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
     throw new Error(
-      "SUPABASE_SERVICE_ROLE_KEY manquant : impossible de créer le client service role."
+      "NEXT_PUBLIC_SUPABASE_URL/SUPABASE_SERVICE_ROLE_KEY manquant(s) : impossible de créer le client service role (assistant IA désactivé)."
     );
   }
 

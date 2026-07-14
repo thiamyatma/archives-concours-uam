@@ -2,14 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { Mail } from "lucide-react";
 import { SITE_NAME, SITE_SLOGAN, CONTACT_EMAIL } from "@/lib/constants";
-
-const FILIERE_LINKS = [
-  { code: "dsti", label: "DSTI" },
-  { code: "dgae", label: "DGAE" },
-  { code: "dstan", label: "DSTAN" },
-  { code: "du2adt", label: "DU2ADT" },
-  { code: "dgo", label: "DGO" },
-];
+import { DEPARTEMENTS } from "@/lib/departements";
 
 export function Footer() {
   return (
@@ -42,33 +35,28 @@ export function Footer() {
           <h3 className="text-sm font-semibold">Navigation</h3>
           <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
             <li>
-              <Link href="/bibliotheque" className="hover:text-primary hover:underline">
-                Bibliothèque
+              <Link href="/departements" className="hover:text-primary hover:underline">
+                Départements
               </Link>
             </li>
             <li>
-              <Link href="/contribuer" className="hover:text-primary hover:underline">
-                Partager une épreuve
-              </Link>
-            </li>
-            <li>
-              <Link href="/admin/login" className="hover:text-primary hover:underline">
-                Espace admin
+              <Link href="/assistant" className="hover:text-primary hover:underline">
+                Assistant IA
               </Link>
             </li>
           </ul>
         </div>
 
         <div>
-          <h3 className="text-sm font-semibold">Filières</h3>
+          <h3 className="text-sm font-semibold">Départements</h3>
           <ul className="text-muted-foreground mt-3 space-y-2 text-sm">
-            {FILIERE_LINKS.map((f) => (
-              <li key={f.code}>
+            {DEPARTEMENTS.map((d) => (
+              <li key={d.code}>
                 <Link
-                  href={`/filieres/${f.code}`}
+                  href={`/departements/${d.code}`}
                   className="hover:text-primary hover:underline"
                 >
-                  {f.label}
+                  {d.nom}
                 </Link>
               </li>
             ))}

@@ -4,7 +4,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
-import { Menu, Upload } from "lucide-react";
+import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Sheet,
@@ -18,8 +18,7 @@ import { SITE_NAME } from "@/lib/constants";
 
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
-  { href: "/bibliotheque", label: "Bibliothèque" },
-  { href: "/filieres", label: "Filières" },
+  { href: "/departements", label: "Départements" },
   { href: "/assistant", label: "Assistant IA" },
 ];
 
@@ -67,15 +66,6 @@ export function Navbar() {
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 md:flex">
-          <Button asChild>
-            <Link href="/contribuer">
-              <Upload className="size-4" aria-hidden="true" />
-              Partager une épreuve
-            </Link>
-          </Button>
-        </div>
-
         <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>
             <Button
@@ -102,12 +92,6 @@ export function Navbar() {
                   {link.label}
                 </Link>
               ))}
-              <Button asChild className="mt-2" onClick={() => setOpen(false)}>
-                <Link href="/contribuer">
-                  <Upload className="size-4" aria-hidden="true" />
-                  Partager une épreuve
-                </Link>
-              </Button>
             </nav>
           </SheetContent>
         </Sheet>

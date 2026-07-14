@@ -11,11 +11,10 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # Valeurs factices : suffisantes pour lint/type-check/test/build.
-  # Le build retombe gracieusement sur des données vides si Supabase est
-  # injoignable (voir lib/data/safe.ts) — aucun vrai secret requis en CI.
-  NEXT_PUBLIC_SUPABASE_URL: "https://ci-placeholder.supabase.co"
-  NEXT_PUBLIC_SUPABASE_ANON_KEY: "ci-placeholder-anon-key"
+  # Les pages départements/archives n'ont besoin d'aucune variable Supabase
+  # (contenu statique, voir docs/ARCHITECTURE.md) — seul l'assistant IA en
+  # dépendrait, et reste désactivé en CI sans ces secrets (comportement
+  # normal, aucun vrai secret requis pour que lint/type-check/test/build passent).
   NEXT_PUBLIC_SITE_URL: "http://localhost:3000"
 
 jobs:
