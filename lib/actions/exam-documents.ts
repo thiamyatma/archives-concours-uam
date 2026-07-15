@@ -117,7 +117,10 @@ export async function createUploadUrl(
     .from(PDF_BUCKET)
     .createSignedUploadUrl(path, { upsert: Boolean(replaceDocumentId) });
 
-  if (error || !data) return { error: "Impossible de préparer l'upload." };
+  if (error || !data) {
+    console.error("createSignedUploadUrl a échoué:", path, error?.message, error);
+    return { error: "Impossible de préparer l'upload." };
+  }
 
   return { signedUrl: data.signedUrl, path: data.path };
 }
