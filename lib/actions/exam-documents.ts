@@ -24,6 +24,14 @@ function unknownDepartements(codes: string[]): string[] {
 async function isRealPdf(path: string): Promise<boolean> {
   if (!env.NEXT_PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) return false;
 
+  // `cache: "no-store"` : sans ça, le patch `fetch` de Next.js (Data Cache)
+  // peut tenter de mettre en cache/cloner une réponse dont on ne lit qu'un
+  // extrait via un reader manuel — observé en production comme un blocage
+  // silencieux de toute la Server Action. `AbortController` en filet de
+  // sécurité supplémentaire pour ne jamais bloquer confirmUpload indéfiniment.
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), 8000);
+
   try {
     const response = await fetch(
       `${env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/${PDF_BUCKET}/${path}`,
@@ -33,6 +41,8 @@ async function isRealPdf(path: string): Promise<boolean> {
           Authorization: `Bearer ${env.SUPABASE_SERVICE_ROLE_KEY}`,
           Range: "bytes=0-4",
         },
+        cache: "no-store",
+        signal: controller.signal,
       }
     );
     if (!response.ok || !response.body) return false;
@@ -43,8 +53,11 @@ async function isRealPdf(path: string): Promise<boolean> {
     if (!value || value.length < 5) return false;
 
     return new TextDecoder().decode(value.slice(0, 5)) === "%PDF-";
-  } catch {
+  } catch (error) {
+    console.error("isRealPdf a échoué:", path, error);
     return false;
+  } finally {
+    clearTimeout(timeout);
   }
 }
 
