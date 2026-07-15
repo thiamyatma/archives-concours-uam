@@ -113,9 +113,15 @@ export async function createUploadUrl(
   }
 
   const path = buildDocumentStoragePath(departementCodes, annee, fileName);
+  // `upsert: true` même pour un nouvel envoi (pas seulement un remplacement) :
+  // le doublon département+année est déjà bloqué juste au-dessus, donc un
+  // objet existant à ce chemin exact ne peut être qu'un résidu orphelin
+  // d'une tentative précédente interrompue avant confirmUpload — sans
+  // upsert, Storage renvoie "The resource already exists" et bloque tout
+  // nouvel essai du même fichier.
   const { data, error } = await supabase.storage
     .from(PDF_BUCKET)
-    .createSignedUploadUrl(path, { upsert: Boolean(replaceDocumentId) });
+    .createSignedUploadUrl(path, { upsert: true });
 
   if (error || !data) {
     console.error("createSignedUploadUrl a échoué:", path, error?.message, error);
