@@ -99,6 +99,18 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["action_rate_limits"]["Insert"]>;
         Relationships: [];
       };
+      admin_session_state: {
+        Row: {
+          id: boolean;
+          revoked_at: string;
+        };
+        Insert: {
+          id?: boolean;
+          revoked_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["admin_session_state"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {

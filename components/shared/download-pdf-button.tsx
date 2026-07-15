@@ -36,7 +36,11 @@ export function DownloadPdfButton({
       ) : (
         <Download className="size-4" aria-hidden="true" />
       )}
-      {status === "downloading" ? "Téléchargement…" : "Télécharger le PDF"}
+      {status === "downloading"
+        ? "Téléchargement…"
+        : status === "error"
+          ? "Réessayer"
+          : "Télécharger le PDF"}
     </Button>
   );
 }

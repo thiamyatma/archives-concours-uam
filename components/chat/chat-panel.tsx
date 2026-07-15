@@ -57,8 +57,9 @@ export function ChatPanel({
                 <button
                   key={q}
                   type="button"
+                  disabled={isStreaming}
                   onClick={() => void ask(q)}
-                  className="hover:bg-accent hover:text-accent-foreground rounded-full border px-3 py-1.5 text-xs transition-colors"
+                  className="hover:bg-accent hover:text-accent-foreground rounded-full border px-3 py-1.5 text-xs transition-colors disabled:pointer-events-none disabled:opacity-50"
                 >
                   {q}
                 </button>

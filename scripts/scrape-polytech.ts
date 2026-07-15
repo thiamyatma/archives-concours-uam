@@ -205,9 +205,17 @@ async function upsertPage(
     .maybeSingle();
 
   if (existing && existing.content_hash === contentHash) {
+    // Le contenu texte n'a pas changé (donc les chunks/embeddings restent
+    // valides, pas besoin de les régénérer), mais le titre ou la section
+    // peuvent avoir changé indépendamment (renommage de page) : on les
+    // rafraîchit quand même, pas seulement fetched_at.
     await supabase
       .from("polytech_pages")
-      .update({ fetched_at: new Date().toISOString() })
+      .update({
+        title: page.title,
+        section: page.section,
+        fetched_at: new Date().toISOString(),
+      })
       .eq("id", existing.id);
     return { pageId: existing.id, changed: false };
   }
