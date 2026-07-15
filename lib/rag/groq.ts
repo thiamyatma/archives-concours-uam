@@ -91,6 +91,11 @@ export function streamRagAnswer({
             model: env.GROQ_MODEL,
             stream: true,
             temperature: 0.2,
+            // Plafond volontaire : le plan gratuit Groq a un quota strict de
+            // tokens/jour (TPD), et une réponse sans limite peut en consommer
+            // plusieurs centaines à elle seule. 600 tokens en sortie suffit
+            // à une réponse claire et concise (déjà demandé au system prompt).
+            max_tokens: 600,
             messages: [
               { role: "system", content: SYSTEM_PROMPT },
               {
