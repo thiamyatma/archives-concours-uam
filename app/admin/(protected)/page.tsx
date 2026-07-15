@@ -22,7 +22,7 @@ export default async function AdminPage() {
   const stats = await getDownloadStats();
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+    <div>
       <div className="mb-8 flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">

@@ -14,6 +14,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "scrape:polytech": "tsx scripts/scrape-polytech.ts",
+    "backfill:exam-documents": "tsx scripts/backfill-exam-documents.ts",
     "prepare": "husky"
   },
   "dependencies": {

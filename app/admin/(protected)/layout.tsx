@@ -1,4 +1,5 @@
 import { requireAdminSession } from "@/lib/actions/admin-auth";
+import { AdminNav } from "@/components/admin/admin-nav";
 
 /**
  * Protège toutes les routes admin, sans exception : un appel à
@@ -13,5 +14,11 @@ export default async function ProtectedAdminLayout({
   children: React.ReactNode;
 }) {
   await requireAdminSession();
-  return <>{children}</>;
+
+  return (
+    <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
+      <AdminNav />
+      {children}
+    </div>
+  );
 }
