@@ -9,18 +9,15 @@ export interface DownloadStats {
   top: { departementCode: string; annee: number; fileName: string; downloads: number }[];
 }
 
-const EMPTY_STATS: DownloadStats = {
-  totalDownloads: 0,
-  totalFilesDownloaded: 0,
-  byDepartement: [],
-  byAnnee: [],
-  top: [],
-};
-
 /**
  * Statistiques agrégées de téléchargement, calculées en base (RPC, même
  * esprit que `get_global_stats` — voir docs/PERFORMANCE.md). Service role
  * uniquement : jamais appelé depuis une page publique.
+ *
+ * Chacune des 4 RPC est traitée indépendamment : si une seule échoue, elle
+ * retombe sur un résultat vide (avec un log), sans effacer les 3 autres qui
+ * ont réussi — un dashboard partiellement rempli vaut mieux qu'un dashboard
+ * entièrement à zéro pour une panne isolée.
  */
 export async function getDownloadStats(): Promise<DownloadStats> {
   const supabase = createServiceClient();
@@ -32,8 +29,20 @@ export async function getDownloadStats(): Promise<DownloadStats> {
     supabase.rpc("get_top_downloaded_pdfs", { limit_count: 10 }),
   ]);
 
-  if (totals.error || byDepartement.error || byAnnee.error || top.error) {
-    return EMPTY_STATS;
+  if (totals.error) {
+    console.error("get_pdf_download_stats a échoué:", totals.error.message);
+  }
+  if (byDepartement.error) {
+    console.error(
+      "get_pdf_downloads_by_departement a échoué:",
+      byDepartement.error.message
+    );
+  }
+  if (byAnnee.error) {
+    console.error("get_pdf_downloads_by_annee a échoué:", byAnnee.error.message);
+  }
+  if (top.error) {
+    console.error("get_top_downloaded_pdfs a échoué:", top.error.message);
   }
 
   const totalsRow = totals.data?.[0];

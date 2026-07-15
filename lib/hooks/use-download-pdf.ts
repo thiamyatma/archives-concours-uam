@@ -35,22 +35,31 @@ export function useDownloadPdf(departementCode: string, annee: number) {
 
   async function download() {
     setStatus("downloading");
-    const result = await getExamPdfDownloadUrl(departementCode, annee);
 
-    if ("error" in result) {
-      setStatus("unavailable");
-      toast.error(result.error);
-      return;
+    try {
+      const result = await getExamPdfDownloadUrl(departementCode, annee);
+
+      if ("error" in result) {
+        // "error" (pas "unavailable") : un échec ponctuel (réseau, Storage)
+        // reste réessayable, contrairement à "unavailable" qui signifie
+        // "ce PDF n'existe vraiment pas" (vérifié au montage).
+        setStatus("error");
+        toast.error(result.error);
+        return;
+      }
+
+      trackDownloadSubject({
+        department: departementCode,
+        year: annee,
+        file_name: result.fileName,
+      });
+      window.location.href = result.url;
+      toast.success("Le téléchargement a démarré.");
+      setStatus("available");
+    } catch {
+      setStatus("error");
+      toast.error("Le téléchargement a échoué. Réessayez.");
     }
-
-    trackDownloadSubject({
-      department: departementCode,
-      year: annee,
-      file_name: result.fileName,
-    });
-    window.location.href = result.url;
-    toast.success("Le téléchargement a démarré.");
-    setStatus("available");
   }
 
   return { status, download };

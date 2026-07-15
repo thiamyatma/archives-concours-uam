@@ -249,7 +249,8 @@ alter table public.pdf_downloads enable row level security;
 insert into storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
 values ('exam-pdfs', 'exam-pdfs', false, 52428800, array['application/pdf'])
 on conflict (id) do update
-  set file_size_limit = excluded.file_size_limit,
+  set public = excluded.public,
+      file_size_limit = excluded.file_size_limit,
       allowed_mime_types = excluded.allowed_mime_types;
 
 -- Aucune policy storage.objects : dépôt et lecture réservés au service role.
@@ -396,3 +397,19 @@ $$;
 
 revoke all on function public.check_action_rate_limit(text, text, integer, integer) from public;
 grant execute on function public.check_action_rate_limit(text, text, integer, integer) to service_role;
+
+-- Révocation de session admin : une seule ligne "horodatage de dernière
+-- révocation" (voir lib/actions/admin-auth.ts). Se déconnecter invalide
+-- tous les cookies de session émis avant cet instant — sinon un cookie
+-- capturé avant la déconnexion resterait valide jusqu'à son expiration.
+
+create table if not exists public.admin_session_state (
+  id boolean primary key default true,
+  revoked_at timestamptz not null default now(),
+  constraint admin_session_state_singleton check (id)
+);
+
+insert into public.admin_session_state (id) values (true) on conflict (id) do nothing;
+
+alter table public.admin_session_state enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role.

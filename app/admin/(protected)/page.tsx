@@ -11,7 +11,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DownloadBarChart } from "@/components/admin/download-bar-chart";
-import { requireAdminSession, logoutAdmin } from "@/lib/actions/admin-auth";
+import { logoutAdmin } from "@/lib/actions/admin-auth";
 import { getDownloadStats } from "@/lib/data/download-stats";
 import { formatNumber } from "@/lib/format";
 
@@ -19,7 +19,6 @@ export const metadata: Metadata = { title: "Admin — Statistiques" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  await requireAdminSession();
   const stats = await getDownloadStats();
 
   return (
