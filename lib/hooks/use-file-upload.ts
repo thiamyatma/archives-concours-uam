@@ -54,12 +54,7 @@ export function useFileUpload() {
       }
 
       try {
-        await putFileWithProgress(
-          target.signedUrl,
-          file,
-          Boolean(metadata.replaceDocumentId),
-          setProgress
-        );
+        await putFileWithProgress(target.signedUrl, file, setProgress);
       } catch {
         const message = "Échec de l'envoi du fichier.";
         setStatus("error");
@@ -97,13 +92,14 @@ export function useFileUpload() {
 function putFileWithProgress(
   signedUrl: string,
   file: File,
-  upsert: boolean,
   onProgress: (percent: number) => void
 ): Promise<void> {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open("PUT", signedUrl);
-    xhr.setRequestHeader("x-upsert", String(upsert));
+    // Le token signé encode déjà `upsert: true` (voir createUploadUrl) —
+    // toujours vrai ici aussi, pour ne jamais désaccorder les deux.
+    xhr.setRequestHeader("x-upsert", "true");
 
     xhr.upload.onprogress = (event) => {
       if (event.lengthComputable) {
