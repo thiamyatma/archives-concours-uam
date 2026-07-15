@@ -20,7 +20,7 @@ export interface RetrievedChunk {
  */
 export async function searchPolytechChunks(
   question: string,
-  matchCount = 6
+  matchCount = 4
 ): Promise<RetrievedChunk[]> {
   const supabase = createServiceClient();
 
