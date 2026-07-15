@@ -31,16 +31,20 @@ l'UAM de :
 
 - **Parcourir** les archives par département et par année
 - **Lire** directement une épreuve dans le navigateur (Markdown rendu, avec
-  formules scientifiques via KaTeX) — aucun téléchargement de fichier
+  formules scientifiques via KaTeX)
+- **Télécharger** le PDF combiné de la session, géré depuis une page admin
+  (voir [docs/pdf-downloads.md](docs/pdf-downloads.md))
 - Les matières d'une épreuve apparaissent chacune dans leur propre section
 
 Cinq départements sont couverts : **DSTI, DGAE, DSTAAN, DU2ADT, DGO**. DSTI,
 DGAE et DSTAAN partagent certaines années la même épreuve — le contenu n'est
 alors stocké qu'une seule fois (voir [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)).
 
-Le contenu des archives est **git-versionné** (`content/archives/**`), pas
-stocké en base de données : ajouter une nouvelle session ne nécessite ni
-compte admin, ni upload, juste un fichier Markdown au bon endroit.
+Le contenu textuel des archives est **git-versionné**
+(`content/archives/**`), pas stocké en base de données : ajouter une
+nouvelle session ne nécessite ni compte admin, ni upload, juste un fichier
+Markdown au bon endroit. Le PDF téléchargeable de cette même session est un
+système indépendant, géré séparément depuis `/admin/epreuves`.
 
 Le site n'est **pas affilié officiellement** à l'administration de l'UAM —
 c'est une initiative communautaire.
@@ -134,6 +138,13 @@ Aucun compte admin ni upload : déposer un fichier Markdown puis déployer.
 Détail de la résolution de contenu (override propre à un département vs
 partagé) et du rendu (réparation LaTeX, KaTeX) : [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md#départements-et-archives--résolution-de-contenu).
 
+Le PDF téléchargeable de cette même session est un système **indépendant**,
+géré depuis `/admin/epreuves` (upload, publication) — voir
+[docs/pdf-downloads.md](docs/pdf-downloads.md). Ni l'un ni l'autre ne
+nécessite le second pour fonctionner, mais une épreuve avec seulement un
+PDF publié (sans ce fichier Markdown) a quand même une page publique
+minimale, générée automatiquement.
+
 ## Qualité du code
 
 ```bash
@@ -173,40 +184,47 @@ app/
   page.tsx                                  Accueil (hero, stats, départements)
   departements/page.tsx                     Index des 5 départements
   departements/[code]/page.tsx              Détail département + années disponibles
-  departements/[code]/[annee]/page.tsx      Épreuve rendue (Markdown), une section par matière
+  departements/[code]/[annee]/page.tsx      Épreuve (Markdown, ou repli PDF-seul si publié sans Markdown)
   assistant/page.tsx, api/chat/route.ts     Assistant IA (RAG sur polytech.sn)
   sitemap.ts / robots.ts                    SEO
   opengraph-image.tsx                       Image Open Graph générée dynamiquement
+  admin/(protected)/page.tsx                 Stats de téléchargement PDF
+  admin/(protected)/epreuves/page.tsx        Gestion des épreuves : upload, publication, suppression des PDF
+  admin/login/page.tsx                       Login (mot de passe)
 
 components/
   ui/                               Composants shadcn/ui (générés, éviter de modifier à la main)
-  shared/                           Navbar, Footer, cartes département, rendu Markdown, bouton PDF
+  shared/                           Navbar, Footer, cartes département, rendu Markdown, bouton/lien PDF
   chat/                             Widget assistant IA
   analytics/                        Google Analytics 4 (chargement, consentement, trackers)
-  admin/                            Graphiques du dashboard de statistiques PDF
+  admin/                            Dashboard stats, upload (dropzone, progression), tableau des épreuves
 
 content/
   archives/<groupe-ou-code>/<année>.md      Épreuves (voir "Ajouter une nouvelle épreuve")
-
-app/admin/                          Login (mot de passe) + stats de téléchargement PDF
 
 lib/
   departements.ts                   Config statique des 5 départements
   content/                          Résolution de contenu, parsing, réparation LaTeX (fonctions pures + tests)
   data/departements.ts              Point d'entrée pour les pages (React cache())
-  pdf/                              Résolution des chemins PDF (miroir de lib/content/resolve.ts)
-  actions/download-pdf.ts           Server Actions : disponibilité + URL signée + log
-  actions/admin-auth.ts             Authentification admin (mot de passe + cookie signé)
+  pdf/                              Constantes bucket + slug de chemin de stockage (fonctions pures + tests)
+  actions/download-pdf.ts           Server Actions publiques : disponibilité + URL signée + log + vues
+  actions/exam-documents.ts         Server Actions admin : upload, métadonnées, statut, suppression
+  actions/admin-auth.ts             Authentification admin (mot de passe + cookie signé, révocation)
+  data/exam-documents.ts            Lecture des documents (tableau admin + repli page publique)
   analytics/                        API GA4 typée (événements, consentement, trackEvent) — voir docs/google-analytics.md
-  hooks/use-analytics.ts, use-download-pdf.ts
+  hooks/use-analytics.ts, use-download-pdf.ts, use-file-upload.ts
   rag/, supabase/service.ts         Assistant IA + accès Storage/DB service-role (PDF inclus)
+  rate-limit.ts, http/client-ip.ts  Rate-limiting générique par IP+action
   constants.ts, format.ts, env.ts
 
 supabase/
-  schema.sql                        Tables/RLS/RPC : assistant IA + log de téléchargement PDF
+  schema.sql                        Tables/RLS/RPC : assistant IA, PDF, rate-limiting, session admin
   migrations/                       Historique des migrations appliquées (Supabase CLI)
 
-types/database.ts                   Types Supabase (assistant IA + pdf_downloads)
+scripts/
+  backfill-exam-documents.ts        Migration ponctuelle des PDF déposés avant la page admin
+
+types/database.ts                   Types Supabase (assistant IA, exam_documents, pdf_downloads...)
 
 docs/                                Documentation technique (architecture, composants, performance)
 
@@ -218,10 +236,13 @@ docs/                                Documentation technique (architecture, comp
 
 - Aucune donnée utilisateur n'est collectée par les pages départements/archives
   (contenu statique, pas de formulaire, pas de compte).
-- La clé `service_role` Supabase n'est utilisée que par l'assistant IA et le
-  téléchargement PDF, dans des modules serveur marqués `server-only`
+- La clé `service_role` Supabase n'est utilisée que par l'assistant IA et la
+  gestion des PDF, dans des modules serveur marqués `server-only`
   (`lib/supabase/service.ts`), jamais exposée au client.
-- `/admin` (statistiques de téléchargement) est protégée par mot de passe
+- Chaque Server Action admin (`lib/actions/exam-documents.ts`,
+  `lib/actions/admin-auth.ts`) revalide elle-même la session — pas
+  seulement le layout de la page qui l'englobe.
+- `/admin` et `/admin/epreuves` sont protégées par mot de passe
   (`ADMIN_PASSWORD`) et exclue du sitemap/robots.txt.
 - Vulnérabilité trouvée ? Voir [SECURITY.md](SECURITY.md) pour la procédure de
   signalement responsable.
@@ -230,7 +251,7 @@ docs/                                Documentation technique (architecture, comp
 
 - [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) — vue d'ensemble, résolution
   de contenu Markdown, composants partagés
-- [docs/DATABASE.md](docs/DATABASE.md) — schéma Supabase (assistant IA)
+- [docs/DATABASE.md](docs/DATABASE.md) — schéma Supabase (assistant IA, PDF, rate-limiting, session admin)
 - [docs/COMPONENTS.md](docs/COMPONENTS.md) — composants réutilisables et
   quand les utiliser
 - [docs/PERFORMANCE.md](docs/PERFORMANCE.md) — rendu statique, cache,

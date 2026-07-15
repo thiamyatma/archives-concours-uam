@@ -1,12 +1,13 @@
 # Base de données
 
-Les archives de concours (départements/années/épreuves) ne vivent **pas**
+Le contenu textuel des archives (départements/années/épreuves) ne vit pas
 en base de données — ce sont des fichiers Markdown git-versionnés sous
 `content/archives/**` (voir [ARCHITECTURE.md](ARCHITECTURE.md#départements-et-archives--résolution-de-contenu)).
-Les PDF correspondants vivent dans Supabase Storage, pas en base non plus
-(voir [pdf-downloads.md](pdf-downloads.md)). Les données persistées ici
-servent l'assistant IA (RAG sur polytech.sn, voir [RAG.md](RAG.md)) et le
-log des téléchargements PDF.
+Les PDF téléchargeables, eux, sont gérés depuis la page admin
+`/admin/epreuves` et vivent ici (métadonnées) + Supabase Storage (octets) —
+voir [pdf-downloads.md](pdf-downloads.md). Les données persistées ici
+servent aussi l'assistant IA (RAG sur polytech.sn, voir [RAG.md](RAG.md)),
+le rate-limiting et la session admin.
 
 ## `polytech_pages`
 
@@ -51,6 +52,66 @@ log des téléchargements PDF.
 Log insert-only, un événement par téléchargement réussi — voir
 [pdf-downloads.md](pdf-downloads.md).
 
+## `exam_documents`
+
+| Colonne                     | Type          | Notes                                     |
+| --------------------------- | ------------- | ----------------------------------------- |
+| `id`                        | `uuid` (PK)   |                                           |
+| `annee`                     | `integer`     | 2000-2100                                 |
+| `file_name`                 | `text`        | nom original (affichage + téléchargement) |
+| `storage_path`              | `text`        | ex. `dgae-dsti-dstaan/2025/nom.pdf`       |
+| `file_size`                 | `bigint`      | octets                                    |
+| `description`               | `text`        | optionnelle                               |
+| `statut`                    | `text`        | `publie` / `brouillon`                    |
+| `created_at` / `updated_at` | `timestamptz` | `updated_at` maintenu par trigger         |
+
+## `exam_document_departments`
+
+Table de liaison — un document peut couvrir plusieurs départements.
+
+| Colonne            | Type      | Notes                                |
+| ------------------ | --------- | ------------------------------------ |
+| `document_id`      | `uuid`    | FK `exam_documents`, cascade         |
+| `departement_code` | `text`    | ex. `dsti`                           |
+| `annee`            | `integer` | dénormalisée depuis `exam_documents` |
+
+Clé primaire `(document_id, departement_code)`. **`unique (departement_code,
+annee)`** : un département donné ne peut être lié qu'à un seul document par
+année (le doublon est rejeté à l'import) — voir [pdf-downloads.md](pdf-downloads.md).
+
+## `exam_document_views`
+
+| Colonne            | Type          | Notes |
+| ------------------ | ------------- | ----- |
+| `id`               | `uuid` (PK)   |       |
+| `departement_code` | `text`        |       |
+| `annee`            | `integer`     |       |
+| `viewed_at`        | `timestamptz` |       |
+
+Log insert-only, une consultation de page épreuve (compteur admin,
+indépendant de Google Analytics), rate-limitée par IP+département+année.
+
+## `action_rate_limits`
+
+| Colonne      | Type          | Notes                                              |
+| ------------ | ------------- | -------------------------------------------------- |
+| `id`         | `uuid` (PK)   |                                                    |
+| `key_hash`   | `text`        | SHA-256 d'une clé (IP, ou IP+contexte)             |
+| `action`     | `text`        | ex. `admin_login`, `pdf_download`, `document_view` |
+| `created_at` | `timestamptz` |                                                    |
+
+Limiteur générique par clé+action, voir `check_action_rate_limit` ci-dessous.
+
+## `admin_session_state`
+
+| Colonne      | Type                      | Notes                                 |
+| ------------ | ------------------------- | ------------------------------------- |
+| `id`         | `boolean` (PK, singleton) | toujours `true`                       |
+| `revoked_at` | `timestamptz`             | horodatage de la dernière déconnexion |
+
+Une seule ligne : se déconnecter (`logoutAdmin`) met à jour `revoked_at`,
+invalidant tous les cookies de session émis avant cet instant.
+
 ## RPC
 
 - `search_polytech_chunks(search_query, match_count)` — retrieval du RAG :
@@ -59,8 +120,16 @@ Log insert-only, un événement par téléchargement réussi — voir
   `polytech_chunks`, classé par `ts_rank`.
 - `get_pdf_download_stats()`, `get_pdf_downloads_by_departement()`,
   `get_pdf_downloads_by_annee()`, `get_top_downloaded_pdfs(limit_count)` —
-  agrégats pour le dashboard admin, calculés en base (`group by` +
-  `count(*)`) plutôt que rapatriés ligne par ligne côté application.
+  agrégats pour `/admin`, calculés en base (`group by` + `count(*)`) plutôt
+  que rapatriés ligne par ligne côté application.
+- `get_exam_documents_with_stats()` — un document par ligne pour
+  `/admin/epreuves`, avec `departement_codes` agrégé (`array_agg`) et
+  `downloads`/`views` sommés à travers tous les départements liés.
+- `check_and_record_rag_rate_limit(p_ip_hash, p_limit)` — check-then-insert
+  atomique (verrou advisory) pour le rate-limit du RAG.
+- `check_action_rate_limit(p_key_hash, p_action, p_limit, p_window_seconds)`
+  — limiteur générique par clé+action, même principe, utilisé pour
+  `admin_login`, `pdf_download` et `document_view`.
 
 ## RLS
 
@@ -69,8 +138,9 @@ Log insert-only, un événement par téléchargement réussi — voir
   de scraping, `lib/rag/*.ts`) peut modifier ces tables.
 - `rag_query_log` : aucune policy publique, lu/écrit uniquement par
   `app/api/chat/route.ts` via le service role.
-- `pdf_downloads` : aucune policy publique (ni lecture ni écriture) — lu/écrit
-  uniquement par le service role, depuis `lib/actions/download-pdf.ts` et
-  `lib/data/download-stats.ts`.
+- `pdf_downloads`, `exam_documents`, `exam_document_departments`,
+  `exam_document_views`, `action_rate_limits`, `admin_session_state` :
+  aucune policy publique (ni lecture ni écriture) sur aucune de ces tables —
+  lu/écrit uniquement par le service role.
 
 Schéma complet : [`supabase/schema.sql`](../supabase/schema.sql).

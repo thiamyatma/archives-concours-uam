@@ -18,24 +18,33 @@ parle encore à Supabase).
 - [Assistant IA (RAG)](#assistant-ia-rag)
 - [Ce qui n'a délibérément pas été fait](#ce-qui-na-délibérément-pas-été-fait)
 
-## Départements et archives : rendu 100% statique
+## Départements et archives : rendu 100% statique (avec une exception bornée)
 
-Toutes les pages `/`, `/departements`, `/departements/[code]` et
-`/departements/[code]/[annee]` sont **statiques** (`generateStaticParams`
-associé à `dynamicParams = false`) : chaque combinaison (département,
-année) connue au build est pré-rendue en HTML une fois pour toutes, à
-partir des fichiers sous `content/archives/**`. La sortie de `next build`
-doit afficher `○` (statique) pour chacune de ces routes, jamais `ƒ`
-(dynamique).
+Toutes les pages `/`, `/departements` et `/departements/[code]` sont
+**statiques** (`generateStaticParams` associé à `dynamicParams = false`
+pour `[code]`) : chaque département connu au build est pré-rendu en HTML
+une fois pour toutes, à partir des fichiers sous `content/archives/**`. La
+sortie de `next build` doit afficher `●`/`○` pour ces routes, jamais `ƒ`.
 
-Conséquence directe : **aucune fonction serverless ne lit le système de
-fichiers à l'exécution**. `fs.readdirSync`/`fs.readFileSync`
-(`lib/content/fs.ts`) ne s'exécutent que pendant `next build`, qui tourne
-sur un checkout git complet — `content/archives/**` y est garanti présent.
-Une future page qui aurait besoin de contenu non connu au build (recherche
-plein texte sur les épreuves, par exemple) devrait repenser ce point :
-elle ne pourrait plus être un simple `fs.readFileSync` en Server Component
-statique.
+`/departements/[code]/[annee]` reste statique pour toute combinaison connue
+au build (`generateStaticParams`, dérivé uniquement du Markdown, aucun
+appel réseau) mais utilise **`dynamicParams = true`** : une combinaison
+inconnue n'est plus un 404 automatique — elle est générée à la demande au
+premier accès (recherche d'un document PDF publié sans Markdown
+correspondant, voir [pdf-downloads.md](pdf-downloads.md)), puis mise en
+cache comme une page statique classique pour les requêtes suivantes.
+Exception scopée et bornée : elle ne coûte un aller réseau qu'une fois par
+nouvelle combinaison département+année jamais vue, jamais pour les pages
+Markdown déjà connues au build. `/departements/[code]` s'enrichit lui aussi
+en listant ces années PDF-seul, mais via une petite amélioration
+**côté client** (`DepartementYearsList`) — la page elle-même reste
+statique, sans appel réseau côté serveur.
+
+Conséquence directe pour le reste du site : **aucune fonction serverless ne
+lit le système de fichiers à l'exécution** en dehors du cas ci-dessus.
+`fs.readdirSync`/`fs.readFileSync` (`lib/content/fs.ts`) ne s'exécutent que
+pendant `next build`, qui tourne sur un checkout git complet —
+`content/archives/**` y est garanti présent.
 
 ## Pourquoi aucun cache n'est nécessaire ici
 

@@ -111,6 +111,72 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["admin_session_state"]["Insert"]>;
         Relationships: [];
       };
+      exam_documents: {
+        Row: {
+          id: string;
+          annee: number;
+          file_name: string;
+          storage_path: string;
+          file_size: number;
+          description: string | null;
+          statut: string;
+          created_at: string;
+          updated_at: string;
+        };
+        Insert: {
+          id?: string;
+          annee: number;
+          file_name: string;
+          storage_path: string;
+          file_size: number;
+          description?: string | null;
+          statut?: string;
+          created_at?: string;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["exam_documents"]["Insert"]>;
+        Relationships: [];
+      };
+      exam_document_departments: {
+        Row: {
+          document_id: string;
+          departement_code: string;
+          annee: number;
+        };
+        Insert: {
+          document_id: string;
+          departement_code: string;
+          annee: number;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["exam_document_departments"]["Insert"]
+        >;
+        Relationships: [
+          {
+            foreignKeyName: "exam_document_departments_document_id_fkey";
+            columns: ["document_id"];
+            isOneToOne: false;
+            referencedRelation: "exam_documents";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      exam_document_views: {
+        Row: {
+          id: string;
+          departement_code: string;
+          annee: number;
+          viewed_at: string;
+        };
+        Insert: {
+          id?: string;
+          departement_code: string;
+          annee: number;
+          viewed_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["exam_document_views"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {
@@ -158,6 +224,23 @@ export interface Database {
           p_window_seconds: number;
         };
         Returns: boolean;
+      };
+      get_exam_documents_with_stats: {
+        Args: Record<string, never>;
+        Returns: {
+          id: string;
+          annee: number;
+          file_name: string;
+          storage_path: string;
+          file_size: number;
+          description: string | null;
+          statut: string;
+          created_at: string;
+          updated_at: string;
+          departement_codes: string[];
+          downloads: number;
+          views: number;
+        }[];
       };
     };
     Enums: Record<string, never>;

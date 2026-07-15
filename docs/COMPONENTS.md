@@ -1,10 +1,10 @@
 # Composants
 
-Deux familles : `components/ui/` (shadcn, généré), `components/shared/`
-(public). Voir [ARCHITECTURE.md](ARCHITECTURE.md) pour la philosophie
-générale (Server vs Client Components). Il n'y a plus de dossier
-`components/admin/` : le tableau de bord de modération PDF a disparu avec
-le passage aux archives Markdown.
+Trois familles : `components/ui/` (shadcn, généré), `components/shared/`
+(public), `components/admin/` (dashboard de statistiques + gestion des
+épreuves, protégé par mot de passe — voir [pdf-downloads.md](pdf-downloads.md)).
+Voir [ARCHITECTURE.md](ARCHITECTURE.md) pour la philosophie générale (Server
+vs Client Components).
 
 ## `components/ui/`
 
@@ -17,14 +17,35 @@ composants composables (`Button`, `DialogTrigger`, etc.) supportent la prop
 
 ## `components/shared/`
 
-| Composant              | Type   | Rôle                                                                 |
-| ---------------------- | ------ | -------------------------------------------------------------------- |
-| `Navbar`               | client | Logo (mark recadré), nav principale, menu mobile (Sheet)             |
-| `Footer`               | server | Logo complet, liens départements/navigation, mention non-affiliation |
-| `DepartementCard`      | server | Carte département (nom, description, nb de sessions, lien archives)  |
-| `DepartementYearsList` | server | Liste des années disponibles pour un département (pas de pagination) |
-| `MarkdownRenderer`     | server | Rend une chaîne Markdown (react-markdown + remark-gfm/math + KaTeX)  |
-| `StatsSection`         | server | Tuiles de statistiques génériques (page d'accueil)                   |
+| Composant              | Type   | Rôle                                                                                    |
+| ---------------------- | ------ | --------------------------------------------------------------------------------------- |
+| `Navbar`               | client | Logo (mark recadré), nav principale, menu mobile (Sheet)                                |
+| `Footer`               | server | Logo complet, liens départements/navigation, mention non-affiliation                    |
+| `DepartementCard`      | server | Carte département (nom, description, nb de sessions, lien archives)                     |
+| `DepartementYearsList` | client | Liste des années Markdown (props) fusionnée avec les années PDF-seul (fetch au montage) |
+| `MarkdownRenderer`     | server | Rend une chaîne Markdown (react-markdown + remark-gfm/math + KaTeX)                     |
+| `StatsSection`         | server | Tuiles de statistiques génériques (page d'accueil)                                      |
+| `DownloadPdfButton`    | client | Bouton de téléchargement PDF (vérification + URL signée + toast)                        |
+| `ViewPdfLink`          | client | Lien « Consulter » (PDF inline, sans forcer le téléchargement)                          |
+| `RecordDocumentView`   | client | Compte une consultation de page (sans rendu), indépendant de GA4                        |
+
+## `components/admin/`
+
+Protégé par `app/admin/(protected)/layout.tsx` (mot de passe). Deux pages :
+`/admin` (statistiques) et `/admin/epreuves` (gestion des PDF).
+
+| Composant                | Type   | Rôle                                                         |
+| ------------------------ | ------ | ------------------------------------------------------------ |
+| `AdminNav`               | client | Onglets entre les deux pages admin                           |
+| `DownloadBarChart`       | server | Graphique en barres sans dépendance externe (statistiques)   |
+| `UploadDropzone`         | client | Drag & drop + sélection de fichiers PDF                      |
+| `PendingUploadCard`      | client | Un fichier en attente + son mini-formulaire de métadonnées   |
+| `DepartementMultiSelect` | client | Sélection multiple de départements pour un document          |
+| `UploadProgress`         | client | Barre de progression réelle (`XMLHttpRequest`)               |
+| `DocumentsTable`         | client | Tableau des documents + menu d'actions par ligne             |
+| `EditMetadataDialog`     | client | Modifier départements/année/description/statut d'un document |
+| `ReplacePdfDialog`       | client | Remplacer le fichier d'un document existant                  |
+| `DeleteDialog`           | client | Confirmation de suppression (`alert-dialog`)                 |
 
 ## `components/chat/`
 
