@@ -39,49 +39,53 @@ export function useFileUpload() {
       setProgress(0);
       setError(null);
 
-      const target = await createUploadUrl({
-        departementCodes: metadata.departementCodes,
-        annee: metadata.annee,
-        fileName: file.name,
-        fileSize: file.size,
-        replaceDocumentId: metadata.replaceDocumentId,
-      });
-
-      if ("error" in target) {
-        setStatus("error");
-        setError(target.error);
-        return target;
-      }
-
+      // Tout le corps est dans un seul try/catch : une exception non gérée
+      // n'importe où ici (réseau, timeout serveur) laissait auparavant le
+      // statut bloqué sur "uploading" indéfiniment — la barre de
+      // progression semblait figée à 100% sans jamais afficher d'erreur.
       try {
+        const target = await createUploadUrl({
+          departementCodes: metadata.departementCodes,
+          annee: metadata.annee,
+          fileName: file.name,
+          fileSize: file.size,
+          replaceDocumentId: metadata.replaceDocumentId,
+        });
+
+        if ("error" in target) {
+          setStatus("error");
+          setError(target.error);
+          return target;
+        }
+
         await putFileWithProgress(target.signedUrl, file, setProgress);
+
+        const result = await confirmUpload({
+          departementCodes: metadata.departementCodes,
+          annee: metadata.annee,
+          fileName: file.name,
+          fileSize: file.size,
+          description: metadata.description,
+          statut: metadata.statut,
+          storagePath: target.path,
+          replaceDocumentId: metadata.replaceDocumentId,
+        });
+
+        if ("error" in result) {
+          setStatus("error");
+          setError(result.error);
+          return result;
+        }
+
+        setProgress(100);
+        setStatus("success");
+        return result;
       } catch {
-        const message = "Échec de l'envoi du fichier.";
+        const message = "Échec de l'upload. Réessayez.";
         setStatus("error");
         setError(message);
         return { error: message };
       }
-
-      const result = await confirmUpload({
-        departementCodes: metadata.departementCodes,
-        annee: metadata.annee,
-        fileName: file.name,
-        fileSize: file.size,
-        description: metadata.description,
-        statut: metadata.statut,
-        storagePath: target.path,
-        replaceDocumentId: metadata.replaceDocumentId,
-      });
-
-      if ("error" in result) {
-        setStatus("error");
-        setError(result.error);
-        return result;
-      }
-
-      setProgress(100);
-      setStatus("success");
-      return result;
     },
     []
   );
