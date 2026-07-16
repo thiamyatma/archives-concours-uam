@@ -14,6 +14,19 @@ import { getExamPageViewsTotal } from "@/lib/contest/page-views";
 import { SITE_SLOGAN } from "@/lib/constants";
 
 /**
+ * Téléchargements et vues (`ContestStatsRow`) changent avec l'activité des
+ * visiteurs, pas seulement quand un admin enregistre les paramètres du
+ * concours (seul événement qui revalide "/" — voir
+ * lib/actions/contest-settings.ts). Sans ceci, la page resterait figée sur
+ * les chiffres du dernier build/de la dernière revalidation, contrairement
+ * à `/admin` (`force-dynamic`, toujours à jour). Revalidation périodique
+ * plutôt que `force-dynamic` : la page reste statique/servie du cache entre
+ * deux régénérations (voir docs/PERFORMANCE.md), l'écart de fraîcheur (au
+ * plus 1h) est sans conséquence pour de simples compteurs informatifs.
+ */
+export const revalidate = 3600;
+
+/**
  * SEO éditable depuis /admin/parametres (onglet SEO). Un champ vide ne
  * remplace pas la valeur par défaut du layout racine (`app/layout.tsx`) —
  * Next.js fusionne les métadonnées champ par champ.
