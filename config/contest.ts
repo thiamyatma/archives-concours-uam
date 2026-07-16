@@ -1,47 +1,64 @@
+import type { ContestSettings } from "@/lib/contest/types";
+
 /**
- * Configuration centralisée du concours. Pour faire évoluer la section
- * "Concours" d'une année à l'autre (2027, 2028…), il suffit de modifier ce
- * fichier — aucun composant React n'a besoin d'être touché.
+ * Valeurs par défaut des paramètres du concours. La source de vérité en
+ * production est la table Supabase `contest_settings` (voir
+ * lib/contest/settings.ts) ; ces défauts servent UNIQUEMENT de repli si la
+ * ligne est absente ou illisible — le site public ne casse jamais. Ils
+ * reflètent l'état initial seedé par la migration
+ * `20260722000000_contest_settings.sql`.
  *
- * Les dates sont volontairement exprimées sans suffixe de fuseau : elles sont
- * interprétées dans le fuseau du serveur de rendu (Vercel = UTC, ce qui
- * correspond à l'heure du Sénégal, GMT).
+ * Pour changer les infos du concours en production : utiliser
+ * /admin/parametres (aucune modification de code / redéploiement requis).
  */
-
-export interface ContestConfig {
-  /** Année du concours (affichée dans le titre et les libellés). */
-  year: number;
-  /** Date/heure limite d'inscription (incluse). */
-  registrationDeadline: Date;
-  /** Date/heure du concours (cible du compte à rebours). */
-  contestDate: Date;
-  /** Message affiché une fois le concours terminé. */
-  resultsMessage: string;
-  /** Lien externe vers le dépôt de dossier / infos officielles du concours. */
-  registrationUrl: string;
-}
-
-export const CONTEST_CONFIG: ContestConfig = {
+export const DEFAULT_CONTEST_SETTINGS: ContestSettings = {
   year: 2026,
-  registrationDeadline: new Date("2026-08-16T23:59:59"),
-  contestDate: new Date("2026-08-22T08:00:00"),
-  resultsMessage: "Les résultats seront publiés prochainement.",
-  registrationUrl: "https://depot.uam.sn/concours",
+  officialName: "Concours d'entrée Polytech Diamniadio 2026",
+  subtitle:
+    "École Supérieure Polytechnique de Diamniadio — Université Amadou Mahtar Mbow de Dakar",
+  description: "Concours d'entrée de l'UAM.",
+  registrationOpensAt: new Date("2026-07-23T00:00:00+00:00"),
+  registrationClosesAt: new Date("2026-08-16T23:59:59+00:00"),
+  contestDate: new Date("2026-08-22T08:00:00+00:00"),
+  resultsDate: null,
+  messages: {
+    beforeRegistration: "Les inscriptions ouvriront bientôt.",
+    duringRegistration:
+      "Les inscriptions au concours sont ouvertes jusqu'au {dateClotureInscriptions}.",
+    afterRegistration:
+      "Les inscriptions sont terminées. Le concours aura lieu le {dateConcours}.",
+    contestDay: "Le concours a lieu aujourd'hui ! Bonne chance à tous les candidats.",
+    afterContest: "Le concours est terminé.",
+    beforeResults: "Les résultats seront publiés prochainement.",
+    afterResults: "Les résultats sont disponibles.",
+  },
+  banner: {
+    enabled: false,
+    title: "",
+    message: "",
+    type: "info",
+    color: "",
+  },
+  countdown: {
+    enabled: true,
+    floatingWidget: false,
+    position: "right",
+    showSeconds: true,
+    showProgress: false,
+  },
+  buttons: {
+    primaryLabel: "Consulter les anciennes épreuves",
+    primaryUrl: "/departements",
+    secondaryLabel: "Déposer mon dossier",
+    secondaryUrl: "https://depot.uam.sn/concours",
+  },
+  info: {
+    location: "",
+    convocationTime: "",
+    startTime: "",
+    documents: "",
+    allowedMaterial: "",
+    instructions: "",
+    officialUrl: "https://depot.uam.sn/concours",
+  },
 };
-
-/**
- * Point d'accès unique à la configuration du concours. Aujourd'hui, renvoie
- * simplement la constante statique ci-dessus.
- *
- * Évolution prévue (admin/Supabase) : pour rendre les dates modifiables
- * depuis le tableau de bord sans redéployer, il suffira de remplacer le corps
- * de cette fonction par une lecture Supabase (dans un Server Component ou une
- * Server Action). La page d'accueil, déjà Server Component, passe la config
- * en prop au composant client `ContestCountdown` — ni le hook
- * `useContestStatus` ni le composant n'ont donc à être modifiés le jour où
- * la source devient la base de données. Les objets `Date` sont sérialisables
- * à travers la frontière Server → Client de Next.js.
- */
-export function getContestConfig(): ContestConfig {
-  return CONTEST_CONFIG;
-}

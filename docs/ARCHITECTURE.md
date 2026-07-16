@@ -31,10 +31,12 @@ Navigateur
    ├─ app/assistant + app/api/chat/route.ts
    │     lib/rag/*.ts ──► lib/supabase/service.ts ──► Supabase (RAG)
    │
-   └─ app/admin/**  (mot de passe, force-dynamic)
+   └─ app/admin/**  (comptes email+mot de passe, force-dynamic)
          ├─ /admin              lib/data/download-stats.ts ──► Supabase (stats PDF)
-         └─ /admin/epreuves     lib/data/exam-documents.ts,
-                                 lib/actions/exam-documents.ts ──► Supabase (documents)
+         ├─ /admin/epreuves     lib/data/exam-documents.ts,
+         │                       lib/actions/exam-documents.ts ──► Supabase (documents)
+         └─ /admin/parametres   lib/contest/settings.ts,
+                                 lib/actions/contest-settings.ts ──► Supabase (contest_settings)
 ```
 
 ## Départements et archives : résolution de contenu

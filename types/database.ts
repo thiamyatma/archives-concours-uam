@@ -177,6 +177,60 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["exam_document_views"]["Insert"]>;
         Relationships: [];
       };
+      admin_users: {
+        Row: {
+          id: string;
+          email: string;
+          password_hash: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          email: string;
+          password_hash: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["admin_users"]["Insert"]>;
+        Relationships: [];
+      };
+      contest_settings: {
+        Row: {
+          id: boolean;
+          year: number;
+          official_name: string;
+          subtitle: string;
+          description: string;
+          registration_opens_at: string | null;
+          registration_closes_at: string | null;
+          contest_date: string | null;
+          results_date: string | null;
+          messages: Record<string, unknown>;
+          banner: Record<string, unknown>;
+          countdown: Record<string, unknown>;
+          buttons: Record<string, unknown>;
+          info: Record<string, unknown>;
+          updated_at: string;
+        };
+        Insert: {
+          id?: boolean;
+          year: number;
+          official_name: string;
+          subtitle?: string;
+          description?: string;
+          registration_opens_at?: string | null;
+          registration_closes_at?: string | null;
+          contest_date?: string | null;
+          results_date?: string | null;
+          messages?: Record<string, unknown>;
+          banner?: Record<string, unknown>;
+          countdown?: Record<string, unknown>;
+          buttons?: Record<string, unknown>;
+          info?: Record<string, unknown>;
+          updated_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["contest_settings"]["Insert"]>;
+        Relationships: [];
+      };
     };
     Views: Record<string, never>;
     Functions: {

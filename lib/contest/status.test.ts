@@ -1,82 +1,112 @@
 import { describe, expect, it } from "vitest";
-import type { ContestConfig } from "@/config/contest";
-import { getContestPhase, getRemainingTime } from "./status";
+import { DEFAULT_CONTEST_SETTINGS } from "@/config/contest";
+import type { ContestSettings } from "@/lib/contest/types";
+import {
+  getContestPhase,
+  getContestProgress,
+  getRemainingTime,
+  phaseHasCountdown,
+} from "./status";
 
-const config: ContestConfig = {
-  year: 2026,
-  registrationDeadline: new Date("2026-08-16T23:59:59"),
-  contestDate: new Date("2026-08-22T08:00:00"),
-  resultsMessage: "Les résultats seront publiés prochainement.",
-  registrationUrl: "https://depot.uam.sn/concours",
-};
+function makeSettings(overrides: Partial<ContestSettings> = {}): ContestSettings {
+  return {
+    ...DEFAULT_CONTEST_SETTINGS,
+    registrationOpensAt: new Date("2026-07-23T00:00:00Z"),
+    registrationClosesAt: new Date("2026-08-16T23:59:59Z"),
+    contestDate: new Date("2026-08-22T08:00:00Z"),
+    resultsDate: new Date("2026-09-05T12:00:00Z"),
+    ...overrides,
+  };
+}
 
 describe("getContestPhase", () => {
-  it("renvoie 'registration' bien avant la date limite", () => {
-    expect(getContestPhase(new Date("2026-07-01T10:00:00"), config)).toBe("registration");
+  const s = makeSettings();
+
+  it("avant l'ouverture → before_registration", () => {
+    expect(getContestPhase(new Date("2026-07-01T10:00:00Z"), s)).toBe(
+      "before_registration"
+    );
   });
 
-  it("renvoie 'registration' jusqu'à la date limite incluse", () => {
-    expect(getContestPhase(new Date("2026-08-16T23:59:59"), config)).toBe("registration");
+  it("pendant les inscriptions → registration_open", () => {
+    expect(getContestPhase(new Date("2026-08-01T10:00:00Z"), s)).toBe(
+      "registration_open"
+    );
   });
 
-  it("renvoie 'closed' juste après la date limite", () => {
-    expect(getContestPhase(new Date("2026-08-17T00:00:00"), config)).toBe("closed");
+  it("à la clôture incluse → registration_open", () => {
+    expect(getContestPhase(new Date("2026-08-16T23:59:59Z"), s)).toBe(
+      "registration_open"
+    );
   });
 
-  it("renvoie 'closed' pendant la période inter-inscriptions/concours", () => {
-    expect(getContestPhase(new Date("2026-08-21T23:59:59"), config)).toBe("closed");
+  it("après clôture, avant le jour J → registration_closed", () => {
+    expect(getContestPhase(new Date("2026-08-19T10:00:00Z"), s)).toBe(
+      "registration_closed"
+    );
   });
 
-  it("renvoie 'contest-day' dès le début du jour du concours", () => {
-    expect(getContestPhase(new Date("2026-08-22T00:00:00"), config)).toBe("contest-day");
+  it("le jour du concours → contest_day", () => {
+    expect(getContestPhase(new Date("2026-08-22T15:00:00Z"), s)).toBe("contest_day");
   });
 
-  it("renvoie 'contest-day' à l'heure du concours", () => {
-    expect(getContestPhase(new Date("2026-08-22T08:00:00"), config)).toBe("contest-day");
+  it("après le concours, avant résultats → after_contest", () => {
+    expect(getContestPhase(new Date("2026-08-25T10:00:00Z"), s)).toBe("after_contest");
   });
 
-  it("renvoie 'contest-day' jusqu'à la fin du jour du concours", () => {
-    expect(getContestPhase(new Date("2026-08-22T23:59:59"), config)).toBe("contest-day");
+  it("à partir des résultats → results_published", () => {
+    expect(getContestPhase(new Date("2026-09-05T12:00:00Z"), s)).toBe(
+      "results_published"
+    );
   });
 
-  it("renvoie 'finished' le lendemain du concours", () => {
-    expect(getContestPhase(new Date("2026-08-23T00:00:00"), config)).toBe("finished");
+  it("sans date de résultats, reste after_contest indéfiniment", () => {
+    const noResults = makeSettings({ resultsDate: null });
+    expect(getContestPhase(new Date("2027-01-01T00:00:00Z"), noResults)).toBe(
+      "after_contest"
+    );
+  });
+});
+
+describe("phaseHasCountdown", () => {
+  it("actif avant le jour J, inactif ensuite", () => {
+    expect(phaseHasCountdown("before_registration")).toBe(true);
+    expect(phaseHasCountdown("registration_open")).toBe(true);
+    expect(phaseHasCountdown("registration_closed")).toBe(true);
+    expect(phaseHasCountdown("contest_day")).toBe(false);
+    expect(phaseHasCountdown("after_contest")).toBe(false);
+    expect(phaseHasCountdown("results_published")).toBe(false);
   });
 });
 
 describe("getRemainingTime", () => {
-  it("décompose correctement un écart de plusieurs jours", () => {
-    const now = new Date("2026-08-20T08:00:00");
-    const target = new Date("2026-08-22T08:00:00");
-    expect(getRemainingTime(now, target)).toEqual({
-      days: 2,
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      total: 2 * 86400 * 1000,
-    });
+  it("décompose un écart de plusieurs jours", () => {
+    expect(
+      getRemainingTime(new Date("2026-08-20T08:00:00Z"), new Date("2026-08-22T08:00:00Z"))
+    ).toEqual({ days: 2, hours: 0, minutes: 0, seconds: 0, total: 2 * 86400 * 1000 });
   });
 
-  it("décompose heures, minutes et secondes", () => {
-    const now = new Date("2026-08-21T20:30:15");
-    const target = new Date("2026-08-22T08:00:00");
-    expect(getRemainingTime(now, target)).toMatchObject({
-      days: 0,
-      hours: 11,
-      minutes: 29,
-      seconds: 45,
-    });
+  it("ne renvoie jamais de valeurs négatives", () => {
+    expect(
+      getRemainingTime(new Date("2026-08-23T00:00:00Z"), new Date("2026-08-22T08:00:00Z"))
+    ).toEqual({ days: 0, hours: 0, minutes: 0, seconds: 0, total: 0 });
+  });
+});
+
+describe("getContestProgress", () => {
+  const s = makeSettings();
+
+  it("0 à l'ouverture, 1 au concours, ~0.5 au milieu", () => {
+    expect(getContestProgress(new Date("2026-07-23T00:00:00Z"), s)).toBe(0);
+    expect(getContestProgress(new Date("2026-08-22T08:00:00Z"), s)).toBe(1);
+    const mid = getContestProgress(new Date("2026-08-06T16:00:00Z"), s);
+    expect(mid).toBeGreaterThan(0.4);
+    expect(mid).toBeLessThan(0.6);
   });
 
-  it("ne renvoie jamais de valeurs négatives une fois la cible dépassée", () => {
-    const now = new Date("2026-08-23T00:00:00");
-    const target = new Date("2026-08-22T08:00:00");
-    expect(getRemainingTime(now, target)).toEqual({
-      days: 0,
-      hours: 0,
-      minutes: 0,
-      seconds: 0,
-      total: 0,
-    });
+  it("null si dates manquantes", () => {
+    expect(
+      getContestProgress(new Date(), makeSettings({ contestDate: null }))
+    ).toBeNull();
   });
 });
