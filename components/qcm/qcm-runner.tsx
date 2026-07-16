@@ -177,7 +177,9 @@ function QcmQuestionCard({
       </CardContent>
       {corrigee && (
         <CardContent className="border-t pt-4">
-          <p className="text-sm">{corrigee.justification}</p>
+          <MarkdownRenderer className="text-sm">
+            {corrigee.justification}
+          </MarkdownRenderer>
           <div className="text-muted-foreground mt-2 flex flex-wrap gap-x-4 gap-y-1 text-xs">
             <span>Concept : {corrigee.concept}</span>
             <span>Difficulté : {corrigee.difficulte}</span>
