@@ -92,8 +92,11 @@ uniquement en PDF ait immédiatement une page publique, sans redéploiement :
    inchangé).
 2. Si absent, `getPdfOnlyDocument` (`lib/data/exam-documents.ts`) cherche un
    document **publié** lié à ce département+année ; si trouvé, une vue de
-   repli minimale est rendue (titre, description éventuelle, bouton
-   télécharger, lien consulter) au lieu des sections Markdown.
+   repli est rendue (titre, description éventuelle, bouton télécharger, et
+   le PDF affiché **directement dans la page** via `PdfInlineViewer` — une
+   `iframe` pointant vers une URL signée récupérée côté client au montage,
+   TTL d'1h car une lecture peut durer plusieurs minutes) au lieu des
+   sections Markdown.
 3. Sinon, 404 normal.
 
 Next.js met ensuite ce rendu en cache comme une page statique classique

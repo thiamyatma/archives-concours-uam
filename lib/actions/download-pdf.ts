@@ -9,6 +9,9 @@ import { getClientIp } from "@/lib/http/client-ip";
 import { checkActionRateLimit } from "@/lib/rate-limit";
 
 const SIGNED_URL_TTL_SECONDS = 60;
+// Plus longue que le TTL de téléchargement : une lecture inline peut durer
+// plusieurs minutes (visionneuse PDF native du navigateur dans une iframe).
+const PREVIEW_URL_TTL_SECONDS = 60 * 60;
 const DOWNLOAD_RATE_LIMIT = 30;
 const DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 const VIEW_RATE_LIMIT_WINDOW_SECONDS = 30 * 60;
@@ -156,7 +159,11 @@ export async function getExamPdfDownloadUrl(
   return { url: data.signedUrl, fileName: document.fileName };
 }
 
-/** Comme `getExamPdfDownloadUrl`, mais pour un affichage inline ("Consulter"). */
+/**
+ * Comme `getExamPdfDownloadUrl`, mais pour un affichage inline ("Consulter",
+ * visionneuse intégrée) — TTL plus long, pas de log dans `pdf_downloads`
+ * (ce n'est pas un téléchargement).
+ */
 export async function getDocumentPreviewUrl(
   departementCode: string,
   annee: number
@@ -183,7 +190,7 @@ export async function getDocumentPreviewUrl(
 
   const { data, error } = await supabase.storage
     .from(PDF_BUCKET)
-    .createSignedUrl(document.storagePath, SIGNED_URL_TTL_SECONDS);
+    .createSignedUrl(document.storagePath, PREVIEW_URL_TTL_SECONDS);
 
   if (error || !data) return { error: "Impossible de générer le lien de consultation." };
 

@@ -26,7 +26,7 @@ composants composables (`Button`, `DialogTrigger`, etc.) supportent la prop
 | `MarkdownRenderer`     | server | Rend une chaîne Markdown (react-markdown + remark-gfm/math + KaTeX)                     |
 | `StatsSection`         | server | Tuiles de statistiques génériques (page d'accueil)                                      |
 | `DownloadPdfButton`    | client | Bouton de téléchargement PDF (vérification + URL signée + toast)                        |
-| `ViewPdfLink`          | client | Lien « Consulter » (PDF inline, sans forcer le téléchargement)                          |
+| `PdfInlineViewer`      | client | Visionneuse PDF intégrée (`iframe`) pour la page de repli PDF-seul                      |
 | `RecordDocumentView`   | client | Compte une consultation de page (sans rendu), indépendant de GA4                        |
 
 ## `components/admin/`
