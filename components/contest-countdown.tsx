@@ -48,7 +48,7 @@ export function ContestCountdown({ settings }: { settings: ContestSettings }) {
       currentPhase === "registration_closed");
 
   return (
-    <Card className="animate-in fade-in slide-in-from-bottom-3 border-primary/20 from-primary/5 to-card gap-5 bg-gradient-to-b py-8 text-center duration-700">
+    <Card className="animate-in fade-in slide-in-from-bottom-3 border-primary/20 from-primary/5 to-card @container gap-5 overflow-hidden bg-gradient-to-b py-8 text-center duration-700">
       <CardHeader className="items-center gap-3">
         <span className="border-primary/20 bg-primary/10 text-primary inline-flex items-center gap-1.5 self-center rounded-full border px-3 py-1 text-xs font-semibold">
           <span
@@ -60,7 +60,7 @@ export function ContestCountdown({ settings }: { settings: ContestSettings }) {
         <p
           role="status"
           aria-live="polite"
-          className="mx-auto flex max-w-xl flex-col items-center gap-2 text-lg font-medium text-balance sm:flex-row sm:text-xl"
+          className="mx-auto flex max-w-xl flex-col items-center gap-2 text-lg font-medium text-balance sm:text-xl @sm:flex-row"
         >
           <Icon className="text-primary size-6 shrink-0" aria-hidden="true" />
           <span>{message}</span>
@@ -77,7 +77,7 @@ export function ContestCountdown({ settings }: { settings: ContestSettings }) {
           />
         )}
 
-        <div className="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
+        <div className="flex w-full flex-col justify-center gap-3 @sm:w-auto @sm:flex-row">
           <ContestLinkButton
             label={settings.buttons.primaryLabel}
             url={settings.buttons.primaryUrl}
