@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, GraduationCap } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { MarkdownRenderer } from "@/components/shared/markdown-renderer";
@@ -16,6 +16,8 @@ import {
   getDepartementByCode,
 } from "@/lib/data/departements";
 import { getPdfOnlyDocument } from "@/lib/data/exam-documents";
+import { listQcmMatieres } from "@/lib/qcm/data";
+import { slugifyMatiereTitle } from "@/lib/qcm/slug";
 
 // `true` (au lieu de `false`) : une épreuve publiée uniquement en PDF (sans
 // Markdown correspondant) doit rester atteignable dès l'import, sans
@@ -66,6 +68,8 @@ export default async function DepartementAnneePage({
   const pdfOnly = content ? null : await getPdfOnlyDocument(departement.code, annee);
   if (!content && !pdfOnly) notFound();
 
+  const matieresQcm = new Set(listQcmMatieres(departement.contentGroup, annee));
+
   return (
     <div className="mx-auto max-w-4xl px-4 py-14 sm:px-6">
       <TrackEpreuveView department={departement.code} year={annee} />
@@ -87,18 +91,35 @@ export default async function DepartementAnneePage({
           </MarkdownRenderer>
 
           <div className="mt-10 space-y-6">
-            {content.sections.map((section) => (
-              <Card key={section.title}>
-                <CardHeader>
-                  <CardTitle className="text-brand-blue text-center text-xl sm:text-2xl">
-                    {section.title}
-                  </CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <MarkdownRenderer>{section.markdown}</MarkdownRenderer>
-                </CardContent>
-              </Card>
-            ))}
+            {content.sections.map((section) => {
+              const matiereSlug = slugifyMatiereTitle(section.title);
+              const aUnQcm = matieresQcm.has(matiereSlug);
+
+              return (
+                <Card key={section.title}>
+                  <CardHeader>
+                    <div className="flex flex-col items-center gap-3 sm:flex-row sm:justify-between">
+                      <CardTitle className="text-brand-blue text-center text-xl sm:text-2xl">
+                        {section.title}
+                      </CardTitle>
+                      {aUnQcm && (
+                        <Button asChild size="sm" variant="outline" className="shrink-0">
+                          <Link
+                            href={`/departements/${departement.code}/${annee}/entrainement/${matiereSlug}`}
+                          >
+                            <GraduationCap className="size-4" aria-hidden="true" />
+                            S&apos;entraîner (QCM)
+                          </Link>
+                        </Button>
+                      )}
+                    </div>
+                  </CardHeader>
+                  <CardContent>
+                    <MarkdownRenderer>{section.markdown}</MarkdownRenderer>
+                  </CardContent>
+                </Card>
+              );
+            })}
           </div>
         </>
       ) : (

@@ -1,0 +1,333 @@
+{
+  "matiere": "Physique-Chimie",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 1,
+      "question": "Un gymnaste quitte la surface élastique d'un trampoline avec une vitesse $V_0$. Son centre d'inertie est à 2 m du sol. On suppose que la chute est libre. Sachant que l'instant $t$ pour que le gymnaste atteigne la hauteur maximale $H_{max} = 6$ m est $t = 0{,}9$ s, la vitesse initiale $V_0$ du gymnaste est (avec $g = 10\\ \\text{m/s}^2$) :",
+      "propositions": {
+        "A": "$V_0 = 48{,}4\\ \\text{km/h}$",
+        "B": "$V_0 = 6{,}67\\ \\text{m/s}$",
+        "C": "$V_0 = 8{,}9\\ \\text{m/s}$",
+        "D": "$V_0 = 24\\ \\text{km/s}$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'ascension (2 m à 6 m) représente une montée de 4 m. En utilisant $V_0=\\sqrt{2g\\times4}$, on obtient $V_0\\approx8{,}9$ m/s ; on vérifie la cohérence avec $t=V_0/g\\approx0{,}89$ s, proche des $0{,}9$ s donnés.",
+      "concept": "Mécanique — chute libre",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 2,
+      "question": "On éclaire une cellule photoélectrique à vide avec une lumière monochromatique. L'énergie d'extraction d'un électron du métal cathodique est $3\\times10^{-19}\\ \\text{J}$. La longueur d'onde de la radiation est $0{,}600\\ \\mu\\text{m}$. L'énergie cinétique maximale $E_{c\\,max}$ d'un électron émis est ($h=6{,}62\\times10^{-34}$ SI, $C=3\\times10^{8}$ m/s) :",
+      "propositions": {
+        "A": "$E_{c\\,max} = 2\\ \\text{eV}$",
+        "B": "$E_{c\\,max} = 0{,}19\\ \\text{eV}$",
+        "C": "$E_{c\\,max} = 1{,}6\\times10^{-19}\\ \\text{J}$",
+        "D": "$E_{c\\,max} = 9{,}1\\times10^{-31}\\ \\text{J}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$E_{photon}=hc/\\lambda\\approx3{,}31\\times10^{-19}$ J. $E_{c\\,max}=E_{photon}-W\\approx3{,}1\\times10^{-20}$ J $\\approx0{,}19$ eV.",
+      "concept": "Effet photoélectrique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 3,
+      "question": "Des électrons, émis avec une vitesse initiale pratiquement nulle du filament d'un canon à électrons, sont accélérés par une tension $U_1 = 400$ V. La valeur $V_0$ de la vitesse des électrons à l'anode A est ($q=1{,}6\\times10^{-19}$ C, $m=9{,}1\\times10^{-31}$ kg) :",
+      "propositions": {
+        "A": "$V_0 = 1{,}2\\times10^{7}\\ \\text{m/s}$",
+        "B": "$V_0 = 1{,}13\\times10^{22}\\ \\text{m/s}$",
+        "C": "$V_0 = 5{,}9\\times10^{6}\\ \\text{m/s}$",
+        "D": "$V_0 = 6\\times10^{6}\\ \\text{m/s}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Théorème de l'énergie cinétique : $qU_1=\\frac12mV_0^2$, donc $V_0=\\sqrt{2qU_1/m}\\approx1{,}2\\times10^7$ m/s.",
+      "concept": "Électricité — accélération de particules chargées",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 4,
+      "question": "On réalise un pendule élastique horizontal en accrochant, à l'extrémité d'un ressort de raideur $K = 25\\ \\text{N/m}$, un solide S de masse $m = 100$ g, qui peut se déplacer sans frottement sur un support horizontal. La fréquence propre $N_0$ des oscillations est égale à :",
+      "propositions": {
+        "A": "$N_0 = 15{,}8\\ \\text{Hz}$",
+        "B": "$N_0 = 0{,}01\\ \\text{Hz}$",
+        "C": "$N_0 = 99\\ \\text{Hz}$",
+        "D": "$N_0 = 2{,}5\\ \\text{Hz}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$N_0=\\frac{1}{2\\pi}\\sqrt{K/m}=\\frac{1}{2\\pi}\\sqrt{25/0{,}1}\\approx2{,}5$ Hz.",
+      "concept": "Oscillateur mécanique — pendule élastique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 5,
+      "question": "Une bobine a pour résistance $R = 10\\ \\Omega$ et pour inductance $L = 1$ H. On établit à ses bornes, à la date $t = 0$, une tension $U = 6$ V, délivrée par un générateur de tension continue G. L'intensité du courant $I_0$ en régime permanent est :",
+      "propositions": {
+        "A": "$I_0 = 1{,}7\\ \\text{A}$",
+        "B": "$I_0 = 0{,}6\\ \\text{A}$",
+        "C": "$I_0 = 0{,}1\\ \\text{A}$",
+        "D": "$I_0 = 0{,}17\\ \\text{A}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En régime permanent, la bobine se comporte comme un simple conducteur ohmique (l'effet inductif disparaît) : $I_0=U/R=6/10=0{,}6$ A.",
+      "concept": "Électricité — dipôle RL en régime permanent",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 6,
+      "question": "La fréquence de la tension sinusoïdale délivrée par un générateur est $f = 200$ Hz. Une bobine de résistance $r = 40\\ \\Omega$ et d'inductance $L = 34$ mH est branchée aux bornes de ce générateur. L'impédance $Z$ du circuit est égale à :",
+      "propositions": {
+        "A": "$Z = 42\\ \\Omega$",
+        "B": "$Z = 58{,}5\\ \\Omega$",
+        "C": "$Z = 40\\ \\Omega$",
+        "D": "$Z = 4{,}2\\times10^{4}\\ \\Omega$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$X_L=2\\pi fL\\approx42{,}7\\ \\Omega$ ; $Z=\\sqrt{r^2+X_L^2}=\\sqrt{40^2+42{,}7^2}\\approx58{,}5\\ \\Omega$.",
+      "concept": "Électricité — impédance d'une bobine",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 7,
+      "question": "Des particules $\\alpha$ de masse $m = 6{,}64\\times10^{-27}$ kg et de charge $q = +2e$ pénètrent avec une vitesse $\\vec{V_0}$ de valeur $V_0 = 2\\times10^{6}\\ \\text{m/s}$ dans une région de l'espace où règne un champ magnétique $\\vec{B}$ uniforme orthogonal à $\\vec{V_0}$. Elles décrivent alors une trajectoire circulaire de rayon $R = 42$ cm. L'intensité du champ magnétique $B$ est égale à :",
+      "propositions": {
+        "A": "$B = 0{,}001\\ \\text{T}$",
+        "B": "$B = 0{,}1\\ \\text{T}$",
+        "C": "$B = 1\\ \\text{MT}$",
+        "D": "$B = 0{,}5\\ \\text{T}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$R=\\dfrac{mV_0}{qB} \\Rightarrow B=\\dfrac{mV_0}{qR}=\\dfrac{6{,}64\\times10^{-27}\\times2\\times10^6}{2\\times1{,}6\\times10^{-19}\\times0{,}42}\\approx0{,}1$ T.",
+      "concept": "Mouvement d'une particule chargée dans un champ magnétique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 8,
+      "question": "On réalise l'expérience d'interférences lumineuses avec les fentes de Young. La radiation employée a une longueur d'onde $\\lambda = 0{,}5\\ \\mu\\text{m}$. En un point M du champ d'interférence, la différence de marche est $\\delta = 15\\ \\mu\\text{m}$. Le point M est situé sur :",
+      "propositions": {
+        "A": "une frange sombre",
+        "B": "une frange brillante",
+        "C": "la frange centrale",
+        "D": "une frange dont l'ordre d'interférence est 20"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'ordre d'interférence vaut $p=\\delta/\\lambda=15/0{,}5=30$, un nombre entier : M est donc sur une frange brillante (l'option D indique un ordre erroné, 20 au lieu de 30).",
+      "concept": "Optique — interférences",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 9,
+      "question": "Un petit jouet assimilable à un point matériel de masse $m$ est lancé à la vitesse initiale $V_0$ à partir d'un point A le long de la ligne de plus grande pente de longueur $L = AB$ d'un plan incliné faisant un angle $\\alpha$ avec l'horizontale. Les frottements développent une force d'intensité $f$ en sens contraire du vecteur vitesse. L'expression de $V_0$ nécessaire pour que le palet parvienne en B (en haut du plan) à la vitesse $V_1$ est :",
+      "propositions": {
+        "A": "$V_0 = \\sqrt{V_1^2 + 2L\\left(g\\sin\\alpha - \\dfrac{f}{m}\\right)}$",
+        "B": "$V_0 = \\sqrt{V_1^2 + 2L\\left(g\\sin\\alpha + \\dfrac{f}{m}\\right)}$",
+        "C": "$V_0 = \\sqrt{2L\\left(g\\sin\\alpha - \\dfrac{f}{m}\\right)}$",
+        "D": "$V_0 = \\sqrt{2L\\left(g\\sin\\alpha - \\dfrac{f}{m}\\right)}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En montée, le poids et le frottement s'opposent tous deux au mouvement : le théorème de l'énergie cinétique donne $\\frac12mV_0^2=\\frac12mV_1^2+mgL\\sin\\alpha+fL$, soit $V_0=\\sqrt{V_1^2+2L(g\\sin\\alpha+f/m)}$. À noter : les options C et D sont des doublons identiques dans l'énoncé source.",
+      "concept": "Mécanique — travail et énergie cinétique sur plan incliné",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 10,
+      "question": "L'expression de la vitesse de libération $V_l$ d'un objet de masse $m$ lancé à partir de la surface de la terre de masse $M$ et de rayon $R$ est :",
+      "propositions": {
+        "A": "$V_l = \\sqrt{\\dfrac{GM}{R}}$",
+        "B": "$V_l = \\sqrt{\\dfrac{GM}{2R}}$",
+        "C": "$V_l = \\sqrt{\\dfrac{2GM}{R}}$",
+        "D": "$V_l = \\sqrt{\\dfrac{2Gm}{R}}$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Formule classique de la vitesse de libération, obtenue en annulant l'énergie mécanique totale à l'infini : $V_l=\\sqrt{2GM/R}$.",
+      "concept": "Gravitation — vitesse de libération",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 11,
+      "question": "La fréquence du mouvement d'une particule de charge $q = 1{,}6\\times10^{-19}$ C et de masse $m$, en mouvement circulaire uniforme dans un champ magnétique de valeur $B = 0{,}1$ T est $N = 1{,}534$ MHz. La masse $m$ de la particule est égale à :",
+      "propositions": {
+        "A": "$m = 1{,}66\\times10^{-21}\\ \\text{kg}$",
+        "B": "$m = 5{,}2\\times10^{-19}\\ \\text{kg}$",
+        "C": "$m = 1{,}66\\times10^{-27}\\ \\text{kg}$",
+        "D": "$m = 9{,}1\\times10^{-31}\\ \\text{kg}$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$N=\\dfrac{qB}{2\\pi m} \\Rightarrow m=\\dfrac{qB}{2\\pi N}\\approx1{,}66\\times10^{-27}$ kg (proche de la masse d'un nucléon).",
+      "concept": "Mouvement circulaire d'une particule chargée",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 12,
+      "question": "Un condensateur de capacité $C = 0{,}5\\ \\mu\\text{F}$ se décharge dans un conducteur ohmique de résistance $R = 10\\ \\text{k}\\Omega$. La constante de temps $\\tau$ du circuit est :",
+      "propositions": {
+        "A": "$\\tau = 5\\ \\text{ms}$",
+        "B": "$\\tau = 5\\ \\text{s}$",
+        "C": "$\\tau = 5\\times10^{-9}\\ \\text{s}$",
+        "D": "$\\tau = 20\\ \\text{s}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\tau=RC=10\\,000\\times0{,}5\\times10^{-6}=5\\times10^{-3}$ s $=5$ ms.",
+      "concept": "Électricité — décharge d'un condensateur",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 13,
+      "question": "Un composé A de formule $C_4H_8O$ donne un précipité jaune avec la DNPH et son oxydation ménagée à l'aide du permanganate de potassium donne l'acide 2-méthylpropanoïque. La formule semi-développée de A est (voir les 4 formules proposées en image) :",
+      "propositions": {
+        "A": "$CH_3{-}CH_2{-}CO{-}CH_3$",
+        "B": "$CH_3{-}CH(CH_3){-}CHO$",
+        "C": "$CH_3{-}CH_2{-}CH_2{-}CHO$",
+        "D": "$CH_3{-}CH(OH){-}CH_2{-}CH_3$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le test positif à la DNPH indique un composé carbonylé. Seul un aldéhyde s'oxyde en acide carboxylique de même squelette : $CH_3{-}CH(CH_3){-}CHO$ (2-méthylpropanal) s'oxyde bien en acide 2-méthylpropanoïque.",
+      "concept": "Chimie organique — aldéhydes et oxydation ménagée",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 14,
+      "question": "Un volume de 20 mL d'une solution aqueuse d'une amine saturée $R{-}NH_2$ de concentration massique $C_m = 2{,}95\\ \\text{g/L}$ est dosé par une solution d'acide sulfurique $H_2SO_4$ (diacide fort) de concentration $C_a = 5\\times10^{-2}\\ \\text{mol/L}$. Le virage de l'indicateur a lieu pour un volume d'acide de 10 mL. La formule brute de l'amine est :",
+      "propositions": {
+        "A": "$C_3H_9N$",
+        "B": "$C_7H_{17}N$",
+        "C": "$CH_5N$",
+        "D": "$C_3H_7N$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$H_2SO_4$ étant diacide, $n(H^+)=2\\times C_a\\times V_a=2\\times5\\times10^{-2}\\times0{,}01=10^{-3}$ mol $=n(\\text{amine})$. D'où $M=C_m/C=2{,}95/(10^{-3}/0{,}02)=59$ g/mol, ce qui correspond à $C_3H_9N$ ($CH_3{-}CH_2{-}CH_2{-}NH_2$).",
+      "concept": "Chimie — dosage acido-basique d'une amine",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 15,
+      "question": "On prélève $V_0 = 10$ mL d'une solution d'acide éthanoïque de concentration $C_0 = 10^{-2}\\ \\text{mol/L}$ ; on ajoute un volume variable $V$ d'eau distillée. Si $C$ est la nouvelle concentration de la solution, alors la relation entre $C$, $C_0$, $V_0$ et $V$ est :",
+      "propositions": {
+        "A": "$C_0 V_0 = C(V_0 + V)$",
+        "B": "$C_0 V_0 = C V$",
+        "C": "$C_0 V_0 = C V_0$",
+        "D": "$C_0 V = C(V_0 + V)$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La quantité de matière se conserve lors d'une dilution : $n=C_0V_0=C\\times V_{total}$, avec $V_{total}=V_0+V$ (volume initial + eau ajoutée).",
+      "concept": "Chimie — dilution",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 16,
+      "question": "L'oxydation ménagée du 3-méthylbutan-2-ol donne (voir les 4 formules proposées en image) :",
+      "propositions": {
+        "A": "$CH_3{-}CH(CH_3){-}CH_2{-}CHO$",
+        "B": "$CH_3{-}CH(CH_3){-}CO{-}CH_3$",
+        "C": "$CH_3{-}CH(CH_3){-}CH_2{-}COOH$",
+        "D": "$CH_3{-}CH(CH_3){-}CH_2{-}OH$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le 3-méthylbutan-2-ol est un alcool secondaire (le carbone porteur de l'OH a un seul H) : son oxydation ménagée s'arrête au stade cétone, ici la 3-méthylbutan-2-one.",
+      "concept": "Chimie organique — alcools secondaires et oxydation ménagée",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 17,
+      "question": "La déshydratation du 2-méthylbutan-2-ol conduit préférentiellement au :",
+      "propositions": {
+        "A": "2-méthylbut-2-ène",
+        "B": "2-méthylbutane",
+        "C": "2-méthylbut-1-ène",
+        "D": "3-méthylbut-1-ène"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La règle de Zaïtsev prévoit la formation préférentielle de l'alcène le plus substitué : le 2-méthylbut-2-ène (double liaison trisubstituée) plutôt que les alcènes moins substitués.",
+      "concept": "Chimie organique — déshydratation, règle de Zaïtsev",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 18,
+      "question": "On considère le dosage d'une solution d'acide éthanoïque ($CH_3COOH$) de volume $V_a = 20$ mL et de concentration $C_a$ inconnue par une solution de soude de concentration $C_b = 10^{-2}\\ \\text{mol/L}$. À la demi-équivalence acido-basique, le pH mesuré donne 4,8. Le $pK_a$ du couple $CH_3COOH/CH_3COO^-$ est égal à :",
+      "propositions": {
+        "A": "$pK_a = 4{,}8$",
+        "B": "$pK_a = 2{,}4$",
+        "C": "$pK_a = 2$",
+        "D": "$pK_a = 7$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "À la demi-équivalence, les concentrations de l'acide et de sa base conjuguée sont égales : la formule de Henderson-Hasselbalch donne alors $pH=pK_a$, donc $pK_a=4{,}8$.",
+      "concept": "Chimie — titrage acido-basique, pKa",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 19,
+      "question": "Sur l'étiquette d'une bouteille commerciale d'ammoniac, on peut lire : $NH_3$ ; Masse molaire : 17 g/mol ; Masse volumique : $450\\ \\text{kg/m}^3$ ; Pourcentage massique : 33 %. La concentration $C_0$ de cette solution commerciale est :",
+      "propositions": {
+        "A": "$C_0 = 8{,}7\\ \\text{g/L}$",
+        "B": "$C_0 = 4{,}5\\ \\text{g/L}$",
+        "C": "$C_0 = 8{,}7\\times10^{-2}\\ \\text{g/L}$",
+        "D": "$C_0 = 26{,}5\\ \\text{g/L}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Masse volumique = 450 g/L ; masse d'ammoniac par litre = $450\\times0{,}33=148{,}5$ g/L, soit une concentration molaire de $148{,}5/17\\approx8{,}7$ mol/L. La valeur numérique 8,7 de l'option A correspond à ce calcul (l'énoncé source indique par erreur l'unité g/L au lieu de mol/L).",
+      "concept": "Chimie — concentration molaire d'une solution commerciale",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 20,
+      "question": "L'acide propanoïque réagit avec le pentachlorure de phosphore ($PCl_5$). Le produit organique obtenu est :",
+      "propositions": {
+        "A": "anhydride propanoïque",
+        "B": "2-chloropropanal",
+        "C": "propanamide",
+        "D": "chlorure de propanoyle"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$PCl_5$ transforme un acide carboxylique en chlorure d'acyle correspondant : l'acide propanoïque donne le chlorure de propanoyle.",
+      "concept": "Chimie organique — chlorures d'acyle",
+      "difficulte": "Moyenne"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

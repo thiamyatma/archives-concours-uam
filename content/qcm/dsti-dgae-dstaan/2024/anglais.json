@@ -1,0 +1,333 @@
+{
+  "matiere": "Anglais",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 41,
+      "question": "The main idea developed in the text is :",
+      "propositions": {
+        "A": "The balance between technology and nature",
+        "B": "The benefits and drawbacks of technology",
+        "C": "Man's misuse of technological gadgets",
+        "D": "Impacts of technologies on health"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The whole passage is built around the 'double edged sword' idea: it details technology's advantages (paragraphs 1-4) then its downsides (paragraphs 5-6). A and D only cover part of that scope.",
+      "concept": "Reading comprehension — main idea",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 42,
+      "question": "This (also leads to physical) :",
+      "propositions": {
+        "A": "anxiety",
+        "B": "depression and phobia",
+        "C": "excessive usage of multimedia technology",
+        "D": "people"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The sentence reads: 'People are suffering from anxiety and phobia due to excessive usage of multimedia technology. This also leads to...' — 'This' picks up the cause just mentioned, i.e. the excessive usage itself.",
+      "concept": "Reference — pronoun reference",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 43,
+      "question": "their (depletion) :",
+      "propositions": {
+        "A": "technologies",
+        "B": "natural resources and power",
+        "C": "video games",
+        "D": "pollution"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'...consume a lot of natural resources and power gradually leading to their depletion' — 'their' agrees with the plural noun phrase immediately preceding it.",
+      "concept": "Reference — pronoun reference",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 44,
+      "question": "it (is required) :",
+      "propositions": {
+        "A": "manufacturing technology",
+        "B": "proper disposal",
+        "C": "E-waste",
+        "D": "chemicals"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'Manufacturing technology creates a huge amount of E-waste and proper disposal of it is required...' — 'it' is the object that needs disposing of, i.e. the E-waste.",
+      "concept": "Reference — pronoun reference",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 45,
+      "question": "Its (: Its potential) :",
+      "propositions": {
+        "A": "global village",
+        "B": "ideas and advancements",
+        "C": "technology",
+        "D": "light"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'Its potential is limitless and awaits great discoveries' continues the sentence about technology introduced earlier in paragraph 1.",
+      "concept": "Reference — pronoun reference",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 46,
+      "question": "it (becomes very important to strike...) :",
+      "propositions": {
+        "A": "technology",
+        "B": "self-destruction",
+        "C": "indefinite pronoun",
+        "D": "balance"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "This 'it' is a dummy/impersonal subject ('it becomes important to...'), like in 'it is raining' — it does not refer back to any specific noun in the text.",
+      "concept": "Reference — impersonal pronoun",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 47,
+      "question": "Match the first paragraph to the given titles :",
+      "propositions": {
+        "A": "Unveiling the mystery of nature",
+        "B": "Total master of medical science",
+        "C": "Transit facilities",
+        "D": "Technology, a convenient tool"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Paragraph 1 lists technology's everyday conveniences (education, communication, medicine, transportation, sports) — exactly what D names.",
+      "concept": "Reading comprehension — paragraph/title matching",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 48,
+      "question": "According to the text, it is possible to obtain a balance between technology and nature.",
+      "propositions": {
+        "A": "Yes",
+        "B": "No",
+        "C": "Not mentioned",
+        "D": "The text implies it but does not state it explicitly"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The conclusion states explicitly: 'Judicious and decisive use of technology could help in creating a balance between technology and nature.'",
+      "concept": "Reading comprehension — true/false/not mentioned",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 49,
+      "question": "According to the text, technology moves very fast and is mutable.",
+      "propositions": {
+        "A": "Yes",
+        "B": "No",
+        "C": "Not mentioned",
+        "D": "The text implies it but does not state it explicitly"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Paragraph 1 states directly: 'Technology is fast paced and ever changing. Today's technology in no time becomes obsolete.'",
+      "concept": "Reading comprehension — true/false/not mentioned",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 50,
+      "question": "In paragraph 4, a drawback of the use of technology in the medicine sector is given.",
+      "propositions": {
+        "A": "Yes",
+        "B": "No",
+        "C": "Not mentioned",
+        "D": "The text implies it but does not state it explicitly"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Paragraph 4 ends with: 'technology has resulted in focusing and treating only on the sick part of the body rather than caring for the patient as a whole' — an explicit drawback.",
+      "concept": "Reading comprehension — true/false/not mentioned",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 51,
+      "question": "In the text, a broad definition of technology is provided.",
+      "propositions": {
+        "A": "Yes",
+        "B": "No",
+        "C": "Not mentioned",
+        "D": "The text implies it but does not state it explicitly"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The text describes technology's effects and uses extensively but never formally defines the term itself.",
+      "concept": "Reading comprehension — true/false/not mentioned",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 52,
+      "question": "\"Technology can be regarded as a double edged sword\" means :",
+      "propositions": {
+        "A": "Technology has no limits",
+        "B": "Technology has impacts on our past and our future",
+        "C": "Technology causes violence",
+        "D": "Technology affects our society both positively as well as negatively"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "A double-edged sword is a classic idiom for something that can cut both ways — here, technology's benefits and harms, matching D.",
+      "concept": "Vocabulary — idioms",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 53,
+      "question": "\"Technology is advancing with a speed of light\" means :",
+      "propositions": {
+        "A": "Technology is advancing with electricity",
+        "B": "Technology is advancing every decade",
+        "C": "Technology is advancing very fastly",
+        "D": "Technology is advancing thanks to scientists"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'Speed of light' is a figurative way of saying 'extremely fast', matching option C.",
+      "concept": "Vocabulary — idioms",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 54,
+      "question": "\"Today's technology in no time becomes obsolete\" means :",
+      "propositions": {
+        "A": "Today's technology becomes obsolete without time",
+        "B": "Today's technology becomes obsolete very quickly",
+        "C": "Today's technology becomes obsolete with time",
+        "D": "Today's technology becomes obsolete very simply"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'In no time' is an idiom meaning 'very quickly', not literally 'without any time passing'.",
+      "concept": "Vocabulary — idioms",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 55,
+      "question": "\"Balance between technology and nature is the need of the hour\" means :",
+      "propositions": {
+        "A": "balance between technology and nature is urgent",
+        "B": "balance between technology and nature has many advantages",
+        "C": "balance between technology and nature is useless",
+        "D": "balance between technology and nature has limits"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "'The need of the hour' is an idiom meaning something urgently required right now.",
+      "concept": "Vocabulary — idioms",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 56,
+      "question": "\"everything is a miracle of technology\", this idea is also developed in :",
+      "propositions": {
+        "A": "Paragraph 6",
+        "B": "Paragraph 1",
+        "C": "Paragraph 3",
+        "D": "Paragraph 2"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The phrase appears verbatim in paragraph 4, but the same sentiment — everyday objects being part of technology's 'miracle' — is echoed in paragraph 2: 'everything is the whimsical world of technology.'",
+      "concept": "Reading comprehension — idea across paragraphs",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 57,
+      "question": "\"People are suffering from anxiety\", this idea is also developed in :",
+      "propositions": {
+        "A": "Paragraph 7",
+        "B": "Paragraph 2",
+        "C": "Paragraph 5",
+        "D": "Paragraph 1"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The sentence is from paragraph 6; the same mental-health concern (stress, depression from isolation) is already introduced in paragraph 5.",
+      "concept": "Reading comprehension — idea across paragraphs",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 58,
+      "question": "\"It becomes very important to strike a balance between technology and nature\", this idea is also developed in :",
+      "propositions": {
+        "A": "Paragraph 7",
+        "B": "Paragraph 1",
+        "C": "Paragraph 3",
+        "D": "Paragraph 2"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The sentence is from paragraph 5; the conclusion (paragraph 7) restates it: 'Striking a balance between technology and nature is the need of the hour.'",
+      "concept": "Reading comprehension — idea across paragraphs",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 59,
+      "question": "Various :",
+      "propositions": {
+        "A": "Variety",
+        "B": "Variousity",
+        "C": "Varyness",
+        "D": "Vary"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The noun form of the adjective 'various' is 'variety'. B and C are not real English words.",
+      "concept": "Vocabulary — word formation",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 60,
+      "question": "Improved :",
+      "propositions": {
+        "A": "Improvisment",
+        "B": "Improvement",
+        "C": "Improvisation",
+        "D": "Improve"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "The noun form of 'improved/improve' is 'improvement'. 'Improvisation' is a different word entirely (related to 'improvise').",
+      "concept": "Vocabulary — word formation",
+      "difficulte": "Facile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

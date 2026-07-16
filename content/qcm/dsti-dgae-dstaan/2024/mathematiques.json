@@ -1,0 +1,333 @@
+{
+  "matiere": "Mathématiques",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 21,
+      "question": "Soit $z$ un nombre complexe non nul, dont $\\theta$ est un argument, la forme exponentielle de $z$ s'écrit :",
+      "propositions": {
+        "A": "$|z|\\,e^{-i\\theta}$",
+        "B": "$|z|\\,e^{i\\theta}$",
+        "C": "$z\\,e^{i\\theta}$",
+        "D": "$|z|\\,e^{-i\\theta}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Par définition, la forme exponentielle d'un nombre complexe est $z=|z|e^{i\\theta}$ (module fois exponentielle de l'argument). À noter : les options A et D sont des doublons identiques dans l'énoncé source.",
+      "concept": "Nombres complexes — forme exponentielle",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 22,
+      "question": "Soit $z$ un nombre complexe d'argument $\\theta$, alors on a :",
+      "propositions": {
+        "A": "$\\arg(\\bar{z}) = \\theta + \\pi\\ [2\\pi]$",
+        "B": "$\\arg\\left(\\dfrac{1}{z}\\right) = -\\theta\\ [2\\pi]$",
+        "C": "$\\arg(z^n) = n\\theta\\ [\\pi]$",
+        "D": "$\\arg(\\bar{z}) = \\theta - \\pi\\ [2\\pi]$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\arg(1/z)=-\\arg(z)=-\\theta\\ [2\\pi]$ est la propriété standard. Le conjugué vérifie $\\arg(\\bar z)=-\\theta\\ [2\\pi]$, et non $\\theta\\pm\\pi$ (A et D sont fausses).",
+      "concept": "Nombres complexes — arguments",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 23,
+      "question": "Soit $s$ une similitude de forme réduite $y' = a y + b$ avec $|a| = 1$, alors :",
+      "propositions": {
+        "A": "$s$ est une translation",
+        "B": "$s$ est une rotation",
+        "C": "$s$ est une similitude de centre d'affixe $z = \\dfrac{-b}{1-a}$",
+        "D": "$s$ est une homothétie"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$|a|=1$ signifie que le rapport de la similitude vaut 1 : c'est une isométrie directe, donc une rotation (le cas particulier $a=1$, une translation, n'est pas le cas général visé ici).",
+      "concept": "Similitudes directes — cas particuliers",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 24,
+      "question": "Soient $s$ et $s'$ deux similitudes directes d'éléments caractéristiques respectifs $(I, \\theta, k)$ et $(I', \\theta', k')$, alors pour les composées $s\\circ s'$ et $s'\\circ s$, on a :",
+      "propositions": {
+        "A": "$s\\circ s' = s'\\circ s$",
+        "B": "$s\\circ s'$ et $s'\\circ s$ ont même centre et même angle",
+        "C": "$s'\\circ s$ et $s\\circ s'$ ont même angle et même rapport",
+        "D": "$s\\circ s'$ et $s'\\circ s$ ont même centre et même rapport"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La composée de deux similitudes directes a pour angle la somme des angles et pour rapport le produit des rapports, quel que soit l'ordre de composition — mais le centre, lui, diffère en général selon l'ordre.",
+      "concept": "Similitudes directes — composition",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 25,
+      "question": "Soient A et B deux événements d'un univers donné ; si $P(A \\cap B) = P(A)\\,P(B)$, alors :",
+      "propositions": {
+        "A": "A et B sont incompatibles",
+        "B": "A et B sont indépendants",
+        "C": "A et B sont disjoints",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$P(A\\cap B)=P(A)P(B)$ est précisément la définition de l'indépendance de deux événements.",
+      "concept": "Probabilités — événements indépendants",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 26,
+      "question": "Soit X une variable aléatoire suivant la loi binomiale de paramètres $n$ et $p$, et soit A l'événement : « avoir 3 succès », alors $P(A)$ est :",
+      "propositions": {
+        "A": "$C_n^3\\, p^3 (1 + p)^{n-3}$",
+        "B": "$C_n^3\\, p^{n-3} (1 - p)^3$",
+        "C": "$C_n^3\\, p^3 (1 - p)^{n-3}$",
+        "D": "$C_n^3\\, p^{n-3} (1 + p)^3$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La formule de la loi binomiale donne $P(X=3)=C_n^3\\,p^3(1-p)^{n-3}$ : c'est la seule option avec la structure correcte (échec en $1-p$, exposants bien placés).",
+      "concept": "Probabilités — loi binomiale",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 27,
+      "question": "Soit X une variable aléatoire suivant la loi binomiale de paramètres $n$ et $p$ ; alors :",
+      "propositions": {
+        "A": "$P(X \\geq 2) = 1 - P(X < 2)$",
+        "B": "$P(X \\geq 2) = \\displaystyle\\sum_{k=0}^{2} P(X = k)$",
+        "C": "$P(X \\geq 2) = C_n^2\\, p^2 (1 - p)^{n-2}$",
+        "D": "$P(X \\geq 2) = C_n^2\\, p^{n-2} (1 - p)^2$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "C'est la loi de l'événement contraire, toujours vraie : $P(X\\geq2)=1-P(X<2)=1-P(X=0)-P(X=1)$. B confond avec $P(X\\le2)$, C et D ne donnent que le terme $k=2$ isolé.",
+      "concept": "Probabilités — loi binomiale, événement contraire",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 28,
+      "question": "Soit X une variable aléatoire suivant la loi binomiale de paramètres $n$ et $p$, alors la variance de X est :",
+      "propositions": {
+        "A": "$\\mathrm{Var}(X) = np(1 - p)$",
+        "B": "$\\mathrm{Var}(X) = np(1 - p)^2$",
+        "C": "$\\mathrm{Var}(X) = np^2 (1 - p)$",
+        "D": "$\\mathrm{Var}(X) = n(1 - p)^2$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Formule à connaître par cœur pour la loi binomiale : $\\mathrm{Var}(X)=np(1-p)$.",
+      "concept": "Probabilités — loi binomiale, variance",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 29,
+      "question": "Laquelle des affirmations ci-dessous est fausse :",
+      "propositions": {
+        "A": "Une suite convergente est bornée",
+        "B": "Une suite bornée est convergente",
+        "C": "Toute suite croissante et majorée est convergente",
+        "D": "Toute suite décroissante et minorée est convergente"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une suite bornée n'est pas nécessairement convergente (ex : $(-1)^n$ est bornée mais divergente). A, C et D sont des théorèmes classiques vrais.",
+      "concept": "Suites — convergence",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 30,
+      "question": "Soit $(U_n)$ une suite géométrique de raison $q$ et de premier terme $U_0$. La suite définie par $S_n = U_0 + U_1 + U_2 + \\cdots + U_n$ est convergente si :",
+      "propositions": {
+        "A": "$q > 1$",
+        "B": "$|q| < 1$",
+        "C": "$-1 < q \\leq 1$",
+        "D": "$q \\leq -1$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La série géométrique $\\sum U_n$ converge si et seulement si $|q|<1$.",
+      "concept": "Suites géométriques — convergence de la somme",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 31,
+      "question": "Une population a un taux de croissance de 12 % par an ; pour estimer cette population au bout de quelques années on utilise :",
+      "propositions": {
+        "A": "la somme des termes d'une suite arithmétique",
+        "B": "la suite géométrique",
+        "C": "la somme des termes d'une suite géométrique",
+        "D": "la suite arithmétique"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une croissance à taux constant se modélise par une suite géométrique de raison $1{,}12$ ; c'est le terme lui-même (l'effectif à l'année n), pas une somme de termes, qui donne la population.",
+      "concept": "Suites — modélisation d'une croissance",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 32,
+      "question": "Soit $(U_n)$ une suite récurrente définie par $U_{n+1} = f(U_n)$, alors :",
+      "propositions": {
+        "A": "Si $f(x) = x$ admet une solution, $(U_n)$ est convergente",
+        "B": "Si $(U_n)$ est convergente, $f(x) = x$ admet au moins une solution",
+        "C": "$f(x) = x$ admet une solution si et seulement si $(U_n)$ est convergente",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Si $(U_n)$ converge vers une limite $L$ et que $f$ est continue, alors $L=f(L)$ : $L$ est un point fixe de $f$, donc $f(x)=x$ admet au moins une solution. La réciproque (A) est fausse : l'existence d'un point fixe ne garantit pas la convergence de la suite.",
+      "concept": "Suites récurrentes — points fixes",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 33,
+      "question": "Soit $f$ une fonction continue sur un intervalle I et $n \\neq 1$, alors une primitive de $U' U^{-n}$ sur I est :",
+      "propositions": {
+        "A": "$\\dfrac{1}{1-n}\\, U^{1-n}$",
+        "B": "$\\dfrac{-1}{1-n}\\, U^{1-n}$",
+        "C": "$\\dfrac{-1}{1+n}\\, U^{1+n}$",
+        "D": "$\\dfrac{1}{1+n}\\, U^{1+n}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En dérivant $\\frac{1}{1-n}U^{1-n}$, on retrouve $U'U^{-n}$ : c'est la formule de primitive de $U'U^{p}$ (avec $p=-n$) généralisant $U'U^n$.",
+      "concept": "Primitives — fonction composée $U'U^n$",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 34,
+      "question": "Soit $f$ une fonction dérivable sur un intervalle I et $k$ un réel non nul, alors la dérivée de $k f^{n}$ sur I est :",
+      "propositions": {
+        "A": "$nk\\, f^{n-1}$",
+        "B": "$(n+1)k\\, f' f^{n}$",
+        "C": "$nk\\, f' f^{n-1}$",
+        "D": "$n\\, f' f^{n-1}$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$(k f^n)'=k\\times n f^{n-1}f'=nk\\,f'f^{n-1}$.",
+      "concept": "Dérivation — fonction composée $f^n$",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 35,
+      "question": "Soient $f(x)$ et $h(x)$ deux fonctions dérivables sur un intervalle I ; $a$ et $b$ deux réels, alors $\\displaystyle\\int_b^a f'(x)h(x)\\,dx$ est :",
+      "propositions": {
+        "A": "$\\left[f(x)h(x)\\right]_b^a - \\displaystyle\\int_a^b f(x)h'(x)\\,dx$",
+        "B": "$\\left[f(x)h(x)\\right]_a^b - \\displaystyle\\int_a^b f(x)h'(x)\\,dx$",
+        "C": "$\\left[f(x)h(x)\\right]_b^a + \\displaystyle\\int_a^b f(x)h'(x)\\,dx$",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'intégration par parties donne $\\int_b^a f'h\\,dx=[fh]_b^a-\\int_b^a fh'\\,dx$. En utilisant $\\int_b^a=-\\int_a^b$, le dernier terme devient $+\\int_a^b fh'\\,dx$, ce qui correspond exactement à C.",
+      "concept": "Intégration par parties",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 36,
+      "question": "Soit $f$ une fonction paire, alors pour tout réel non nul $a$, on a :",
+      "propositions": {
+        "A": "$\\displaystyle\\int_0^a f(x)\\,dx = -\\int_{-a}^{0} f(x)\\,dx$",
+        "B": "$\\displaystyle\\int_0^{-a} f(x)\\,dx = -\\int_{0}^{a} f(x)\\,dx$",
+        "C": "$\\displaystyle\\int_0^a f(x)\\,dx = \\int_{-a}^{0} f(x)\\,dx$",
+        "D": "$\\displaystyle\\int_0^{-a} f(x)\\,dx = \\int_{0}^{a} f(x)\\,dx$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En posant $x=-u$ dans $\\int_{-a}^0 f(x)dx$, on obtient $\\int_0^a f(-u)du=\\int_0^a f(u)du$ car $f$ est paire : les deux intégrales sont donc égales, pas opposées.",
+      "concept": "Intégrales — parité",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 37,
+      "question": "Soient $f$ et $g$ deux fonctions continues sur un intervalle K, $(C_f)$ et $(C_g)$ leurs représentations graphiques respectives ; $a$ et $b$ deux éléments de K ($a < b$). L'aire du domaine D délimité par $(C_f)$, $(C_g)$ et les droites d'équations $x = a$ et $x = b$ est :",
+      "propositions": {
+        "A": "$A(D) = \\displaystyle\\int_a^b |f(x) - g(x)|\\,dx\\ \\text{cm}^2$",
+        "B": "$A(D) = \\displaystyle\\int_a^b (f(x) - g(x))\\,dx\\ \\text{cm}^2$",
+        "C": "$A(D) = \\left|\\displaystyle\\int_a^b (f(x) - g(x))\\,dx\\right|\\ \\text{cm}^2$",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$f-g$ pouvant changer de signe sur $[a;b]$, seule la valeur absolue SOUS l'intégrale (A) donne l'aire réelle ; la valeur absolue de l'intégrale globale (C) ne compense pas les changements de signe internes.",
+      "concept": "Intégrales — aire entre deux courbes",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 38,
+      "question": "Une primitive de $f(x) = 9x^2(4 - x^3)^8$ est :",
+      "propositions": {
+        "A": "$F(x) = -\\dfrac{1}{3}(4 - x^3)^9$",
+        "B": "$F(x) = \\dfrac{1}{3}(4 - x^3)^9$",
+        "C": "$F(x) = -\\dfrac{1}{9}(4 - x^3)^9$",
+        "D": "$F(x) = \\dfrac{1}{9}(4 - x^3)^9$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Avec $u=4-x^3$, $u'=-3x^2$ : $9x^2(4-x^3)^8=-3\\times u'u^8$. Une primitive de $u'u^8$ est $u^9/9$, donc $F=-3\\times u^9/9=-\\frac13(4-x^3)^9$.",
+      "concept": "Primitives — fonction composée $u'u^n$",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 39,
+      "question": "$\\displaystyle\\lim_{x\\to \\pi/6}\\dfrac{12\\sin x - 6}{6x - \\pi}$ est :",
+      "propositions": {
+        "A": "$\\sqrt{3}$",
+        "B": "$-\\sqrt{3}$",
+        "C": "$\\dfrac{\\sqrt{3}}{3}$",
+        "D": "$-\\dfrac{\\sqrt{3}}{3}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Forme $0/0$ en $x=\\pi/6$ : par dérivation (règle de l'Hôpital), la limite vaut $\\dfrac{12\\cos(\\pi/6)}{6}=\\dfrac{12\\times\\frac{\\sqrt3}{2}}{6}=\\sqrt3$.",
+      "concept": "Limites — forme indéterminée 0/0",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 40,
+      "question": "L'équation $\\dfrac{1 - \\ln x}{2 - \\ln(x - 2)} = 1$ admet comme solution :",
+      "propositions": {
+        "A": "$S = \\left\\{\\dfrac{2}{e-1}\\right\\}$",
+        "B": "$S = \\{e^2 - 2\\}$",
+        "C": "$S = \\{0\\}$",
+        "D": "$S = \\left\\{\\dfrac{-2}{e-1}\\right\\}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En résolvant $1-\\ln x=2-\\ln(x-2)$, on obtient $\\ln\\frac{x-2}{x}=1$, soit $x=\\frac{-2}{e-1}$. À noter, en toute rigueur : cette valeur est négative et ne vérifie donc pas le domaine ($x>2$ et $x>0$ requis pour les logarithmes) — l'équation, telle que posée, n'a en réalité pas de solution valide dans son domaine. L'option D est retenue car elle correspond exactement au résultat de la résolution algébrique.",
+      "concept": "Équations logarithmiques",
+      "difficulte": "Difficile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

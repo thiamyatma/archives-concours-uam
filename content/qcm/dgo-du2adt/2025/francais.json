@@ -1,0 +1,323 @@
+{
+  "matiere": "Français",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 1,
+      "question": "Quelle affirmation résume le mieux l'enjeu principal du texte ?",
+      "propositions": {
+        "A": "L'énergie solaire est coûteuse, mais indispensable dans les grandes villes africaines.",
+        "B": "L'énergie solaire pourrait transformer durablement les territoires d'Afrique de l'Ouest, à condition de surmonter certains obstacles techniques et humains.",
+        "C": "L'électricité est absente dans toutes les zones rurales africaines.",
+        "D": "Les grandes centrales thermiques restent plus adaptées que les systèmes solaires en Afrique de l'Ouest."
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte présente à la fois les atouts du solaire (modularité, coût en baisse, électrification rurale) et ses freins (stockage, techniciens qualifiés) : B est la seule option qui reflète cet équilibre.",
+      "concept": "Compréhension écrite — idée générale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 2,
+      "question": "Parmi les éléments suivants, lequel n'est pas cité comme une conséquence positive de l'arrivée de l'électricité solaire ?",
+      "propositions": {
+        "A": "L'éclairage des classes en soirée",
+        "B": "L'alimentation en électricité des postes de télévision",
+        "C": "L'usage de réfrigérateurs pour les vaccins",
+        "D": "Le fonctionnement de pompes à eau"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte cite lampes, réfrigérateurs pour les vaccins, pompes à eau, matériel informatique et éclairage des classes — jamais les postes de télévision.",
+      "concept": "Compréhension écrite — repérage d'information",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 3,
+      "question": "Parmi les avantages suivants, lequel est sous-entendu dans le texte sans être exprimé de manière explicite ?",
+      "propositions": {
+        "A": "Le solaire peut aider à désenclaver les régions isolées",
+        "B": "Le solaire favorise la création d'emplois locaux",
+        "C": "Le solaire permet l'émergence de start-ups africaines",
+        "D": "Le solaire réduit la dépendance aux énergies fossiles"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "B, C et D sont formulés explicitement dans le dernier paragraphe. Le désenclavement des zones isolées se déduit de l'électrification de « foyers et villages non connectés au réseau », mais n'est jamais nommé comme tel.",
+      "concept": "Compréhension écrite — inférence",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 4,
+      "question": "Selon le texte, quelle combinaison d'actions est nécessaire pour que l'énergie solaire contribue réellement au développement durable en Afrique de l'Ouest ?",
+      "propositions": {
+        "A": "Investissements internationaux et importation de panneaux",
+        "B": "Abaissement des coûts, formation locale et amélioration de la maintenance",
+        "C": "Concurrence avec les centrales hydrauliques et mobilisation des ONG",
+        "D": "Nationalisation des entreprises solaires et taxation des batteries"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La conclusion mentionne explicitement « si les efforts de formation, de financement et de maintenance sont poursuivis », en cohérence avec la baisse déjà amorcée des coûts des panneaux.",
+      "concept": "Compréhension écrite — repérage d'information",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 5,
+      "question": "Quelle formulation est correcte ?",
+      "propositions": {
+        "A": "Les résultats auxquels nous nous attendions ont été publiés.",
+        "B": "Les résultats auxquels nous attendions ont été publiés.",
+        "C": "Les résultats à quoi nous attendions ont été publiés.",
+        "D": "Les résultats dont nous nous attendions ont été publiés."
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le verbe pronominal « s'attendre à » exige à la fois le pronom réfléchi (nous... nous) et le relatif « auquel » pour reprendre « à ». B oublie le réfléchi, C et D utilisent un mauvais relatif.",
+      "concept": "Grammaire — verbes pronominaux et pronoms relatifs",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 6,
+      "question": "Quel adjectif correspond le mieux à la situation suivante : « Une politique urbaine qui manque de cohérence » ?",
+      "propositions": {
+        "A": "anarchique",
+        "B": "rigoureuse",
+        "C": "sobre",
+        "D": "consensuelle"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Anarchique » désigne précisément ce qui manque d'ordre et de cohérence ; les trois autres adjectifs sont plutôt positifs ou neutres.",
+      "concept": "Lexique — adjectifs",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 7,
+      "question": "Quel mot est un synonyme exact de « subvention » dans le contexte économique ?",
+      "propositions": { "A": "Impôt", "B": "Don", "C": "Aide financière", "D": "Taxe" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une subvention est une aide financière versée par une collectivité ou un organisme ; impôt et taxe désignent au contraire des prélèvements.",
+      "concept": "Lexique — vocabulaire économique",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 8,
+      "question": "Quelle phrase contient une faute de grammaire ?",
+      "propositions": {
+        "A": "Il convient que chacun respecte les règles.",
+        "B": "Il faut que nous soyons vigilants.",
+        "C": "Il semble qu'il a raison.",
+        "D": "Il est possible qu'elle réussisse."
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Il semble que » appelle le subjonctif (« qu'il ait raison ») ; l'indicatif « a raison » y est fautif, contrairement aux trois autres phrases qui emploient correctement le subjonctif.",
+      "concept": "Grammaire — mode subjonctif",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 9,
+      "question": "Dans la phrase : « Il a feint de comprendre le problème », que signifie « feindre » ?",
+      "propositions": {
+        "A": "Faire semblant",
+        "B": "Ignorer volontairement",
+        "C": "Résoudre",
+        "D": "Détailler"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Feindre » signifie simuler, faire comme si — ici, faire semblant de comprendre sans réellement comprendre.",
+      "concept": "Lexique — verbes",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 10,
+      "question": "Quelle phrase est correctement ponctuée ?",
+      "propositions": {
+        "A": "Il fallait, selon les experts ; revoir le plan directeur.",
+        "B": "Il fallait, selon les experts, revoir le plan directeur.",
+        "C": "Il fallait selon les experts revoir, le plan directeur.",
+        "D": "Il fallait selon, les experts revoir le plan directeur."
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'incise « selon les experts » doit être encadrée par deux virgules symétriques, comme en B ; les autres options placent la ponctuation à des endroits qui rompent la syntaxe de la phrase.",
+      "concept": "Orthographe — ponctuation",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 11,
+      "question": "Quel est le mot mal accordé dans la phrase suivante : « Les données collectées a été transférées au ministère. » ?",
+      "propositions": {
+        "A": "données",
+        "B": "collectées",
+        "C": "a été",
+        "D": "ministère"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le sujet « Les données » est pluriel : le verbe devrait être « ont été » et non « a été ».",
+      "concept": "Grammaire — accord sujet-verbe",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 12,
+      "question": "Quel est l'antonyme du mot « cohérent » ?",
+      "propositions": {
+        "A": "flou",
+        "B": "rigide",
+        "C": "contradictoire",
+        "D": "logique"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Contradictoire » s'oppose directement à « cohérent » (qui ne se tient pas ensemble, en contradiction) ; « logique » en est au contraire un quasi-synonyme.",
+      "concept": "Lexique — antonymes",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 13,
+      "question": "Dans les phrases suivantes, dans quel cas utilise-t-on l'infinitif et non le subjonctif ?",
+      "propositions": {
+        "A": "Il est temps que vous …….",
+        "B": "Il est important que tu …….",
+        "C": "Il est interdit de …….",
+        "D": "Il faut que je ……."
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Il est interdit de » se construit avec « de + infinitif » (valeur impersonnelle générale), alors que les trois autres tournures introduisent « que + subjonctif » avec un sujet exprimé.",
+      "concept": "Grammaire — infinitif vs subjonctif",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 14,
+      "question": "Quel mot est formé à partir du verbe « croître » ?",
+      "propositions": {
+        "A": "accrétion",
+        "B": "croissance",
+        "C": "croissanterie",
+        "D": "croisement"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Croissance » est le nom directement dérivé de « croître ». « Croisement » vient de « croiser », « croissanterie » et « accrétion » n'en sont pas des dérivés réguliers.",
+      "concept": "Lexique — formation des mots",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 15,
+      "question": "Quel terme conviendrait pour désigner une « ville en pleine transformation urbaine » ?",
+      "propositions": {
+        "A": "Régressive",
+        "B": "Transitoire",
+        "C": "Émergente",
+        "D": "Fossile"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Émergente » désigne ce qui se développe activement, sens le plus proche de « en pleine transformation ».",
+      "concept": "Lexique — adjectifs",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 16,
+      "question": "Quelle phrase illustre une restriction logique ?",
+      "propositions": {
+        "A": "Il a réussi, donc il a travaillé.",
+        "B": "Il a réussi, mais il a échoué ailleurs.",
+        "C": "Il a réussi, sauf dans un domaine précis.",
+        "D": "Il a réussi et il a été félicité."
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Sauf » introduit une exception qui restreint la portée de l'affirmation générale — c'est la marque même de la restriction logique.",
+      "concept": "Grammaire — connecteurs logiques",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 17,
+      "question": "Quel mot complète logiquement cette analogie ? « Médecin est à hôpital ce qu'architecte est à…… »",
+      "propositions": { "A": "chantier", "B": "plan", "C": "béton", "D": "mur" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le médecin exerce à l'hôpital, son lieu de travail ; l'architecte exerce sur le chantier, son équivalent professionnel.",
+      "concept": "Analogies verbales",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 18,
+      "question": "Laquelle de ces phrases contient une faute logique (contradiction interne) ?",
+      "propositions": {
+        "A": "Il a échoué malgré ses efforts.",
+        "B": "Personne ne l'a vu venir, pas même ceux qui l'attendaient.",
+        "C": "Il a réussi parce qu'il a persévéré.",
+        "D": "Elle est arrivée en retard à cause du trafic."
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Si des personnes « l'attendaient », elles étaient par définition attentives à son arrivée : affirmer qu'elles ne l'ont « pas vu venir » est contradictoire.",
+      "concept": "Raisonnement logique — cohérence des énoncés",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 19,
+      "question": "Complétez avec le mot le plus précis et cohérent : « L'urbaniste, en………, tente d'anticiper les besoins futurs des habitants. »",
+      "propositions": {
+        "A": "spéculant",
+        "B": "programmant",
+        "C": "conjecturant",
+        "D": "planifiant"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Planifier » est le terme technique exact du métier d'urbaniste ; « spéculer » et « conjecturer » évoquent l'incertitude, « programmer » convient moins à l'anticipation de besoins humains.",
+      "concept": "Lexique — vocabulaire professionnel",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 20,
+      "question": "Quelle est la phrase qui respecte le mieux la logique de la concordance des temps ?",
+      "propositions": {
+        "A": "Il disait qu'il viendra demain.",
+        "B": "Il disait qu'il venait demain.",
+        "C": "Il disait qu'il viendrait le lendemain.",
+        "D": "Il disait qu'il serait venu demain."
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Au discours rapporté, un futur simple ('viendra') dans la principale au passé devient un conditionnel présent ('viendrait'), et « demain » devient « le lendemain » : seule C applique correctement ces deux transformations.",
+      "concept": "Grammaire — concordance des temps et discours rapporté",
+      "difficulte": "Difficile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

@@ -1,0 +1,258 @@
+{
+  "matiere": "Logique",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 61,
+      "question": "Si « ABCD » est égal à 10, « EFGH » est égal à 26, quel est le résultat pour « IJKL » ?",
+      "propositions": { "A": "32", "B": "46", "C": "42", "D": "54" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque lettre vaut sa position dans l'alphabet (A=1...) et le résultat est la somme des 4 lettres : A+B+C+D=1+2+3+4=10 ✓, E+F+G+H=5+6+7+8=26 ✓, donc I+J+K+L=9+10+11+12=42.",
+      "concept": "Suites logiques — codage alphabétique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 62,
+      "question": "Trouvez le nombre manquant dans la séquence suivante : 2, 6, 12, 20, ?",
+      "propositions": { "A": "22", "B": "30", "C": "32", "D": "40" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque terme vaut n(n+1) : 1×2=2, 2×3=6, 3×4=12, 4×5=20, donc le suivant est 5×6=30.",
+      "concept": "Suites numériques",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 63,
+      "question": "Quel est le mot qui ne s'intègre pas dans la série suivante : « Chat, Chien, École, Oiseau » ?",
+      "propositions": { "A": "Chat", "B": "Chien", "C": "Oiseau", "D": "École" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chat, Chien et Oiseau sont des animaux ; École n'appartient pas à cette catégorie.",
+      "concept": "Classification verbale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 64,
+      "question": "Compléter la séquence suivante : 3, 9, 27, 81... ?",
+      "propositions": { "A": "162", "B": "243", "C": "108", "D": "120" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Suite géométrique de raison 3 : chaque terme est multiplié par 3, donc 81×3=243.",
+      "concept": "Suites numériques — géométrique",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 65,
+      "question": "Quel nombre manque dans la séquence : 1, 4, 9, 16, __, 36 ?",
+      "propositions": { "A": "25", "B": "20", "C": "32", "D": "17" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Ce sont les carrés parfaits successifs : 1², 2², 3², 4², 5²=25, 6²=36.",
+      "concept": "Suites numériques — carrés",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 66,
+      "question": "Trouvez le terme manquant dans la série suivante : « AB, DE, GH, ? »",
+      "propositions": { "A": "IJ", "B": "JK", "C": "KL", "D": "HI" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Les premières lettres avancent de 3 rangs (A→D→G→J) ; le terme suivant commence donc par J, suivi de K : « JK ».",
+      "concept": "Suites logiques — alphabet",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 67,
+      "question": "Complétez l'analogie suivante : « Arbre est à forêt comme maison est à ? »",
+      "propositions": {
+        "A": "Quartier",
+        "B": "Habitation",
+        "C": "Logement",
+        "D": "Bâtiment"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une forêt est un ensemble d'arbres ; par analogie, un quartier est un ensemble de maisons.",
+      "concept": "Analogies verbales",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 68,
+      "question": "Complétez la séquence suivante : « 1, 1, 2, 3, 5, 8, ? »",
+      "propositions": { "A": "13", "B": "14", "C": "20", "D": "12" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Suite de Fibonacci : chaque terme est la somme des deux précédents, donc 5+8=13.",
+      "concept": "Suites numériques — Fibonacci",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 69,
+      "question": "Quelle figure complète la séquence suivante : Triangle, Carré, Pentagone, ?",
+      "propositions": {
+        "A": "Losange",
+        "B": "Hexagone",
+        "C": "Octogone",
+        "D": "Décagone"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le nombre de côtés augmente de 1 à chaque figure (3, 4, 5...), donc la suivante a 6 côtés : l'hexagone.",
+      "concept": "Suites logiques — figures géométriques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 70,
+      "question": "Dans une séquence de figures : un cercle, un triangle, un carré, un cercle, un triangle, quelle est la figure qui suit ?",
+      "propositions": { "A": "Cercle", "B": "Triangle", "C": "Carré", "D": "Rectangle" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le motif se répète par cycles de 3 (cercle, triangle, carré) ; après le 5e terme (triangle), le 6e reprend le 3e du cycle : carré.",
+      "concept": "Suites logiques — figures géométriques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 71,
+      "question": "Combien un cube possède-t-il de faces, d'arêtes et de sommets ?",
+      "propositions": {
+        "A": "Un cube a 6 faces, 12 arêtes et 8 sommets",
+        "B": "Un cube a 8 faces, 14 arêtes et 10 sommets",
+        "C": "Un cube a 4 faces, 10 arêtes et 6 sommets",
+        "D": "Aucune des réponses données"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Propriété géométrique de base d'un cube : 6 faces carrées, 12 arêtes et 8 sommets (relation d'Euler : 8 - 12 + 6 = 2).",
+      "concept": "Géométrie dans l'espace",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 72,
+      "question": "Compléter la suite logique (voir image).",
+      "propositions": { "A": "22", "B": "24", "C": "26", "D": "30" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque carré est divisé en 4 par ses diagonales, avec un nombre par quadrant. Le 2e carré (12,8,16,4) est exactement le double du 1er (6,4,8,2) ; le 3e carré (18,12,?,6) est le triple du 1er : le quadrant manquant vaut donc 8×3=24.",
+      "concept": "Puzzle visuel — relations numériques",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 73,
+      "question": "Compléter la suite logique (voir image).",
+      "propositions": {
+        "A": "Figure a",
+        "B": "Figure b",
+        "C": "Figure c",
+        "D": "Figure d"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La figure (un chevron) rétrécit et se déplace vers le coin supérieur droit à chaque étape ; la figure C poursuit cette réduction progressive. Avertissement : ce type de puzzle purement visuel/géométrique ne peut pas être vérifié avec la même certitude qu'un calcul — cette réponse est une estimation raisonnée, à confirmer visuellement.",
+      "concept": "Puzzle visuel — figures géométriques",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 74,
+      "question": "Compléter la suite logique (voir image).",
+      "propositions": {
+        "A": "Figure a",
+        "B": "Figure b",
+        "C": "Figure c",
+        "D": "Figure d"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La zone noire se simplifie progressivement d'une figure à l'autre vers une forme la plus épurée (une simple colonne pleine). Avertissement : comme pour la question 73, ce puzzle est purement visuel et la réponse proposée est une estimation raisonnée plutôt qu'une certitude calculée.",
+      "concept": "Puzzle visuel — figures géométriques",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 75,
+      "question": "Tom est plus âgé qu'Anne et Anne est plus jeune que Sophie qui est plus âgée que Tom. David est plus jeune qu'Anne. Qui est le plus âgé ?",
+      "propositions": { "A": "Sophie", "B": "Tom", "C": "Anne", "D": "David" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "On obtient l'ordre : Sophie > Tom > Anne > David. Sophie est donc la plus âgée.",
+      "concept": "Raisonnement logique — ordres et comparaisons",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 76,
+      "question": "Le montant d'une facture de gaz comprend 11,75 € d'abonnement par mois et 0,05 € par kWh de gaz consommé. Sachant que le montant du mois dernier s'élève à 41,75 €, quelle est la quantité de gaz consommée ?",
+      "propositions": { "A": "60 kWh", "B": "542 kWh", "C": "600 kWh", "D": "832 kWh" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "41,75 − 11,75 = 30 € pour la consommation ; 30 / 0,05 = 600 kWh.",
+      "concept": "Problèmes arithmétiques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 77,
+      "question": "Trouvez la lettre et le nombre manquants : D23 G20 J17 ??",
+      "propositions": { "A": "N12", "B": "M16", "C": "M14", "D": "O14" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Les lettres avancent de 3 rangs (D→G→J→M) pendant que les nombres diminuent de 3 (23→20→17→14) : la réponse est « M14 ».",
+      "concept": "Suites logiques — lettres et nombres combinés",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 78,
+      "question": "Trouver la lettre qui complète logiquement la suite suivante : C ; F ; I ; L ; ??",
+      "propositions": { "A": "M", "B": "Q", "C": "P", "D": "O" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque lettre avance de 3 rangs (C=3, F=6, I=9, L=12), donc la suivante est la 15e lettre : O.",
+      "concept": "Suites logiques — alphabet",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 79,
+      "question": "Compléter la suite de dominos (voir image).",
+      "propositions": { "A": "6 | (vide)", "B": "5 | 2", "C": "1 | 5", "D": "5 | 1" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Les dominos successifs sont (2,1), (5,5), (1,5) : aucune règle arithmétique simple ne se dégage clairement des trois premiers dominos. L'option D (5,1), symétrique du 3e domino, est retenue à titre d'estimation raisonnée. Avertissement : cette réponse a un niveau de confiance plus faible que les autres questions de cette matière — le puzzle visuel ne permet pas une vérification aussi rigoureuse qu'un calcul.",
+      "concept": "Puzzle visuel — dominos",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 80,
+      "question": "Compléter la séquence : 3, 4, 1, 8, 5, 2, 9, 10, 1...",
+      "propositions": { "A": "13", "B": "6", "C": "7", "D": "15" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En groupant par trois (3,4,1)(8,5,2)(9,10,1), le troisième nombre de chaque groupe se rapproche de l'écart entre les deux premiers pour deux des trois groupes, mais sans règle unique et vérifiable pour l'ensemble de la suite. Avertissement : cette question n'a pas pu être résolue avec une certitude totale à partir du texte seul ; la réponse proposée est une estimation à faible confiance.",
+      "concept": "Suites numériques — groupement",
+      "difficulte": "Difficile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

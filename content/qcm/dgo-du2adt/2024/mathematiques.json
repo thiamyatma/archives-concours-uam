@@ -1,0 +1,333 @@
+{
+  "matiere": "Mathématiques",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 21,
+      "question": "On dit que α est solution du polynôme P(x) si on a :",
+      "propositions": {
+        "A": "$P(\\alpha) = (x - \\alpha)Q(x)$",
+        "B": "$P(\\alpha) = 0$",
+        "C": "$P(0) = \\alpha$",
+        "D": "$P(\\alpha) = \\alpha$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Par définition, α est une racine (solution) de P si et seulement si P(α) = 0. L'option A décrit plutôt la factorisation de P une fois α connu.",
+      "concept": "Polynômes — racines",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 22,
+      "question": "Pour une statistique double de variables X et Y, de coefficient de corrélation $r(X;Y) = -0{,}70$ et de droite de régression (D) : $y = ax + b$ :",
+      "propositions": {
+        "A": "Les estimations de Y connaissant x sont très fiables",
+        "B": "Les estimations de Y connaissant x sont fiables",
+        "C": "Les estimations de Y connaissant x ne sont pas fiables",
+        "D": "Les estimations de y connaissant x sont impossibles"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "|r| = 0,70 traduit une corrélation linéaire assez marquée entre X et Y, suffisante pour considérer les estimations comme fiables — sans atteindre le niveau d'une corrélation quasi parfaite (proche de 1) qui seule justifierait « très fiables ».",
+      "concept": "Statistiques — corrélation linéaire",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 23,
+      "question": "Soit $f(x) = \\ln\\left(\\dfrac{2x+1}{x-3}\\right)$ ; le domaine de définition ($D_f$) de $f$ est :",
+      "propositions": {
+        "A": "$D_f = \\left]-\\dfrac{1}{2} ; 3\\right[$",
+        "B": "$D_f = \\left]-\\infty ; -\\dfrac{1}{2}\\right[ \\cup \\left]3 ; +\\infty\\right[$",
+        "C": "$D_f = \\mathbb{R} \\setminus \\{3\\}$",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Il faut $\\frac{2x+1}{x-3} > 0$. Le tableau de signes (racines en $-\\tfrac12$ et $3$) donne un quotient positif pour $x<-\\tfrac12$ ou $x>3$, soit exactement l'union proposée en B.",
+      "concept": "Fonctions logarithmes — domaine de définition",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 24,
+      "question": "Soit $f(x) = \\ln\\left(\\dfrac{2x+1}{x-3}\\right)$ ; alors on a :",
+      "propositions": {
+        "A": "$\\displaystyle\\lim_{x\\to+\\infty} f(x) = +\\infty$",
+        "B": "$\\displaystyle\\lim_{x\\to+\\infty} f(x) = -\\infty$",
+        "C": "$\\displaystyle\\lim_{x\\to+\\infty} f(x) = \\ln 2$",
+        "D": "$\\displaystyle\\lim_{x\\to+\\infty} f(x) = -\\ln 2$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Quand $x\\to+\\infty$, $\\frac{2x+1}{x-3}\\to 2$ (rapport des termes dominants), donc par continuité de $\\ln$, $f(x)\\to\\ln 2$.",
+      "concept": "Fonctions logarithmes — limites",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 25,
+      "question": "Soit $f(x) = \\ln(U(x))$ avec $U(x)$ une fonction positive et dérivable sur $D_f$ ; la dérivée de $f$ est :",
+      "propositions": {
+        "A": "$f'(x) = \\dfrac{1}{U}$",
+        "B": "$f'(x) = \\dfrac{U'}{U}$",
+        "C": "$f'(x) = -\\dfrac{U'}{U}$",
+        "D": "$f'(x) = -\\dfrac{1}{U}$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Formule de dérivation de $\\ln\\circ U$ : $(\\ln U)' = \\dfrac{U'}{U}$, à connaître par cœur.",
+      "concept": "Dérivation — fonction composée avec ln",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 26,
+      "question": "Un sac contient cinq boules blanches numérotées 1, 2, 3, 4, 5 ; trois boules rouges numérotées 1, 2, 3 et deux boules noires numérotées 1, 2. On suppose que toutes les boules ont la même chance d'être tirées. On tire simultanément deux boules du sac. Le nombre de tirages possibles contenant le numéro 5 est :",
+      "propositions": {
+        "A": "$C_{10}^{1}$",
+        "B": "$C_{9}^{2}$",
+        "C": "$C_{10}^{2}$",
+        "D": "$C_{10}^{1} \\times C_{1}^{1}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une seule boule porte le numéro 5 (la blanche). Le raisonnement attendu est : fixer cette boule ($C_1^1$) puis choisir la seconde parmi les 9 restantes ($C_9^1 = 9$). Le calcul rigoureux donne donc 9 tirages — à noter : aucune des quatre options ne vaut exactement 9 (l'énoncé source comporte une coquille sur les indices des combinaisons). L'option D est retenue car sa structure (« fixer la boule 5, choisir 1 autre ») est la plus proche du raisonnement correct.",
+      "concept": "Dénombrement — combinaisons",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 27,
+      "question": "Un sac contient cinq jetons numérotés de 1 à 5. On les tire au hasard un par un en les plaçant les uns à côté des autres de la gauche vers la droite, de manière à former un nombre de cinq chiffres. Le nombre de possibilités est :",
+      "propositions": {
+        "A": "$C_{5}^{5}$",
+        "B": "$5!$",
+        "C": "$5^5$",
+        "D": "$25$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Il s'agit d'un rangement ordonné de 5 jetons distincts sans remise : c'est une permutation, donc $5! = 120$ possibilités.",
+      "concept": "Dénombrement — permutations",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 28,
+      "question": "Une classe de 30 élèves dont 12 filles doit élire un comité comprenant un Président, un Vice-président et un Secrétaire. Le cumul de postes n'est pas interdit. Le nombre de comités possibles est :",
+      "propositions": {
+        "A": "$30^3$",
+        "B": "$A_{30}^{3}$",
+        "C": "$C_{30}^{3}$",
+        "D": "$60$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le cumul de postes étant autorisé, un même élève peut occuper plusieurs fonctions : chacun des 3 postes se choisit indépendamment parmi les 30 élèves, soit $30 \\times 30 \\times 30 = 30^3$ (et non $A_{30}^3$, qui exclurait les répétitions).",
+      "concept": "Dénombrement — tirages avec répétition",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 29,
+      "question": "Une urne contient 7 jetons portant les lettres S, N, G, H, O, E et R. On suppose qu'un mot est un assemblage de lettres distinctes ou non, ayant un sens ou non. On tire successivement 5 jetons de l'urne, en remettant après chaque tirage le jeton tiré dans l'urne. On note dans l'ordre les lettres des jetons tirés pour former un mot de 5 lettres. La probabilité de former un mot commençant par une voyelle est :",
+      "propositions": {
+        "A": "$\\dfrac{A_{2}^{1} \\times A_{7}^{4}}{A_{7}^{5}}$",
+        "B": "$\\dfrac{3}{7}$",
+        "C": "$0{,}63$",
+        "D": "$\\dfrac{2^1 \\times 7^4}{7^5}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le tirage se fait avec remise : il faut compter en puissances de 7, pas en arrangements sans répétition ($A_n^k$, ce qui élimine A). Sur 7 lettres, seules O et E sont des voyelles : 2 choix pour la première position, 7 choix pour chacune des 4 suivantes, sur $7^5$ mots possibles au total — soit $\\frac{2}{7}$, ce que donne l'option D.",
+      "concept": "Probabilités — tirages avec remise",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 30,
+      "question": "L'équation $\\ln(x^2 - 6x + 5) = \\ln(17 - 7x)$ admet comme solution :",
+      "propositions": {
+        "A": "$S = \\{-4\\}$",
+        "B": "$S = \\{-4 ; 3\\}$",
+        "C": "$S = \\{3\\}$",
+        "D": "$S = \\left\\{1 ; 5 ; \\dfrac{17}{7}\\right\\}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'égalité des logarithmes donne $x^2-6x+5=17-7x$, soit $x^2+x-12=0$, de racines $x=3$ et $x=-4$. Mais $x=3$ ne vérifie pas $x^2-6x+5>0$ (nécessaire au domaine) : seule $x=-4$ est valide.",
+      "concept": "Équations logarithmiques",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 31,
+      "question": "La limite en $+\\infty$ de la suite $U_n = \\ln\\left(\\dfrac{n^2 + 5n + 1}{2n + 1}\\right)$ est :",
+      "propositions": {
+        "A": "$\\ln 2$",
+        "B": "$\\ln\\left(\\dfrac{5}{2}\\right)$",
+        "C": "$+\\infty$",
+        "D": "$0$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le rapport $\\frac{n^2+5n+1}{2n+1}$ se comporte comme $\\frac{n}{2}$ et tend vers $+\\infty$ ; par composition avec $\\ln$, $U_n \\to +\\infty$.",
+      "concept": "Suites — limites et logarithme",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 32,
+      "question": "La limite en $+\\infty$ de la suite $U_n = \\dfrac{\\ln(4n)}{\\ln(3n)}$ est :",
+      "propositions": {
+        "A": "$\\dfrac{\\ln 4}{\\ln 3}$",
+        "B": "$1$",
+        "C": "$\\ln\\left(\\dfrac{4}{3}\\right)$",
+        "D": "$0$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\ln(4n)=\\ln 4+\\ln n$ et $\\ln(3n)=\\ln 3+\\ln n$ : quand $n\\to+\\infty$, le terme $\\ln n$ domine au numérateur comme au dénominateur, donc le rapport tend vers 1.",
+      "concept": "Suites — limites et logarithme",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 33,
+      "question": "Soit $(U_n)$ une suite arithmétique de raison $r = 5$ et telle que $U_{80} = 393$ ; alors $U_6$ est égal à :",
+      "propositions": {
+        "A": "$23$",
+        "B": "$32$",
+        "C": "$42$",
+        "D": "$50$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$U_{80}=U_6+(80-6)r$, donc $U_6=393-74\\times5=393-370=23$.",
+      "concept": "Suites arithmétiques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 34,
+      "question": "Soit la fonction définie par $f(x) = \\dfrac{-2x^2 + 3x + 2}{2x - 1}$. Sa courbe représentative $C_f$ au point $\\dfrac{1}{2}$ admet :",
+      "propositions": {
+        "A": "une asymptote horizontale",
+        "B": "une asymptote verticale",
+        "C": "une branche parabolique de direction $(Ox)$",
+        "D": "une branche parabolique de direction $(Oy)$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En $x=\\tfrac12$, le dénominateur s'annule alors que le numérateur vaut $3\\neq0$ : la fonction diverge en ce point, ce qui caractérise une asymptote verticale.",
+      "concept": "Fonctions rationnelles — asymptotes",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 35,
+      "question": "Soit la fonction définie par $f(x) = \\dfrac{-2x^2 + 3x + 2}{2x - 1}$, alors :",
+      "propositions": {
+        "A": "$I\\left(-\\dfrac{1}{2} ; \\dfrac{1}{2}\\right)$ est centre de symétrie de $C_f$",
+        "B": "$I\\left(\\dfrac{1}{2} ; \\dfrac{1}{2}\\right)$ est centre de symétrie de $C_f$",
+        "C": "$I\\left(-\\dfrac{1}{2} ; -\\dfrac{1}{2}\\right)$ est centre de symétrie de $C_f$",
+        "D": "Aucune de ces réponses"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La division donne $f(x)=(-x+1)+\\dfrac{3}{2x-1}$. Le centre de symétrie d'une telle fonction homographique généralisée est au point d'abscisse annulant le dénominateur ($x=\\tfrac12$) et d'ordonnée celle de l'asymptote oblique en ce point : $y=-\\tfrac12+1=\\tfrac12$.",
+      "concept": "Fonctions rationnelles — centre de symétrie",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 36,
+      "question": "Soit la fonction définie par $f(x) = -x^2 + 2x + 3$ ; alors :",
+      "propositions": {
+        "A": "$x = 1$ est axe de symétrie",
+        "B": "$x = -1$ est axe de symétrie",
+        "C": "$x = 2$ est axe de symétrie",
+        "D": "$x = -3$ est axe de symétrie"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'axe de symétrie d'une parabole $ax^2+bx+c$ est $x=-\\frac{b}{2a}=-\\frac{2}{-2}=1$.",
+      "concept": "Fonctions du second degré — axe de symétrie",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 37,
+      "question": "Soit $f$ une fonction définie par $f(x) = \\dfrac{e^x + e^{-x}}{e^x - e^{-x}}$ et $(C_f)$ sa courbe représentative dans un repère orthonormé, alors :",
+      "propositions": {
+        "A": "$(C_f)$ ne coupe pas l'axe des abscisses",
+        "B": "$(C_f)$ coupe l'axe des ordonnées",
+        "C": "$(C_f)$ admet une asymptote horizontale",
+        "D": "$f(x)$ est impaire"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Cette fonction (coth) est impaire : $f(-x)=-f(x)$, propriété centrale de son étude. À noter, pour la transparence de la correction : A et C sont également des affirmations vraies (le numérateur ne s'annule jamais donc $C_f$ ne coupe jamais l'axe des abscisses, et $f\\to\\pm1$ en $\\pm\\infty$ donne bien des asymptotes horizontales) — l'énoncé source admet donc plusieurs réponses correctes simultanément, ce qui est un défaut de la question. Seule B est fausse ($f$ n'est pas définie en $x=0$, elle ne coupe donc pas l'axe des ordonnées).",
+      "concept": "Fonctions — parité et asymptotes",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 38,
+      "question": "Soit $f(x) = ax^3 + bx - 2$ avec $f'(0) = -3$ et $f'(1) = 0$, alors on a :",
+      "propositions": {
+        "A": "$a = 1$ ; $b = 3$",
+        "B": "$a = -1$ ; $b = 3$",
+        "C": "$a = 1$ ; $b = -3$",
+        "D": "$a = 1$ ; $b = -3$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$f'(x)=3ax^2+b$. $f'(0)=b=-3$. $f'(1)=3a+b=0 \\Rightarrow 3a=3 \\Rightarrow a=1$. On obtient bien $a=1$, $b=-3$ — à noter que les options C et D sont des doublons strictement identiques dans l'énoncé source ; C est retenue par convention (première occurrence).",
+      "concept": "Dérivation — polynômes",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 39,
+      "question": "La dérivée de $f(x) = \\dfrac{x^2 - 4}{x - 1}$ est :",
+      "propositions": {
+        "A": "$f'(x) = \\dfrac{x^2 - 2x + 4}{(x-1)^2}$",
+        "B": "$f'(x) = \\dfrac{x^2 + 2x + 4}{(x-1)^2}$",
+        "C": "$f'(x) = \\dfrac{x^2 - 2x - 4}{(x-1)^2}$",
+        "D": "$f'(x) = \\dfrac{2x}{(x-1)^2}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Avec $u=x^2-4$, $v=x-1$ : $f'=\\dfrac{u'v-uv'}{v^2}=\\dfrac{2x(x-1)-(x^2-4)}{(x-1)^2}=\\dfrac{x^2-2x+4}{(x-1)^2}$.",
+      "concept": "Dérivation — quotient",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 40,
+      "question": "Une primitive de la fonction $f(x) = e^{2x+3}$ est :",
+      "propositions": {
+        "A": "$F(x) = \\dfrac{1}{2} \\times e^{2x+3}$",
+        "B": "$F(x) = -2 \\times e^{2x+3}$",
+        "C": "$F(x) = -\\dfrac{1}{3} \\times e^{2x+3}$",
+        "D": "$F(x) = 3 \\times e^{2x+3}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Pour $e^{ax+b}$, la primitive est $\\frac{1}{a}e^{ax+b}$ : ici $a=2$, donc $F(x)=\\frac12 e^{2x+3}$, ce que confirme $F'(x)=\\frac12\\times2\\times e^{2x+3}=e^{2x+3}$.",
+      "concept": "Primitives — fonction exponentielle",
+      "difficulte": "Facile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}
