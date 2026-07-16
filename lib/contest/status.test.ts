@@ -7,6 +7,7 @@ const config: ContestConfig = {
   registrationDeadline: new Date("2026-08-16T23:59:59"),
   contestDate: new Date("2026-08-22T08:00:00"),
   resultsMessage: "Les résultats seront publiés prochainement.",
+  registrationUrl: "https://depot.uam.sn/concours",
 };
 
 describe("getContestPhase", () => {
