@@ -71,10 +71,10 @@ export function ContestCountdown({
             </Link>
           </Button>
           <Button asChild variant="outline" size="lg">
-            <Link href="/assistant">
+            <a href={config.registrationUrl} target="_blank" rel="noopener noreferrer">
               <Info className="size-4" aria-hidden="true" />
               Informations sur le concours
-            </Link>
+            </a>
           </Button>
         </div>
       </CardContent>
