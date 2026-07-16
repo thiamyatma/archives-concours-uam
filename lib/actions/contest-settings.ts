@@ -68,7 +68,11 @@ export async function updateContestSettings(
   }
 
   revalidateTag(CONTEST_SETTINGS_TAG);
-  revalidatePath("/");
+  // `{ type: "layout" }` : le widget flottant (ContestFloatingWidget) et la
+  // bannière vivent dans app/layout.tsx, partagé par TOUTES les pages —
+  // revalider uniquement "/" (type par défaut "page") laisse le HTML statique
+  // des autres routes (ex. /departements) périmé malgré revalidateTag.
+  revalidatePath("/", "layout");
   revalidatePath("/admin/parametres");
   return { success: true };
 }
