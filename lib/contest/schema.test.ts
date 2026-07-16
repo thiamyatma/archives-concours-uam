@@ -42,6 +42,8 @@ const validInput = {
     instructions: "",
     officialUrl: "",
   },
+  seo: { title: "", description: "", ogImageUrl: "", keywords: "" },
+  stats: { showExams: true, showDownloads: true, showViews: true },
 };
 
 describe("contestSettingsSchema", () => {

@@ -55,6 +55,21 @@ export interface ContestInfo {
   officialUrl: string;
 }
 
+export interface ContestSeo {
+  title: string;
+  description: string;
+  /** URL d'une image déjà hébergée (pas d'upload — voir docs/contest-settings.md). */
+  ogImageUrl: string;
+  /** Mots-clés séparés par des virgules (plus simple à éditer qu'un tableau). */
+  keywords: string;
+}
+
+export interface ContestStatsToggles {
+  showExams: boolean;
+  showDownloads: boolean;
+  showViews: boolean;
+}
+
 export interface ContestSettings {
   year: number;
   officialName: string;
@@ -69,6 +84,8 @@ export interface ContestSettings {
   countdown: CountdownOptions;
   buttons: ContestButtons;
   info: ContestInfo;
+  seo: ContestSeo;
+  stats: ContestStatsToggles;
 }
 
 export type ContestPhase =

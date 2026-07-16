@@ -135,10 +135,25 @@ affichées sur le site. Scalaires typés + `jsonb` pour les groupes.
 | `year`, `official_name`, `subtitle`, `description`                   | scalaires      | infos générales                         |
 | `registration_opens_at`/`_closes_at`, `contest_date`, `results_date` | `timestamptz`  | nullables — pilotent la machine à états |
 | `messages`, `banner`, `countdown`, `buttons`, `info`                 | `jsonb`        | groupes éditables                       |
+| `seo`, `stats`                                                       | `jsonb`        | SEO page d'accueil, toggles de stats    |
 | `updated_at`                                                         | `timestamptz`  | trigger                                 |
 
 Édité depuis `/admin/parametres`, lu (caché) par `lib/contest/settings.ts` —
 voir [contest-settings.md](contest-settings.md).
+
+## `contest_settings_history`
+
+| Colonne       | Type          | Notes                                       |
+| ------------- | ------------- | ------------------------------------------- |
+| `id`          | `uuid` (PK)   |                                             |
+| `changed_at`  | `timestamptz` |                                             |
+| `admin_email` | `text`        | dénormalisé (pas de FK vers `admin_users`)  |
+| `field_path`  | `text`        | dot-path, ex. `messages.duringRegistration` |
+| `old_value`   | `text`        | nullable                                    |
+| `new_value`   | `text`        | nullable                                    |
+
+Une ligne par champ modifié à chaque enregistrement depuis
+`/admin/parametres` (`lib/contest/history.ts`).
 
 ## RPC
 

@@ -61,4 +61,15 @@ export const DEFAULT_CONTEST_SETTINGS: ContestSettings = {
     instructions: "",
     officialUrl: "https://depot.uam.sn/concours",
   },
+  seo: {
+    title: "",
+    description: "",
+    ogImageUrl: "",
+    keywords: "",
+  },
+  stats: {
+    showExams: true,
+    showDownloads: true,
+    showViews: true,
+  },
 };

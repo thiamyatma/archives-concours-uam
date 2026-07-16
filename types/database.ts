@@ -209,6 +209,8 @@ export interface Database {
           countdown: Record<string, unknown>;
           buttons: Record<string, unknown>;
           info: Record<string, unknown>;
+          seo: Record<string, unknown>;
+          stats: Record<string, unknown>;
           updated_at: string;
         };
         Insert: {
@@ -226,9 +228,33 @@ export interface Database {
           countdown?: Record<string, unknown>;
           buttons?: Record<string, unknown>;
           info?: Record<string, unknown>;
+          seo?: Record<string, unknown>;
+          stats?: Record<string, unknown>;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["contest_settings"]["Insert"]>;
+        Relationships: [];
+      };
+      contest_settings_history: {
+        Row: {
+          id: string;
+          changed_at: string;
+          admin_email: string;
+          field_path: string;
+          old_value: string | null;
+          new_value: string | null;
+        };
+        Insert: {
+          id?: string;
+          changed_at?: string;
+          admin_email: string;
+          field_path: string;
+          old_value?: string | null;
+          new_value?: string | null;
+        };
+        Update: Partial<
+          Database["public"]["Tables"]["contest_settings_history"]["Insert"]
+        >;
         Relationships: [];
       };
     };

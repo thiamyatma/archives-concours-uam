@@ -71,8 +71,30 @@ Les messages acceptent des jetons remplacés à l'affichage :
 - RLS activée, aucune policy publique : `admin_users` et `contest_settings`
   ne sont accessibles que par le service role.
 
-## À venir (PR 2)
+## PR 2 — historique, SEO, statistiques, widget flottant
 
-Historique des modifications (acteur = admin connecté, désormais identifié),
-SEO (image OG par URL) câblé dans `generateMetadata`, toggles de statistiques,
-widget flottant du compte à rebours (position gauche/droite, activation).
+- **Historique** (`contest_settings_history`) : `updateContestSettings` lit
+  la ligne avant écriture, calcule un diff field-level
+  (`lib/contest/history-diff.ts`, aplatit en dot-paths — ex.
+  `messages.duringRegistration`) et insère une ligne par champ modifié,
+  avec l'email de l'admin résolu depuis `admin_users` via l'`adminId` de la
+  session. `admin_email` est dénormalisé (pas de FK) : reste lisible même si
+  le compte est supprimé plus tard. Onglet **Historique** dans l'admin
+  (50 dernières entrées, pas de pagination poussée — volume admin-only
+  négligeable).
+- **SEO** (colonne `seo` : titre, description, image OG **par URL**,
+  mots-clés) : `app/page.tsx` exporte `generateMetadata()`, un champ vide ne
+  remplace pas les métadonnées par défaut du layout racine (fusion Next.js
+  champ par champ).
+- **Statistiques** (colonne `stats`, 3 toggles) : Épreuves
+  (`getContentManifest().totalSessions`), Téléchargements
+  (`getDownloadStats().totalDownloads`, déjà calculé), **Vues des épreuves**
+  (`lib/contest/page-views.ts`, total de `exam_document_views`) — pas de
+  « nombre de visites » site-wide (Google Analytics est client-only, une
+  vraie intégration nécessiterait l'API Data GA4/OAuth) ni de « nombre
+  d'utilisateurs » (pas de comptes publics). Rendu par `ContestStatsRow`,
+  utilisé à la fois sur la page d'accueil et dans l'aperçu admin.
+- **Widget flottant** (`ContestFloatingWidget`, monté dans le layout racine,
+  donc sur tout le site) : pilule fixe (position `countdown.position`),
+  masquée sur `/` (redondante avec la carte complète) et dès que la phase n'a
+  plus de décompte (`phaseHasCountdown`). Lien vers `/`.

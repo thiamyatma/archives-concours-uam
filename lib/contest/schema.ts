@@ -62,6 +62,19 @@ const infoSchema = z.object({
   officialUrl: z.string().max(500),
 });
 
+const seoSchema = z.object({
+  title: z.string().max(70),
+  description: z.string().max(300),
+  ogImageUrl: z.string().max(500),
+  keywords: z.string().max(300),
+});
+
+const statsSchema = z.object({
+  showExams: z.boolean(),
+  showDownloads: z.boolean(),
+  showViews: z.boolean(),
+});
+
 export const contestSettingsSchema = z.object({
   year: z.number().int().min(2000).max(2100),
   officialName: z.string().min(1, "Nom officiel requis.").max(200),
@@ -76,6 +89,8 @@ export const contestSettingsSchema = z.object({
   countdown: countdownSchema,
   buttons: buttonsSchema,
   info: infoSchema,
+  seo: seoSchema,
+  stats: statsSchema,
 });
 
 export type ContestSettingsInput = z.input<typeof contestSettingsSchema>;

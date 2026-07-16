@@ -6,6 +6,8 @@ import { Navbar } from "@/components/shared/navbar";
 import { Footer } from "@/components/shared/footer";
 import { ChatWidget } from "@/components/chat/chat-widget";
 import { Analytics } from "@/components/analytics/analytics";
+import { ContestFloatingWidget } from "@/components/contest-floating-widget";
+import { getContestSettings } from "@/lib/contest/settings";
 import { SITE_DESCRIPTION, SITE_NAME, SITE_SLOGAN } from "@/lib/constants";
 import { env } from "@/lib/env";
 
@@ -55,11 +57,15 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // Même fonction cachée que la page d'accueil (lib/contest/settings.ts) :
+  // aucun coût réseau supplémentaire réel, dédupliquée par cache() React.
+  const contestSettings = await getContestSettings();
+
   return (
     <html
       lang="fr"
@@ -79,6 +85,7 @@ export default function RootLayout({
         <Footer />
         <Toaster position="top-center" />
         <ChatWidget />
+        <ContestFloatingWidget settings={contestSettings} />
         <Analytics />
       </body>
     </html>
