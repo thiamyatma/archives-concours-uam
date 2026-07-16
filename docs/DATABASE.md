@@ -112,6 +112,34 @@ Limiteur générique par clé+action, voir `check_action_rate_limit` ci-dessous.
 Une seule ligne : se déconnecter (`logoutAdmin`) met à jour `revoked_at`,
 invalidant tous les cookies de session émis avant cet instant.
 
+## `admin_users`
+
+| Colonne         | Type          | Notes                               |
+| --------------- | ------------- | ----------------------------------- |
+| `id`            | `uuid` (PK)   |                                     |
+| `email`         | `text`        | unique, identifiant de connexion    |
+| `password_hash` | `text`        | scrypt `sel:hash` — jamais en clair |
+| `created_at`    | `timestamptz` |                                     |
+
+Comptes admin (email + mot de passe), remplacent le mot de passe unique — voir
+[contest-settings.md](contest-settings.md) et `lib/auth/password.ts`.
+
+## `contest_settings`
+
+Ligne **singleton** (`id = true`) pilotant toutes les infos du concours
+affichées sur le site. Scalaires typés + `jsonb` pour les groupes.
+
+| Colonne                                                              | Type           | Notes                                   |
+| -------------------------------------------------------------------- | -------------- | --------------------------------------- |
+| `id`                                                                 | `boolean` (PK) | toujours `true`                         |
+| `year`, `official_name`, `subtitle`, `description`                   | scalaires      | infos générales                         |
+| `registration_opens_at`/`_closes_at`, `contest_date`, `results_date` | `timestamptz`  | nullables — pilotent la machine à états |
+| `messages`, `banner`, `countdown`, `buttons`, `info`                 | `jsonb`        | groupes éditables                       |
+| `updated_at`                                                         | `timestamptz`  | trigger                                 |
+
+Édité depuis `/admin/parametres`, lu (caché) par `lib/contest/settings.ts` —
+voir [contest-settings.md](contest-settings.md).
+
 ## RPC
 
 - `search_polytech_chunks(search_query, match_count)` — retrieval du RAG :

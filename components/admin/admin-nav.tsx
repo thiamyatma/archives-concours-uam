@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 const LINKS = [
   { href: "/admin", label: "Statistiques" },
   { href: "/admin/epreuves", label: "Gestion des épreuves" },
+  { href: "/admin/parametres", label: "Paramètres du concours" },
 ];
 
 export function AdminNav() {

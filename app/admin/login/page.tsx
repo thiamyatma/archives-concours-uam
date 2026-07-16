@@ -16,8 +16,9 @@ import { Label } from "@/components/ui/label";
 import { loginAdmin, type AdminLoginResult } from "@/lib/actions/admin-auth";
 
 async function action(_prev: AdminLoginResult | null, formData: FormData) {
+  const email = String(formData.get("email") ?? "");
   const password = String(formData.get("password") ?? "");
-  return loginAdmin(password);
+  return loginAdmin(email, password);
 }
 
 export default function AdminLoginPage() {
@@ -36,13 +37,30 @@ export default function AdminLoginPage() {
       <Card className="w-full">
         <CardHeader>
           <CardTitle>Espace admin</CardTitle>
-          <CardDescription>Statistiques de téléchargement des épreuves.</CardDescription>
+          <CardDescription>Connectez-vous pour gérer le concours.</CardDescription>
         </CardHeader>
         <CardContent>
           <form action={formAction} className="space-y-4">
             <div className="space-y-2">
+              <Label htmlFor="email">Email</Label>
+              <Input
+                id="email"
+                name="email"
+                type="email"
+                autoComplete="email"
+                required
+                autoFocus
+              />
+            </div>
+            <div className="space-y-2">
               <Label htmlFor="password">Mot de passe</Label>
-              <Input id="password" name="password" type="password" required autoFocus />
+              <Input
+                id="password"
+                name="password"
+                type="password"
+                autoComplete="current-password"
+                required
+              />
             </div>
             {result?.error && <p className="text-destructive text-sm">{result.error}</p>}
             <Button type="submit" className="w-full" disabled={pending}>

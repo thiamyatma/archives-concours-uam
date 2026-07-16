@@ -509,3 +509,50 @@ $$;
 
 revoke all on function public.get_exam_documents_with_stats() from public;
 grant execute on function public.get_exam_documents_with_stats() to service_role;
+
+-- =====================================================================
+-- Comptes administrateurs + paramètres du concours
+-- =====================================================================
+-- Voir supabase/migrations/20260722000000_contest_settings.sql et
+-- docs/contest-settings.md. admin_users remplace le mot de passe unique
+-- (mots de passe hachés scrypt, jamais en clair). contest_settings est une
+-- ligne singleton pilotant les infos du concours affichées sur le site.
+
+create table if not exists public.admin_users (
+  id uuid primary key default gen_random_uuid(),
+  email text not null unique,
+  password_hash text not null,
+  created_at timestamptz not null default now()
+);
+
+alter table public.admin_users enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role.
+-- (Le seed des comptes vit dans la migration, pas ici : il contient des
+-- hachés propres à l'environnement.)
+
+create table if not exists public.contest_settings (
+  id boolean primary key default true,
+  year integer not null,
+  official_name text not null,
+  subtitle text not null default '',
+  description text not null default '',
+  registration_opens_at timestamptz,
+  registration_closes_at timestamptz,
+  contest_date timestamptz,
+  results_date timestamptz,
+  messages jsonb not null default '{}'::jsonb,
+  banner jsonb not null default '{}'::jsonb,
+  countdown jsonb not null default '{}'::jsonb,
+  buttons jsonb not null default '{}'::jsonb,
+  info jsonb not null default '{}'::jsonb,
+  updated_at timestamptz not null default now(),
+  constraint contest_settings_singleton check (id)
+);
+
+drop trigger if exists contest_settings_set_updated_at on public.contest_settings;
+create trigger contest_settings_set_updated_at
+  before update on public.contest_settings
+  for each row execute function public.set_updated_at();
+
+alter table public.contest_settings enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role.

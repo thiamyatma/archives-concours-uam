@@ -4,9 +4,9 @@ import Link from "next/link";
 import { format } from "date-fns";
 import { fr } from "date-fns/locale";
 import {
+  Award,
+  CalendarClock,
   CheckCircle2,
-  FileText,
-  FileUp,
   Hourglass,
   Megaphone,
   PartyPopper,
@@ -14,26 +14,38 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { CONTEST_CONFIG, type ContestConfig } from "@/config/contest";
+import { ContestInfoDialog } from "@/components/contest-info-dialog";
 import { useContestStatus } from "@/hooks/useContestStatus";
-import type { ContestPhase, RemainingTime } from "@/lib/contest/status";
+import { messageForPhase } from "@/lib/contest/messages";
+import type { ContestPhase, ContestSettings } from "@/lib/contest/types";
+import type { RemainingTime } from "@/lib/contest/status";
 
 /**
- * Section "Concours" de la page d'accueil. Purement présentationnelle : toute
- * la logique (phase courante, temps restant, drapeaux) vient du hook
- * `useContestStatus`. Le message et le compte à rebours s'adaptent
- * automatiquement à la date courante.
+ * Section « Concours » de la page d'accueil, entièrement pilotée par les
+ * paramètres chargés depuis la base (`ContestSettings`). Présentationnelle :
+ * la logique (phase, temps restant, progression) vient de `useContestStatus`.
+ * Réutilisée telle quelle dans l'aperçu en direct de l'admin.
  */
-export function ContestCountdown({
-  config = CONTEST_CONFIG,
-}: {
-  config?: ContestConfig;
-}) {
-  const { currentPhase, remainingTime } = useContestStatus(config);
-  const message = getPhaseMessage(currentPhase, config);
-  const Icon = message.icon;
-  const showsCountdown = currentPhase === "registration" || currentPhase === "closed";
+const PHASE_ICON: Record<ContestPhase, LucideIcon> = {
+  before_registration: CalendarClock,
+  registration_open: Megaphone,
+  registration_closed: Hourglass,
+  contest_day: PartyPopper,
+  after_contest: CheckCircle2,
+  results_published: Award,
+};
+
+export function ContestCountdown({ settings }: { settings: ContestSettings }) {
+  const { currentPhase, remainingTime, progress } = useContestStatus(settings);
+  const Icon = PHASE_ICON[currentPhase];
+  const message = messageForPhase(currentPhase, settings);
+  const showsCountdown =
+    settings.countdown.enabled &&
+    (currentPhase === "before_registration" ||
+      currentPhase === "registration_open" ||
+      currentPhase === "registration_closed");
 
   return (
     <Card className="animate-in fade-in slide-in-from-bottom-3 border-primary/20 from-primary/5 to-card gap-5 bg-gradient-to-b py-8 text-center duration-700">
@@ -43,7 +55,7 @@ export function ContestCountdown({
             className="bg-primary size-1.5 animate-pulse rounded-full"
             aria-hidden="true"
           />
-          Concours {config.year}
+          {settings.officialName}
         </span>
         <p
           role="status"
@@ -51,34 +63,60 @@ export function ContestCountdown({
           className="mx-auto flex max-w-xl flex-col items-center gap-2 text-lg font-medium text-balance sm:flex-row sm:text-xl"
         >
           <Icon className="text-primary size-6 shrink-0" aria-hidden="true" />
-          <span>
-            <span aria-hidden="true">{message.emoji} </span>
-            {message.text}
-          </span>
+          <span>{message}</span>
         </p>
       </CardHeader>
 
       <CardContent className="flex flex-col items-center gap-6">
-        {showsCountdown && (
-          <Countdown remaining={remainingTime} target={config.contestDate} />
+        {showsCountdown && settings.contestDate && (
+          <Countdown
+            remaining={remainingTime}
+            progress={settings.countdown.showProgress ? progress : null}
+            showSeconds={settings.countdown.showSeconds}
+            target={settings.contestDate}
+          />
         )}
 
         <div className="flex w-full flex-col justify-center gap-3 sm:w-auto sm:flex-row">
-          <Button asChild size="lg">
-            <Link href="/departements">
-              <FileText className="size-4" aria-hidden="true" />
-              Consulter les anciennes épreuves
-            </Link>
-          </Button>
-          <Button asChild variant="outline" size="lg">
-            <a href={config.registrationUrl} target="_blank" rel="noopener noreferrer">
-              <FileUp className="size-4" aria-hidden="true" />
-              Déposer mon dossier
-            </a>
-          </Button>
+          <ContestLinkButton
+            label={settings.buttons.primaryLabel}
+            url={settings.buttons.primaryUrl}
+          />
+          <ContestLinkButton
+            label={settings.buttons.secondaryLabel}
+            url={settings.buttons.secondaryUrl}
+            variant="outline"
+          />
         </div>
+
+        <ContestInfoDialog info={settings.info} />
       </CardContent>
     </Card>
+  );
+}
+
+function ContestLinkButton({
+  label,
+  url,
+  variant = "default",
+}: {
+  label: string;
+  url: string;
+  variant?: "default" | "outline";
+}) {
+  if (!label.trim() || !url.trim()) return null;
+  const isInternal = url.startsWith("/");
+
+  return (
+    <Button asChild size="lg" variant={variant}>
+      {isInternal ? (
+        <Link href={url}>{label}</Link>
+      ) : (
+        <a href={url} target="_blank" rel="noopener noreferrer">
+          {label}
+        </a>
+      )}
+    </Button>
   );
 }
 
@@ -91,13 +129,21 @@ const COUNTDOWN_UNITS = [
 
 function Countdown({
   remaining,
+  progress,
+  showSeconds,
   target,
 }: {
   remaining: RemainingTime | null;
+  progress: number | null;
+  showSeconds: boolean;
   target: Date;
 }) {
+  const units = showSeconds
+    ? COUNTDOWN_UNITS
+    : COUNTDOWN_UNITS.filter((unit) => unit.key !== "seconds");
+
   const label = remaining
-    ? `Temps restant jusqu'au concours : ${remaining.days} jours, ${remaining.hours} heures, ${remaining.minutes} minutes, ${remaining.seconds} secondes.`
+    ? `Temps restant jusqu'au concours : ${remaining.days} jours, ${remaining.hours} heures, ${remaining.minutes} minutes${showSeconds ? `, ${remaining.seconds} secondes` : ""}.`
     : "Chargement du compte à rebours.";
 
   return (
@@ -111,9 +157,10 @@ function Countdown({
       <div
         role="timer"
         aria-label={label}
-        className="mx-auto grid max-w-md grid-cols-4 gap-2 sm:gap-3"
+        className="mx-auto grid max-w-md gap-2 sm:gap-3"
+        style={{ gridTemplateColumns: `repeat(${units.length}, minmax(0, 1fr))` }}
       >
-        {COUNTDOWN_UNITS.map((unit) => (
+        {units.map((unit) => (
           <div
             key={unit.key}
             aria-hidden="true"
@@ -132,52 +179,17 @@ function Countdown({
           </div>
         ))}
       </div>
+      {progress !== null && (
+        <Progress
+          value={Math.round(progress * 100)}
+          className="mx-auto mt-4 max-w-md"
+          aria-label="Progression jusqu'au concours"
+        />
+      )}
     </div>
   );
 }
 
 function formatUnit(value: number, pad: boolean): string {
   return pad ? String(value).padStart(2, "0") : String(value);
-}
-
-interface PhaseMessage {
-  emoji: string;
-  icon: LucideIcon;
-  text: string;
-}
-
-function getPhaseMessage(phase: ContestPhase, config: ContestConfig): PhaseMessage {
-  const deadline = formatLong(config.registrationDeadline);
-  const contestDate = formatLong(config.contestDate);
-
-  switch (phase) {
-    case "registration":
-      return {
-        emoji: "📢",
-        icon: Megaphone,
-        text: `Les inscriptions au concours sont ouvertes jusqu'au ${deadline}.`,
-      };
-    case "closed":
-      return {
-        emoji: "⏳",
-        icon: Hourglass,
-        text: `Les inscriptions sont terminées. Le concours aura lieu le ${contestDate}.`,
-      };
-    case "contest-day":
-      return {
-        emoji: "🎉",
-        icon: PartyPopper,
-        text: "Le concours a lieu aujourd'hui ! Bonne chance à tous les candidats.",
-      };
-    case "finished":
-      return {
-        emoji: "✅",
-        icon: CheckCircle2,
-        text: `Le concours est terminé. ${config.resultsMessage}`,
-      };
-  }
-}
-
-function formatLong(date: Date): string {
-  return format(date, "d MMMM yyyy", { locale: fr });
 }

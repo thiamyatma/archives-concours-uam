@@ -1,32 +1,28 @@
 "use client";
 
 import { useSyncExternalStore } from "react";
-import { CONTEST_CONFIG, type ContestConfig } from "@/config/contest";
+import type { ContestPhase, ContestSettings } from "@/lib/contest/types";
 import {
   getContestPhase,
+  getContestProgress,
   getRemainingTime,
-  type ContestPhase,
+  phaseHasCountdown,
   type RemainingTime,
 } from "@/lib/contest/status";
 
 export interface ContestStatus {
   currentPhase: ContestPhase;
-  /**
-   * Temps restant jusqu'au concours. `null` tant que le composant n'est pas
-   * hydraté (le SSR ne connaît pas l'heure du client) et dès qu'il n'y a plus
-   * de décompte à afficher (jour J et après).
-   */
+  /** `null` avant hydratation (SSR) et quand il n'y a plus de décompte. */
   remainingTime: RemainingTime | null;
-  registrationOpen: boolean;
-  contestStarted: boolean;
-  contestFinished: boolean;
+  /** Progression 0→1 inscriptions→concours, `null` avant hydratation. */
+  progress: number | null;
 }
 
 /**
- * Horloge partagée exposée comme un store externe : `useSyncExternalStore`
- * gère proprement le SSR et évite tout `setState` dans un effet (même pattern
- * que `components/analytics/analytics.tsx`). Le snapshot est un nombre de
- * secondes (référence stable pendant une seconde, requis par l'API).
+ * Horloge partagée exposée comme store externe : `useSyncExternalStore` gère
+ * le SSR et évite tout `setState` dans un effet (pattern maison, voir
+ * components/analytics/analytics.tsx). Snapshot = secondes epoch (référence
+ * stable pendant une seconde).
  */
 function subscribe(onChange: () => void): () => void {
   const id = setInterval(onChange, 1000);
@@ -37,8 +33,6 @@ function getSnapshot(): number {
   return Math.floor(Date.now() / 1000);
 }
 
-// Snapshot serveur constant (`null`) : le SSR et le premier rendu client
-// (hydratation) affichent le décompte en squelette, sans divergence.
 const SERVER_SNAPSHOT = null;
 
 function useNow(): Date | null {
@@ -51,25 +45,23 @@ function useNow(): Date | null {
 }
 
 /**
- * Concentre TOUTE la logique métier du décompte : le composant qui l'utilise
- * n'a plus qu'à afficher. Rafraîchit chaque seconde. La configuration est
- * injectable (défaut : `CONTEST_CONFIG`) pour préparer une future source
- * Supabase passée en prop depuis un Server Component.
+ * Concentre TOUTE la logique métier du statut du concours ; le composant qui
+ * l'utilise n'a plus qu'à afficher. Piloté par les paramètres (dates) chargés
+ * depuis la base.
  */
-export function useContestStatus(config: ContestConfig = CONTEST_CONFIG): ContestStatus {
+export function useContestStatus(settings: ContestSettings): ContestStatus {
   const now = useNow();
-  // Avant l'hydratation, la phase est calculée à partir de l'heure de rendu
-  // (serveur puis client) : elle ne change qu'à 4 instants dans l'année, donc
-  // aucune divergence visible. Seul le décompte (secondes) est différé.
-  const currentPhase = getContestPhase(now ?? new Date(), config);
-  const showCountdown = currentPhase === "registration" || currentPhase === "closed";
+  // Phase calculée dès le rendu (serveur/client) : elle ne dépend pas des
+  // sous-secondes. Seul le décompte est différé après hydratation.
+  const currentPhase: ContestPhase = getContestPhase(now ?? new Date(), settings);
+  const contest = settings.contestDate;
 
   return {
     currentPhase,
     remainingTime:
-      now && showCountdown ? getRemainingTime(now, config.contestDate) : null,
-    registrationOpen: currentPhase === "registration",
-    contestStarted: currentPhase === "contest-day",
-    contestFinished: currentPhase === "finished",
+      now && contest && phaseHasCountdown(currentPhase)
+        ? getRemainingTime(now, contest)
+        : null,
+    progress: now ? getContestProgress(now, settings) : null,
   };
 }
