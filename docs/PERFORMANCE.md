@@ -46,6 +46,19 @@ lit le système de fichiers à l'exécution** en dehors du cas ci-dessus.
 pendant `next build`, qui tourne sur un checkout git complet —
 `content/archives/**` y est garanti présent.
 
+## Exception : revalidation périodique de la page d'accueil
+
+Depuis l'ajout des paramètres du concours ([contest-settings.md](contest-settings.md)),
+`app/page.tsx` affiche aussi des compteurs qui évoluent avec l'activité des
+visiteurs (téléchargements, vues des épreuves) — des données que rien
+d'autre que l'action admin ne revalide autrement. `export const revalidate
+= 3600` régénère la page au plus une fois par heure : elle reste servie du
+cache entre deux régénérations (mêmes gains de perf que le reste du site),
+sans jamais rester figée indéfiniment comme les pages purement statiques
+ci-dessous. Écart de fraîcheur accepté (au plus 1h) pour de simples
+compteurs informatifs — contrairement à `/admin` (`force-dynamic`, toujours
+à jour, car outil d'administration).
+
 ## Pourquoi aucun cache n'est nécessaire ici
 
 L'ancienne architecture (documents en base) avait deux niveaux de cache
