@@ -3,11 +3,16 @@ import { Building2, CalendarDays, LayoutGrid, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DepartementCard } from "@/components/shared/departement-card";
 import { StatsSection, type StatItem } from "@/components/shared/stats-section";
+import { ContestCountdown } from "@/components/contest-countdown";
 import { getContentManifest } from "@/lib/data/departements";
+import { getContestConfig } from "@/config/contest";
 import { SITE_SLOGAN } from "@/lib/constants";
 
 export default function HomePage() {
   const manifest = getContentManifest();
+  // Récupérée côté serveur puis passée en prop : le jour où la config vivra
+  // dans Supabase, seule cette ligne changera (voir config/contest.ts).
+  const contestConfig = getContestConfig();
 
   const stats: StatItem[] = [
     { icon: Building2, label: "Départements", value: manifest.totalDepartements },
@@ -41,6 +46,10 @@ export default function HomePage() {
             </Button>
           </div>
         </div>
+      </section>
+
+      <section className="mx-auto max-w-3xl px-4 pt-16 sm:px-6">
+        <ContestCountdown config={contestConfig} />
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
