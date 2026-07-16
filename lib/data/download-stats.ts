@@ -9,18 +9,36 @@ export interface DownloadStats {
   top: { departementCode: string; annee: number; fileName: string; downloads: number }[];
 }
 
+const EMPTY_STATS: DownloadStats = {
+  totalDownloads: 0,
+  totalFilesDownloaded: 0,
+  byDepartement: [],
+  byAnnee: [],
+  top: [],
+};
+
 /**
  * Statistiques agrégées de téléchargement, calculées en base (RPC, même
- * esprit que `get_global_stats` — voir docs/PERFORMANCE.md). Service role
- * uniquement : jamais appelé depuis une page publique.
+ * esprit que `get_global_stats` — voir docs/PERFORMANCE.md).
  *
  * Chacune des 4 RPC est traitée indépendamment : si une seule échoue, elle
  * retombe sur un résultat vide (avec un log), sans effacer les 3 autres qui
  * ont réussi — un dashboard partiellement rempli vaut mieux qu'un dashboard
  * entièrement à zéro pour une panne isolée.
+ *
+ * Depuis PR 2, aussi appelée depuis la page d'accueil (statique) pour le
+ * compteur de téléchargements — `createServiceClient()` est donc englobée
+ * dans le même filet que le reste (Supabase absent/indisponible ne doit
+ * jamais faire échouer le build ni la page publique).
  */
 export async function getDownloadStats(): Promise<DownloadStats> {
-  const supabase = createServiceClient();
+  let supabase: ReturnType<typeof createServiceClient>;
+  try {
+    supabase = createServiceClient();
+  } catch (error) {
+    console.error("getDownloadStats a échoué:", error);
+    return EMPTY_STATS;
+  }
 
   const [totals, byDepartement, byAnnee, top] = await Promise.all([
     supabase.rpc("get_pdf_download_stats"),
