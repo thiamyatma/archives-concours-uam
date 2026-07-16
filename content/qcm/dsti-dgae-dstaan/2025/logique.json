@@ -1,0 +1,258 @@
+{
+  "matiere": "Logique",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 61,
+      "question": "Trouvez le nombre manquant dans la séquence : 2, 6, 12, 20, … ?",
+      "propositions": { "A": "24", "B": "28", "C": "30", "D": "32" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque terme vaut n(n+1) : 1×2, 2×3, 3×4, 4×5 ; le suivant est 5×6=30.",
+      "concept": "Suites numériques",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 62,
+      "question": "Si Jean est plus grand que Pierre, et que Pierre est plus petit que Marc, alors qui est le plus petit ?",
+      "propositions": {
+        "A": "Jean",
+        "B": "Pierre",
+        "C": "Marc",
+        "D": "On ne peut pas savoir"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Pierre est explicitement plus petit que Jean et plus petit que Marc : il est donc le plus petit des trois.",
+      "concept": "Raisonnement logique — comparaisons",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 63,
+      "question": "Quel mot complète la série : Chat, Chien, Lion ?",
+      "propositions": { "A": "Oiseau", "B": "Tigre", "C": "Poisson", "D": "Serpent" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chat, Chien et Lion sont tous des mammifères ; parmi les options, seul Tigre est également un mammifère.",
+      "concept": "Classification verbale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 64,
+      "question": "Si 3 machines produisent 3 objets en 3 minutes, combien de temps mettront 100 machines pour produire 100 objets ?",
+      "propositions": {
+        "A": "3 minutes",
+        "B": "30 minutes",
+        "C": "100 minutes",
+        "D": "300 minutes"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque machine produit 1 objet en 3 minutes, quel que soit le nombre de machines : 100 machines produisent donc 100 objets en 3 minutes, en travaillant en parallèle.",
+      "concept": "Raisonnement logique — taux et proportionnalité",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 65,
+      "question": "Quel est le nombre suivant dans la suite : 1, 4, 9, 16, 25, … ?",
+      "propositions": { "A": "36", "B": "49", "C": "64", "D": "81" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Ce sont les carrés parfaits : 1², 2², 3², 4², 5², donc le suivant est 6²=36.",
+      "concept": "Suites numériques — carrés",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 66,
+      "question": "Un train met 30 secondes pour traverser un pont de 500 mètres et 10 secondes pour passer devant un poteau. Quelle est la longueur du train ?",
+      "propositions": { "A": "100 m", "B": "150 m", "C": "200 m", "D": "250 m" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Passer devant un poteau ne parcourt que la longueur L du train en 10s (vitesse v=L/10). Traverser le pont parcourt (500+L) en 30s : v×30=500+L. En substituant v=L/10 : 3L=500+L, donc L=250 m.",
+      "concept": "Problèmes de mouvement — vitesse",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 67,
+      "question": "Quel est le prochain symbole dans cette séquence : △, ○, □, △, ○, □, … ?",
+      "propositions": { "A": "△", "B": "○", "C": "□", "D": "◇" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le motif se répète par cycles de 3 symboles ; après le 6e (□), le 7e reprend le 1er du cycle : △.",
+      "concept": "Suites logiques — figures géométriques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 68,
+      "question": "Si le jour d'avant-hier était mercredi, quel jour sera-t-il après-demain ?",
+      "propositions": { "A": "Dimanche", "B": "Mardi", "C": "Mercredi", "D": "Jeudi" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Avant-hier = mercredi signifie que « aujourd'hui » est vendredi. Après-demain (aujourd'hui + 2 jours) tombe donc un dimanche.",
+      "concept": "Raisonnement logique — calcul de jours",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 69,
+      "question": "Trouvez l'intrus : 10, 15, 20, 25, 30, 35, 40, 46 :",
+      "propositions": { "A": "15", "B": "25", "C": "35", "D": "46" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Tous les autres nombres sont des multiples de 5 ; seul 46 ne l'est pas.",
+      "concept": "Classification numérique",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 70,
+      "question": "Quel nombre remplace les points d'interrogation : 7, 14, 21, 28, ??? :",
+      "propositions": { "A": "32", "B": "35", "C": "37", "D": "42" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Ce sont les multiples de 7 : 7, 14, 21, 28, donc le suivant est 35.",
+      "concept": "Suites numériques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 71,
+      "question": "Si tous les X sont Y et qu'aucun Y n'est Z, alors :",
+      "propositions": {
+        "A": "Certains X sont Z",
+        "B": "Aucun X n'est Z",
+        "C": "Tous les Z sont X",
+        "D": "Certains Z sont X"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "X est inclus dans Y, et Y est disjoint de Z ; par transitivité, X est aussi disjoint de Z : aucun X n'est Z.",
+      "concept": "Raisonnement logique — syllogismes",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 72,
+      "question": "Un père et son fils ont ensemble 60 ans. Le père a 30 ans de plus que son fils. Quel âge a le fils ?",
+      "propositions": { "A": "10 ans", "B": "15 ans", "C": "20 ans", "D": "25 ans" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Fils + (Fils+30) = 60 → 2×Fils = 30 → Fils = 15 ans.",
+      "concept": "Problèmes arithmétiques — âges",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 73,
+      "question": "Si 5 ouvriers construisent 5 murs en 5 jours, combien de jours mettront 10 ouvriers pour construire 10 murs ?",
+      "propositions": {
+        "A": "5 jours",
+        "B": "10 jours",
+        "C": "15 jours",
+        "D": "20 jours"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le rapport ouvriers/murs reste identique (1 ouvrier par mur) : doubler les deux ne change pas la durée, toujours 5 jours.",
+      "concept": "Raisonnement logique — taux et proportionnalité",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 74,
+      "question": "Quelle est la lettre manquante dans cette suite : D, G, J, M, … ?",
+      "propositions": { "A": "O", "B": "P", "C": "Q", "D": "R" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque lettre avance de 3 rangs (D=4, G=7, J=10, M=13), donc la suivante est la 16e lettre : P.",
+      "concept": "Suites logiques — alphabet",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 75,
+      "question": "Trouvez le nombre manquant (?) dans cette grille : 3 | 5 | 7 ; 9 | ? | 13 ; 15 | 17 | 19",
+      "propositions": { "A": "10", "B": "11", "C": "12", "D": "14" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque colonne progresse de 6 (3→9→15, 7→13→19) ; la colonne du milieu (5→?→17) suit la même règle : 5+6=11.",
+      "concept": "Puzzle numérique — grille",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 76,
+      "question": "Un escargot monte un mur de 10 mètres. Chaque jour, il grimpe de 3 mètres, mais la nuit, il redescend de 2 mètres. En combien de jours atteindra-t-il le sommet ?",
+      "propositions": { "A": "7 jours", "B": "8 jours", "C": "9 jours", "D": "10 jours" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Chaque jour complet (montée + nuit), l'escargot progresse net de 1 m. Après 7 jours, il est à 7 m ; le 8e jour, sa montée de 3 m l'amène à 10 m : il atteint le sommet avant de redescendre.",
+      "concept": "Problèmes arithmétiques — progression avec retour",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 77,
+      "question": "Trouvez le nombre manquant dans la séquence: 5, 10, 20, 40, ?",
+      "propositions": { "A": "60", "B": "70", "C": "80", "D": "90" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Suite géométrique de raison 2 : chaque terme est multiplié par 2, donc 40×2=80.",
+      "concept": "Suites numériques — géométrique",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 78,
+      "question": "Si 4 peintres peignent 4 murs en 4 heures, combien de temps mettront 8 peintres pour peindre 8 murs ?",
+      "propositions": {
+        "A": "4 heures",
+        "B": "8 heures",
+        "C": "12 heures",
+        "D": "16 heures"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le rapport peintres/murs reste inchangé (1 peintre par mur) : doubler les deux ne modifie pas la durée, toujours 4 heures.",
+      "concept": "Raisonnement logique — taux et proportionnalité",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 79,
+      "question": "Quel est le mot intrus dans la série suivante: Bateau, Voiture, Avion, Bicyclette ?",
+      "propositions": { "A": "Bateau", "B": "Voiture", "C": "Avion", "D": "Bicyclette" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Bateau, voiture et avion sont des véhicules à moteur ; la bicyclette est propulsée par la force humaine, ce qui en fait l'intrus.",
+      "concept": "Classification verbale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 80,
+      "question": "Un sac contient 3 chaussettes rouges, 4 vertes et 5 bleues. Quel est le nombre minimum de chaussettes à tirer (sans regarder) pour être sûr d'avoir au moins deux chaussettes de la même couleur ?",
+      "propositions": { "A": "2", "B": "3", "C": "4", "D": "5" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Principe des tiroirs : dans le pire des cas, les 3 premières chaussettes tirées sont chacune d'une couleur différente ; la 4e tirée reproduit obligatoirement l'une des trois couleurs déjà sorties.",
+      "concept": "Raisonnement logique — principe des tiroirs",
+      "difficulte": "Difficile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

@@ -1,0 +1,288 @@
+{
+  "matiere": "Physique-Chimie",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 1,
+      "question": "Des particules $\\alpha$ de masse $m = 6{,}64 \\times 10^{-27}$ kg et de charge $q = +2e$ ($e = 1{,}6 \\times 10^{-19}$ C) pénètrent avec une vitesse $\\vec{V_0}$ de valeur $V_0 = 2 \\times 10^6$ m/s dans une région de l'espace où règne un champ magnétique $\\vec{B}$ uniforme d'intensité $B = 0{,}1$ T et orthogonal à $\\vec{V_0}$. Elles décrivent alors une trajectoire circulaire de rayon R égal à :",
+      "propositions": { "A": "83 cm", "B": "20 cm", "C": "41,5 cm", "D": "0,5 m" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$R=\\dfrac{mV_0}{qB}=\\dfrac{6{,}64\\times10^{-27}\\times2\\times10^6}{2\\times1{,}6\\times10^{-19}\\times0{,}1}\\approx0{,}415$ m $=41{,}5$ cm.",
+      "concept": "Mouvement d'une particule chargée dans un champ magnétique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 2,
+      "question": "Soit q, la charge à l'instant t. L'équation différentielle associée à la décharge oscillante d'un condensateur de capacité $C = 250$ µF initialement chargé et branché en série avec une bobine non résistive d'inductance $L = 40$ mH s'écrit :",
+      "propositions": {
+        "A": "$40 \\frac{d^2q}{dt^2} + 0,004q = 0$",
+        "B": "$\\frac{d^2q}{dt^2} + 0,0001q = 0$",
+        "C": "$0,04 \\frac{d^2q}{dt^2} + 4000q = 0$",
+        "D": "$0,04 \\frac{d^2q}{dt^2} + 4000 \\frac{dq}{dt} = 0$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'équation d'un circuit LC non résistif est $L\\ddot q+\\frac{1}{C}q=0$, soit ici $0{,}04\\ddot q+100\\,000\\,q=0$ après multiplication par un facteur commun. En divisant l'option C par 0,04, on retrouve $\\ddot q+100\\,000\\,q=0$, ce qui correspond exactement.",
+      "concept": "Électricité — oscillations libres LC",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 3,
+      "question": "Les niveaux d'énergie de l'atome d'hydrogène H sont donnés par $E_n=-E_0/n^2$ ($E_0=13{,}6$ eV). Lors d'une transition entre un état de niveau $E_p$ et un niveau inférieur $E_n$ ($p>n$), la longueur d'onde émise vérifie $\\frac{1}{\\lambda}=R_H(\\frac{1}{n^2}-\\frac{1}{p^2})$. L'expression de la constante de Rydberg $R_H$ en fonction de $h$ et $C$ est :",
+      "propositions": {
+        "A": "$R_H = \\frac{hc}{E_0}$",
+        "B": "$R_H = \\frac{c}{hE_0}$",
+        "C": "$R_H = hC$",
+        "D": "$R_H = \\frac{E_0}{hc}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$E_{photon}=hc/\\lambda=E_0(\\frac{1}{n^2}-\\frac{1}{p^2})$ ; en identifiant avec $\\frac{1}{\\lambda}=R_H(\\frac{1}{n^2}-\\frac{1}{p^2})$, on obtient $hcR_H=E_0$, donc $R_H=E_0/(hc)$.",
+      "concept": "Physique atomique — atome d'hydrogène, constante de Rydberg",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 4,
+      "question": "Le plomb $^{206}_{82}Pb$ peut être obtenu par une désintégration α du polonium $^{210}_{84}Po$ avec une période $T=138$ jours. En partant d'un échantillon de 5 g de polonium, la masse $m_l$ de cet échantillon qui s'est désintégrée au bout de 276 jours est :",
+      "propositions": { "A": "1,25 g", "B": "3,75 g", "C": "20 g", "D": "5 g" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "276 jours = 2 périodes : il reste $5\\times(1/2)^2=1{,}25$ g de polonium, donc $5-1{,}25=3{,}75$ g se sont désintégrés.",
+      "concept": "Radioactivité — décroissance exponentielle",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 5,
+      "question": "La vitesse V qu'un véhicule de masse $M=2$ tonnes doit avoir pour tourner sans problème dans un virage relevé d'un angle $\\alpha=5°$ par rapport à l'horizontale et de rayon $r=36$ m est ($g=10$ m/s², $\\tan(5°)\\approx0{,}1$) :",
+      "propositions": { "A": "18 m/s", "B": "3,6 m/s", "C": "36 m/s", "D": "6 m/s" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Sur virage relevé sans frottement, l'équilibre donne $\\tan\\alpha=V^2/(rg)$, donc $V=\\sqrt{rg\\tan\\alpha}=\\sqrt{36\\times10\\times0{,}1}=6$ m/s.",
+      "concept": "Mécanique — virage relevé",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 6,
+      "question": "On éclaire une cellule photoélectrique à vide avec une lumière monochromatique de longueur d'onde 600 nm. Un électron est émis avec une énergie cinétique maximale égale à 0,19 eV. L'énergie d'extraction E de cet électron depuis le métal cathodique est ($h=6{,}62\\times10^{-34}$ SI, $C=3\\times10^8$ m/s) :",
+      "propositions": {
+        "A": "2 eV",
+        "B": "0,19 eV",
+        "C": "$3 \\times 10^{-19}$ J",
+        "D": "$9,1 \\times 10^{-31}$ J"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$E_{photon}=hc/\\lambda\\approx3{,}31\\times10^{-19}$ J. L'énergie d'extraction est $W=E_{photon}-E_{c\\,max}\\approx3{,}31\\times10^{-19}-0{,}30\\times10^{-19}\\approx3\\times10^{-19}$ J.",
+      "concept": "Effet photoélectrique",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 7,
+      "question": "En 1885, Balmer écrivait la loi de détermination de ses raies sous la forme : $\\lambda = \\lambda_0 \\frac{p^2}{p^2 - 4}$ (p est un niveau excité). L'expression de $\\lambda_0$ est :",
+      "propositions": {
+        "A": "$\\lambda_0 = \\frac{hc}{E_0}$",
+        "B": "$\\lambda_0 = \\frac{hc}{4E_0}$",
+        "C": "$\\lambda_0 = \\frac{E_0}{4hc}$",
+        "D": "$\\lambda_0 = \\frac{4hc}{E_0}$"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En développant $\\lambda=1/[R_H(\\frac14-\\frac{1}{p^2})]$ avec $R_H=E_0/(hc)$, on obtient $\\lambda=\\frac{4hc}{E_0}\\times\\frac{p^2}{p^2-4}$, donc $\\lambda_0=4hc/E_0$.",
+      "concept": "Physique atomique — série de Balmer",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 8,
+      "question": "Des électrons, émis avec une vitesse initiale nulle du filament d'un canon à électrons, sont accélérés par une tension U. La vitesse des électrons à l'anode A étant $V_0=1{,}2\\times10^4$ km/s, la tension U vaut alors ($q=1{,}6\\times10^{-19}$ C, $m=9{,}1\\times10^{-31}$ kg) :",
+      "propositions": {
+        "A": "$4,095 \\times 10^4$ V",
+        "B": "1638 V",
+        "C": "2442 V",
+        "D": "409,5 V"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$V_0=1{,}2\\times10^7$ m/s. Par $qU=\\frac12mV_0^2$, on obtient $U=\\dfrac{mV_0^2}{2q}\\approx409{,}5$ V.",
+      "concept": "Électricité — accélération de particules chargées",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 9,
+      "question": "La fréquence de la tension sinusoïdale délivrée par un générateur est $f=100$ Hz. Une bobine de résistance (r) et d'inductance $L=34$ mH est branchée aux bornes de ce générateur. L'impédance du circuit vaut $Z_c=60\\ \\Omega$. La résistance (r) de la bobine est égale à :",
+      "propositions": { "A": "56 Ω", "B": "60 Ω", "C": "94 Ω", "D": "0,6 Ω" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$X_L=2\\pi fL\\approx21{,}4\\ \\Omega$. Comme $Z=\\sqrt{r^2+X_L^2}$, on a $r=\\sqrt{Z^2-X_L^2}=\\sqrt{60^2-21{,}4^2}\\approx56\\ \\Omega$.",
+      "concept": "Électricité — impédance d'une bobine",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 10,
+      "question": "Un dipôle possède les caractéristiques suivantes : $R=20\\ \\Omega$; $L=500$ mH; $C=100$ µF. Il est alimenté par un GBF qui délivre une tension alternative sinusoïdale de fréquence $f_0$ qui provoque la résonance du dipôle (R, L, C). La valeur du facteur de qualité Q est :",
+      "propositions": { "A": "20", "B": "$3,5 \\times 10^{-6}$", "C": "3,5", "D": "5" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "À la résonance, le facteur de qualité s'écrit $Q=\\dfrac{1}{R}\\sqrt{\\dfrac{L}{C}}=\\dfrac{1}{20}\\sqrt{\\dfrac{0{,}5}{10^{-4}}}\\approx3{,}5$.",
+      "concept": "Électricité — résonance RLC, facteur de qualité",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 11,
+      "question": "Une particule, de charge $q<0$ et de masse m, plongée dans un champ magnétique $\\vec{B}$, possède un mouvement circulaire et uniforme de période T, de vitesse $V_0$. Le rayon de la trajectoire étant R. L'expression de la période T du mouvement est :",
+      "propositions": {
+        "A": "$T = \\frac{2\\pi m}{|q|B}$",
+        "B": "$T = \\frac{mV_0}{|q|B}$",
+        "C": "$T = \\frac{\\pi m}{|q|B}$",
+        "D": "$T = \\frac{|q|BR}{m}$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Formule classique de la période cyclotron : $T=2\\pi m/(|q|B)$, indépendante de la vitesse et du rayon.",
+      "concept": "Mouvement circulaire d'une particule chargée",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 12,
+      "question": "L'activité A d'un échantillon X qui se désintègre est fonction du temps (t) selon la relation : $A = 6 \\times 10^{-8} \\times e^{-5 \\times 10^{-7}t}$. La période radioactive T de l'échantillon est :",
+      "propositions": {
+        "A": "$1,4 \\times 10^6$ s",
+        "B": "$5 \\times 10^{-7}$ s",
+        "C": "$6 \\times 10^{-8}$ s",
+        "D": "$2 \\times 10^6$ s"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La constante radioactive est $\\lambda=5\\times10^{-7}\\ \\text{s}^{-1}$ (lue dans l'exponentielle). $T=\\ln2/\\lambda\\approx1{,}39\\times10^6$ s, soit environ $1{,}4\\times10^6$ s.",
+      "concept": "Radioactivité — période radioactive",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 13,
+      "question": "Un composé organique A a pour formule brute $C_xH_yO$. La combustion complète de 0,04 mol de A donne 4,32 g d'eau et 5 L de dioxyde de carbone. Dans les conditions de l'expérience, le volume molaire gazeux est de 25 L/mol. La formule brute du composé A est :",
+      "propositions": {
+        "A": "$C_5H_{10}O$",
+        "B": "$C_4H_{10}O$",
+        "C": "$C_5H_{12}O$",
+        "D": "$C_5H_{16}O$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$n(CO_2)=5/25=0{,}2$ mol, donc $x=n(CO_2)/n(A)=0{,}2/0{,}04=5$. $n(H_2O)=4{,}32/18=0{,}24$ mol, donc $y=2\\times n(H_2O)/n(A)=2\\times0{,}24/0{,}04=12$. La formule brute est donc $C_5H_{12}O$.",
+      "concept": "Chimie organique — combustion, formule brute",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 14,
+      "question": "Quelle est la masse de produit obtenu si on a fait réagir 30 g de triméthylamine avec 35 g d'iodométhane sachant que le rendement de la réaction est de 85% ? ($M$(triméthylamine)$=59{,}112$ g/mol ; $M$(iodométhane)$=141{,}939$ g/mol)",
+      "propositions": { "A": "18,27 g", "B": "49,58 g", "C": "42,14 g", "D": "39,66 g" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$n(\\text{amine})\\approx0{,}508$ mol, $n(\\text{iodométhane})\\approx0{,}247$ mol : le réactif limitant est l'iodométhane. Le produit (iodure de tétraméthylammonium) a pour masse molaire $59{,}112+141{,}939\\approx201{,}05$ g/mol. Masse théorique $\\approx0{,}247\\times201{,}05\\approx49{,}6$ g, puis avec un rendement de 85% : $\\approx42{,}1$ g.",
+      "concept": "Chimie organique — quaternisation, rendement",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 15,
+      "question": "On considère un acide carboxylique à chaîne carbonée saturée A de formule R-COOH. On transforme entièrement une masse $m=2{,}96$ g de A en son chlorure d'acyle B, que l'on hydrolyse complètement. Le chlorure d'hydrogène formé est recueilli et dissous dans l'eau. Le virage du BBT est observé après avoir versé $V=19{,}9$ cm³ de solution de soude de concentration $C=2{,}01$ mol/L. La masse molaire de A est :",
+      "propositions": {
+        "A": "93 g/mol",
+        "B": "74 g/mol",
+        "C": "59 g/mol",
+        "D": "44 g/mol"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$n(HCl)=n(NaOH)=C\\times V\\approx0{,}04$ mol. Chaque mole de A donne une mole de HCl (via le chlorure d'acyle) : $n(A)=n(HCl)\\approx0{,}04$ mol, donc $M(A)=2{,}96/0{,}04=74$ g/mol.",
+      "concept": "Chimie organique — chlorures d'acyle, dosage",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 16,
+      "question": "Le volume d'eau ajouté à 24 mL de solution de NaOH de concentration 0,3 mol/L pour obtenir une solution à pH = 11,8 est :",
+      "propositions": { "A": "1,141 L", "B": "1,117 L", "C": "1,042 L", "D": "1,002 L" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$n(NaOH)=0{,}024\\times0{,}3=7{,}2\\times10^{-3}$ mol. À pH=11,8, $[OH^-]=10^{-(14-11,8)}\\approx6{,}31\\times10^{-3}$ mol/L. Volume total $=n/[OH^-]\\approx1{,}141$ L, donc volume d'eau ajouté $\\approx1{,}141-0{,}024\\approx1{,}117$ L.",
+      "concept": "Chimie — dilution et pH d'une base forte",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 17,
+      "question": "On fait réagir l'amine secondaire A avec un acide carboxylique B. On obtient après chauffage un composé C dont l'analyse de 0,645 g montre qu'il contient 0,07 g d'azote. La formule brute du composé C est :",
+      "propositions": {
+        "A": "$C_7H_{15}ON$",
+        "B": "$C_6H_{13}ON_2$",
+        "C": "$C_7H_{11}O_2N$",
+        "D": "$C_5H_{11}O_2N$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le pourcentage massique d'azote est $0{,}07/0{,}645\\approx10{,}85\\%$, ce qui correspond à une masse molaire de 129 g/mol (partagée par A et B). Or C résulte de la réaction d'UNE amine (1 azote) avec UN acide carboxylique (0 azote) : le produit ne peut contenir qu'un seul atome d'azote, ce qui élimine B (2 azotes) au profit de A ($C_7H_{15}ON$, un seul O et un seul N, cohérent avec un amide).",
+      "concept": "Chimie organique — amides, composition élémentaire",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 18,
+      "question": "L'acide lactique a un $K_a$ de $1{,}3\\times10^{-4}$. Le $pK_b$ de la base conjuguée est :",
+      "propositions": { "A": "7,74", "B": "10,1", "C": "12", "D": "14" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$pK_a=-\\log(1{,}3\\times10^{-4})\\approx3{,}89$. Comme $pK_a+pK_b=14$, on a $pK_b\\approx14-3{,}89\\approx10{,}1$.",
+      "concept": "Chimie — couple acide-base, pKa/pKb",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 19,
+      "question": "Déterminer les formules brutes (FB) et semi-développées (FSD) d'un acide α-aminé A constitué d'une chaîne carbonée saturée non cyclique et ramifiée :",
+      "propositions": {
+        "A": "FB: $C_5H_{11}NO_2$; FSD: $(CH_3)_2CH{-}CH(NH_2){-}COOH$",
+        "B": "FB: $C_4H_9NO_3$; FSD: $CH_3{-}CH(OH){-}CH(NH_2){-}COOH$",
+        "C": "FB: $C_6H_{13}NO_2$; FSD: $CH_3{-}CH_2{-}CH(CH_3){-}CH(NH_2){-}COOH$",
+        "D": "FB: $C_5H_{13}NO_2$; FSD: $CH_3{-}CH_2{-}CH_2{-}CH(NH_2){-}COOH$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'énoncé source indique une masse molaire manifestement erronée (« 1,87 g/mol », impossible pour un acide aminé). En s'appuyant sur la description structurelle (chaîne ramifiée), seule l'option A propose une structure effectivement ramifiée avec deux oxygènes et un azote — c'est la valine, dont la masse molaire réelle est 117 g/mol. L'option D a la même masse molaire mais une chaîne linéaire, incompatible avec « ramifiée » ; l'option B contient un troisième oxygène (hydroxyle) non prévu par l'énoncé.",
+      "concept": "Chimie organique — acides α-aminés",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 20,
+      "question": "On vaporise entièrement une masse $m=8{,}5$ g d'un acide aminé. Le volume de gaz obtenu mesuré dans les conditions normales vaut $V=2{,}13$ dm³. La densité de cet acide est (masse volumique de l'air $\\mu=1{,}3$ g/L) :",
+      "propositions": { "A": "2", "B": "3,07", "C": "1,27", "D": "1" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La masse volumique du gaz vaporisé est $m/V=8{,}5/2{,}13\\approx3{,}99$ g/L. La densité par rapport à l'air est le rapport des masses volumiques : $3{,}99/1{,}3\\approx3{,}07$.",
+      "concept": "Chimie — densité d'un gaz",
+      "difficulte": "Moyenne"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

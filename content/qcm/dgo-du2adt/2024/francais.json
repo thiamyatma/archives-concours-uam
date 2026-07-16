@@ -1,0 +1,333 @@
+{
+  "matiere": "Français",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 1,
+      "question": "Trouver un titre au texte.",
+      "propositions": {
+        "A": "Intelligence artificielle : défis et considérations éthiques",
+        "B": "Intelligence artificielle : perspectives et développements actuels",
+        "C": "Intelligence artificielle : applications émergentes",
+        "D": "Intelligence artificielle : systèmes actuels"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte ne se limite ni aux enjeux éthiques (A) ni aux seules applications (C) : il balaie l'évolution de l'IA, ses techniques et ses usages actuels, ce que résume le titre B.",
+      "concept": "Compréhension écrite — idée générale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 2,
+      "question": "Quelle est l'idée générale du texte ?",
+      "propositions": {
+        "A": "Les progrès en apprentissage automatique",
+        "B": "Le traitement du langage naturel par l'intelligence artificielle",
+        "C": "Les développements récents dans le domaine de l'intelligence artificielle et leur impact sur divers secteurs industriels",
+        "D": "L'impact de l'intelligence artificielle sur divers secteurs industriels"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "A et B ne couvrent qu'une partie du texte (ML, puis NLP). D omet la dimension « développements récents » pourtant centrale dans les premiers paragraphes. C est la seule option qui réunit les deux axes du texte.",
+      "concept": "Compréhension écrite — idée générale",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 3,
+      "question": "Selon ce texte, le langage naturel relève :",
+      "propositions": {
+        "A": "exclusivement de l'humain",
+        "B": "de l'humain et de l'informatique (ordinateur)",
+        "C": "exclusivement de l'informatique",
+        "D": "ni de l'humain, ni de l'informatique"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte explique que le NLP « vise à permettre aux machines de comprendre et de générer du langage humain » : il s'agit bien d'une interaction entre langage humain et traitement informatique.",
+      "concept": "Compréhension écrite — inférence",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 4,
+      "question": "Selon ce texte, le DL produit des modèles :",
+      "propositions": {
+        "A": "efficaces exclusivement dans le traitement du langage naturel",
+        "B": "moins efficaces que le ML dans la reconnaissance d'images",
+        "C": "inefficaces dans la reconnaissance d'images et le traitement du langage naturel",
+        "D": "très opérants dans la reconnaissance d'images et le traitement du langage naturel"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte est explicite : les modèles de DL (CNN, RNN) « sont particulièrement efficaces pour les tâches de reconnaissance d'images et de traitement du langage naturel ».",
+      "concept": "Compréhension écrite — repérage d'information",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 5,
+      "question": "Les progrès en apprentissage automatique, apprentissage profond et traitement du langage naturel sont analysés pour :",
+      "propositions": {
+        "A": "comprendre le processus d'amélioration de la reconnaissance d'images et du traitement du langage naturel.",
+        "B": "comprendre les défis et considérations éthiques à relever",
+        "C": "comprendre leur impact sur divers secteurs industriels",
+        "D": "comprendre comment détecter, avec précision, des maladies comme le cancer"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Après avoir présenté ML/DL/NLP, le texte enchaîne systématiquement sur leurs usages en santé, transport et finance : l'objectif de l'analyse est bien l'impact sectoriel, D n'étant qu'un exemple isolé de C.",
+      "concept": "Compréhension écrite — idée générale",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 6,
+      "question": "Le secteur économique impacté par les applications émergentes de l'intelligence artificielle est :",
+      "propositions": {
+        "A": "le secteur tertiaire",
+        "B": "le secteur secondaire",
+        "C": "le secteur primaire",
+        "D": "aucun de ces secteurs"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Santé, transport et finance sont des activités de services : elles relèvent du secteur tertiaire, contrairement à l'industrie manufacturière (secondaire) ou à l'agriculture/l'extraction (primaire).",
+      "concept": "Compréhension écrite — culture générale économique",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 7,
+      "question": "Les défis actuels à relever pour minimiser les risques liés à l'intelligence artificielle consistent à :",
+      "propositions": {
+        "A": "protéger les données sensibles contre les cyberattaques",
+        "B": "assurer la transparence des modèles d'intelligence artificielle",
+        "C": "garantir l'équité des systèmes",
+        "D": "toutes ces réponses à la fois"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Les trois derniers paragraphes du texte évoquent successivement l'équité (biais), la transparence/explicabilité et la sécurité face aux cyberattaques : les trois défis sont cités, donc D.",
+      "concept": "Compréhension écrite — repérage d'information",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 8,
+      "question": "Quelle est la structure du texte ?",
+      "propositions": {
+        "A": "Applications émergentes de l'IA ; Défis et considérations éthiques ; Avancées récentes en IA",
+        "B": "Défis et considérations éthiques ; Avancées récentes en IA ; Applications émergentes de l'IA",
+        "C": "Avancées récentes en IA ; Applications émergentes de l'IA ; Défis et considérations éthiques",
+        "D": "Avancées récentes en IA ; Défis et considérations éthiques"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le texte suit précisément cet ordre : présentation de l'IA/ML/DL/NLP, puis ses applications (santé, transport, finance), puis les défis éthiques et sécuritaires en conclusion.",
+      "concept": "Compréhension écrite — structure du texte",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 9,
+      "question": "« Les modèles complexes sont souvent considérés comme des \"boîtes noires\" », parce que leurs décisions sont :",
+      "propositions": {
+        "A": "inexplicables",
+        "B": "transparentes",
+        "C": "transparentes et explicables",
+        "D": "inexplicables mais transparentes"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La phrase suivante précise que « des efforts sont en cours pour développer des techniques permettant d'expliquer les décisions » : elles ne le sont donc pas encore, d'où l'image de la boîte noire.",
+      "concept": "Compréhension écrite — inférence",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 10,
+      "question": "Cet article passe en revue :",
+      "propositions": {
+        "A": "les développements récents dans le domaine de l'intelligence artificielle",
+        "B": "les applications émergentes liées au développement de l'intelligence artificielle",
+        "C": "les défis et les considérations éthiques associées à l'intelligence artificielle",
+        "D": "toutes ces réponses à la fois"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Comme le confirme la question sur la structure du texte (Q8), les trois thèmes A, B et C sont chacun développés dans une partie distincte de l'article.",
+      "concept": "Compréhension écrite — idée générale",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 11,
+      "question": "L'intelligence artificielle est :",
+      "propositions": {
+        "A": "une application et un algorithme",
+        "B": "un ensemble de techniques et de technologies",
+        "C": "un système, une application et un algorithme",
+        "D": "une application avec un système"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Dès la première phrase, le texte définit l'IA comme englobant « une vaste gamme de techniques et de technologies », formulation reprise mot pour mot par l'option B.",
+      "concept": "Compréhension écrite — repérage d'information",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 12,
+      "question": "Lequel des articles ci-dessous doit être employé dans la phrase ci-après : « Il faudra (……) rendre leurs affaires » ?",
+      "propositions": {
+        "A": "le",
+        "B": "les",
+        "C": "la",
+        "D": "leur"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Leurs affaires » est déjà le complément d'objet direct : il faut donc un pronom personnel complément d'objet indirect (« à eux ») pour indiquer à qui l'on rend ces affaires — c'est « leur ».",
+      "concept": "Grammaire — pronoms compléments",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 13,
+      "question": "Lequel des pronoms ci-dessous doit être utilisé dans la phrase ci-après : « Je participerai à l'événement (……) tu m'as parlé ».",
+      "propositions": {
+        "A": "dont",
+        "B": "duquel",
+        "C": "que",
+        "D": "auquel"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le verbe « parler » se construit avec « de » (parler de quelque chose) ; le pronom relatif remplaçant un complément en « de » est « dont ».",
+      "concept": "Grammaire — pronoms relatifs",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 14,
+      "question": "Exprimer la cause en utilisant la conjonction de subordination appropriée dans la phrase ci-après : « La réunion ne s'était pas tenue, (……) le trésorier était absent. »",
+      "propositions": {
+        "A": "Par conséquent",
+        "B": "Parce que",
+        "C": "En conséquence",
+        "D": "Puisque"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Par conséquent » et « en conséquence » introduisent une conséquence, pas une cause. « Parce que » est le connecteur de cause de référence dans ce type d'exercice.",
+      "concept": "Grammaire — expression de la cause",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 15,
+      "question": "Exprimer la conséquence en utilisant la conjonction de subordination appropriée dans la phrase ci-après : « Vous êtes arrivés en retard. (……), le professeur peut vous renvoyer. »",
+      "propositions": {
+        "A": "Parce que",
+        "B": "En conséquence",
+        "C": "Puisque",
+        "D": "Par conséquent"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Parce que » et « puisque » expriment une cause, l'inverse de ce qui est demandé. « Par conséquent » est le connecteur de conséquence attendu, symétrique de « parce que » utilisé à la question précédente.",
+      "concept": "Grammaire — expression de la conséquence",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 16,
+      "question": "Trouver la bonne conjugaison du verbe entre parenthèses pour exprimer l'antériorité entre les actions dans la phrase ci-après : « Vous nous aviez dit que vous (régler) votre facture. »",
+      "propositions": {
+        "A": "avez réglé",
+        "B": "réglerez",
+        "C": "aviez réglé",
+        "D": "régliez"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La proposition principale est au plus-que-parfait (« aviez dit ») ; pour exprimer une action antérieure à une autre action passée, on emploie aussi le plus-que-parfait : « aviez réglé ».",
+      "concept": "Conjugaison — concordance des temps",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 17,
+      "question": "Trouver la bonne conjugaison du verbe entre parenthèses pour exprimer la postériorité entre les actions dans la phrase ci-après : « Vous nous direz quand vous (régler) votre facture. »",
+      "propositions": {
+        "A": "avez réglé",
+        "B": "aviez réglé",
+        "C": "régleriez",
+        "D": "aurez réglé"
+      },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Règle classique « quand + futur antérieur, futur simple » : l'action de régler doit être achevée avant le moment futur où elle sera annoncée, d'où « aurez réglé ».",
+      "concept": "Conjugaison — concordance des temps",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 18,
+      "question": "Trouver la phrase dont le sens évoque l'absence du professeur :",
+      "propositions": {
+        "A": "Le professeur a dit l'élève est absent.",
+        "B": "Le professeur a dit : l'élève est absent.",
+        "C": "Le professeur, a dit l'élève, est absent.",
+        "D": "Le professeur a dit, l'élève est absent."
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Dans C, « a dit l'élève » est une incise : c'est l'élève qui parle et affirme que le professeur est absent. Dans B et D, c'est le professeur qui parle et annonce l'absence de l'élève.",
+      "concept": "Orthographe — ponctuation et sens",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 19,
+      "question": "Utiliser le mot qui convient pour compléter la phrase ci-après : « Le policier était de (……) toute la nuit devant la présidence de la République. »",
+      "propositions": {
+        "A": "fiction",
+        "B": "faction",
+        "C": "fraction",
+        "D": "friction"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "« Être de faction » est une expression figée signifiant monter la garde, en sentinelle — sens confirmé par le contexte (« toute la nuit devant la présidence »).",
+      "concept": "Lexique — paronymes",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 20,
+      "question": "Trouver la bonne formulation :",
+      "propositions": {
+        "A": "Après que vous êtes parti du bureau",
+        "B": "Après que vous partiez du bureau",
+        "C": "Après que vous soyez parti du bureau",
+        "D": "Après que vous partez du bureau"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Contrairement à « avant que », la locution « après que » est prescriptivement suivie de l'indicatif, car elle introduit un fait acquis. L'emploi du subjonctif (C) est un usage courant mais fautif.",
+      "concept": "Grammaire — mode après une locution conjonctive",
+      "difficulte": "Difficile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}

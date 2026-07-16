@@ -1,0 +1,263 @@
+{
+  "matiere": "Mathématiques",
+  "nombre_questions": 20,
+  "questions": [
+    {
+      "numero": 21,
+      "question": "Soit la fonction $f(x) = x^3 - 3x^2 + 2$. Quelle est sa dérivée $f'(x)$ ?",
+      "propositions": {
+        "A": "$3x^2 - 6x$",
+        "B": "$3x^2 - 6x + 2$",
+        "C": "$x^2 - 3x$",
+        "D": "$3x^2 + 6x$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$(x^3)'=3x^2$, $(-3x^2)'=-6x$ et la constante $2$ disparaît en dérivant : $f'(x)=3x^2-6x$.",
+      "concept": "Dérivation — polynômes",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 22,
+      "question": "Calculer la limite suivante : $\\lim_{x\\to0} \\frac{\\sin(2x)}{x}$",
+      "propositions": { "A": "0", "B": "1", "C": "2", "D": "8" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En écrivant $\\frac{\\sin(2x)}{x}=2\\times\\frac{\\sin(2x)}{2x}$ et en utilisant $\\lim_{u\\to0}\\frac{\\sin u}{u}=1$ (avec $u=2x$), la limite vaut $2\\times1=2$.",
+      "concept": "Limites — limite de référence sin(x)/x",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 23,
+      "question": "Soit $(u_n)$ une suite géométrique de raison 2 et de premier terme $u_0 = 3$. Quelle est la valeur du terme $u_5$ ?",
+      "propositions": { "A": "48", "B": "64", "C": "96", "D": "128" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$u_5=u_0\\times q^5=3\\times2^5=3\\times32=96$.",
+      "concept": "Suites géométriques",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 24,
+      "question": "Résoudre $\\ln(x^2 - 1) = 0$ (en tenant compte du domaine de définition) :",
+      "propositions": {
+        "A": "$x = \\sqrt{2}$",
+        "B": "$x = e$",
+        "C": "$x = \\pm\\sqrt{2}$",
+        "D": "$x = \\pm e$"
+      },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\ln(x^2-1)=0 \\Rightarrow x^2-1=1 \\Rightarrow x^2=2 \\Rightarrow x=\\pm\\sqrt2$. Les deux valeurs vérifient bien $x^2-1>0$.",
+      "concept": "Équations logarithmiques",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 25,
+      "question": "Simplifier l'expression suivante $e^{2\\ln 3}$:",
+      "propositions": { "A": "6", "B": "9", "C": "$e^6$", "D": "$3 e^2$" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$e^{2\\ln3}=e^{\\ln(3^2)}=3^2=9$.",
+      "concept": "Fonctions exponentielle et logarithme — propriétés",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 26,
+      "question": "Soient $A(1;2)$ et $B(4;6)$. Quelle est la distance AB entre ces deux points ?",
+      "propositions": { "A": "3", "B": "4", "C": "5", "D": "6" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$AB=\\sqrt{(4-1)^2+(6-2)^2}=\\sqrt{9+16}=\\sqrt{25}=5$.",
+      "concept": "Géométrie analytique — distance",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 27,
+      "question": "Résoudre l'équation suivante dans l'intervalle [0; π] : $\\cos x = 1/2$",
+      "propositions": {
+        "A": "$\\pi/6$",
+        "B": "$\\pi/3$",
+        "C": "$\\pi/4$",
+        "D": "$\\pi/2$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "La valeur remarquable $\\cos(\\pi/3)=1/2$ est à connaître par cœur ; c'est la seule solution dans $[0;\\pi]$.",
+      "concept": "Trigonométrie — valeurs remarquables",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 28,
+      "question": "Calculer l'expression suivante $(1+i)^2$:",
+      "propositions": { "A": "$1+i$", "B": "$2i$", "C": "$1+2i$", "D": "$2+2i$" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$(1+i)^2=1+2i+i^2=1+2i-1=2i$.",
+      "concept": "Nombres complexes — calculs",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 29,
+      "question": "Soit $A = \\begin{pmatrix} 1 & 2 \\\\ 3 & 4 \\end{pmatrix}$. Quel est le déterminant de la matrice A ?",
+      "propositions": { "A": "-2", "B": "2", "C": "5", "D": "10" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\det(A)=1\\times4-2\\times3=4-6=-2$.",
+      "concept": "Matrices — déterminant 2×2",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 30,
+      "question": "Calculer la valeur de l'intégrale définie suivante: $\\int_0^1 (2x+1) dx$:",
+      "propositions": { "A": "1", "B": "2", "C": "3", "D": "4" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une primitive est $x^2+x$ ; $[x^2+x]_0^1=(1+1)-(0)=2$.",
+      "concept": "Intégrales — calcul direct",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 31,
+      "question": "On lance deux dés équilibrés à six faces. Quelle est la probabilité d'obtenir un double (c'est-à-dire deux faces identiques) ?",
+      "propositions": { "A": "1/6", "B": "1/12", "C": "1/18", "D": "1/36" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "6 doubles favorables (1-1, 2-2, ..., 6-6) sur 36 issues équiprobables : $6/36=1/6$.",
+      "concept": "Probabilités — dénombrement",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 32,
+      "question": "Pour une série statistique de moyenne 10 et écart-type 2, quel est le coefficient de variation exprimé en pourcentage?",
+      "propositions": { "A": "5%", "B": "10%", "C": "20%", "D": "50%" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Le coefficient de variation est $\\sigma/\\bar{x}=2/10=0{,}20=20\\%$.",
+      "concept": "Statistiques — coefficient de variation",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 33,
+      "question": "Soit la fonction $f(x) = \\frac{x^2 - 4}{x - 2}$. Quelle est la valeur de $\\lim_{x\\to2} f(x)$ ?",
+      "propositions": { "A": "0", "B": "2", "C": "4", "D": "Indéterminée" },
+      "bonne_reponse": "C",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "En factorisant, $\\frac{x^2-4}{x-2}=\\frac{(x-2)(x+2)}{x-2}=x+2$ pour $x\\neq2$, donc la limite quand $x\\to2$ vaut $2+2=4$.",
+      "concept": "Limites — forme indéterminée 0/0",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 34,
+      "question": "Soient deux vecteurs $\\vec{u}=(1;2)$ et $\\vec{v}=(3;1)$, quel est le produit scalaire $\\vec{u} \\cdot \\vec{v}$ ?",
+      "propositions": { "A": "1", "B": "2", "C": "3", "D": "5" },
+      "bonne_reponse": "D",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\vec{u}\\cdot\\vec{v}=1\\times3+2\\times1=3+2=5$.",
+      "concept": "Vecteurs — produit scalaire",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 35,
+      "question": "Quelle est la solution générale de l'équation différentielle $y' = 2y$ ?",
+      "propositions": {
+        "A": "$y = Ce^{2x}$",
+        "B": "$y = Ce^{-2x}$",
+        "C": "$y = 2x + C$",
+        "D": "$y = x^2 + C$"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "L'équation $y'=ky$ a pour solution générale $y=Ce^{kx}$ ; ici $k=2$, d'où $y=Ce^{2x}$.",
+      "concept": "Équations différentielles — y'=ky",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 36,
+      "question": "Dans un sac contenant 3 boules rouges, 4 boules jaunes et 2 boules vertes indiscernables au toucher, on tire successivement sans remise trois boules de ce sac. La probabilité de l'événement « l'une seulement des boules est rouge » est :",
+      "propositions": { "A": "15/28", "B": "5/28", "C": "3/14", "D": "9/28" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$P=\\dfrac{C_3^1\\times C_6^2}{C_9^3}=\\dfrac{3\\times15}{84}=\\dfrac{45}{84}=\\dfrac{15}{28}$ (choisir 1 rouge parmi 3, et 2 boules non rouges parmi les 6 restantes).",
+      "concept": "Probabilités — tirages sans remise",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 37,
+      "question": "Soit $P(x) = x^2 - 5x + 6$. Quelles sont les racines de ce polynôme ?",
+      "propositions": { "A": "1 et 6", "B": "2 et 3", "C": "-2 et -3", "D": "0 et 5" },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$\\Delta=25-24=1$, racines $x=\\frac{5\\pm1}{2}$, soit $2$ et $3$ — on vérifie aussi que $2\\times3=6$ et $2+3=5$.",
+      "concept": "Polynômes — racines du second degré",
+      "difficulte": "Facile"
+    },
+    {
+      "numero": 38,
+      "question": "Si l'implication logique $P \\Rightarrow Q$ est fausse, alors:",
+      "propositions": {
+        "A": "P est vrai et Q est faux",
+        "B": "P est faux et Q est vrai",
+        "C": "P et Q sont vrais",
+        "D": "P et Q sont faux"
+      },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Une implication $P\\Rightarrow Q$ n'est fausse que dans le seul cas où la prémisse P est vraie et la conclusion Q est fausse.",
+      "concept": "Logique — implication",
+      "difficulte": "Moyenne"
+    },
+    {
+      "numero": 39,
+      "question": "Un arrondissement de m habitants compte 48% d'hommes. Des études statistiques montrent que: 4% des hommes et 7% des femmes sont atteints de paludisme. On choisit un individu au hasard parmi ces habitants. La probabilité pour qu'il soit « atteint de paludisme » est:",
+      "propositions": { "A": "0,0556", "B": "0,0672", "C": "0,045", "D": "0,052" },
+      "bonne_reponse": "A",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "Formule des probabilités totales : $P=0{,}48\\times0{,}04+0{,}52\\times0{,}07=0{,}0192+0{,}0364=0{,}0556$.",
+      "concept": "Probabilités — probabilités totales",
+      "difficulte": "Difficile"
+    },
+    {
+      "numero": 40,
+      "question": "Soit $f(x) = x^2$ et $g(x) = x + 1$. Quelle est la fonction composée $f \\circ g(x)$ ?",
+      "propositions": {
+        "A": "$x^2 + 1$",
+        "B": "$x^2 + 2x + 1$",
+        "C": "$x^2 + x$",
+        "D": "$x^3 + x^2$"
+      },
+      "bonne_reponse": "B",
+      "reponse_candidat": null,
+      "resultat": null,
+      "justification": "$f\\circ g(x)=f(g(x))=(x+1)^2=x^2+2x+1$.",
+      "concept": "Fonctions — composition",
+      "difficulte": "Facile"
+    }
+  ],
+  "resume": {
+    "score": null,
+    "pourcentage": null,
+    "niveau": null,
+    "commentaire": null,
+    "chapitres_a_revoir": null
+  }
+}
