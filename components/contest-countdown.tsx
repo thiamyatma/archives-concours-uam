@@ -6,8 +6,8 @@ import { fr } from "date-fns/locale";
 import {
   CheckCircle2,
   FileText,
+  FileUp,
   Hourglass,
-  Info,
   Megaphone,
   PartyPopper,
   type LucideIcon,
@@ -72,8 +72,8 @@ export function ContestCountdown({
           </Button>
           <Button asChild variant="outline" size="lg">
             <a href={config.registrationUrl} target="_blank" rel="noopener noreferrer">
-              <Info className="size-4" aria-hidden="true" />
-              Informations sur le concours
+              <FileUp className="size-4" aria-hidden="true" />
+              Déposer mon dossier
             </a>
           </Button>
         </div>
