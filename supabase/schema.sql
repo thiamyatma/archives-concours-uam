@@ -545,6 +545,8 @@ create table if not exists public.contest_settings (
   countdown jsonb not null default '{}'::jsonb,
   buttons jsonb not null default '{}'::jsonb,
   info jsonb not null default '{}'::jsonb,
+  seo jsonb not null default '{}'::jsonb,
+  stats jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now(),
   constraint contest_settings_singleton check (id)
 );
@@ -555,4 +557,22 @@ create trigger contest_settings_set_updated_at
   for each row execute function public.set_updated_at();
 
 alter table public.contest_settings enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role.
+
+-- Historique des modifications de contest_settings (une ligne par champ
+-- modifié — voir lib/contest/history.ts). admin_email dénormalisé : reste
+-- lisible même si le compte est supprimé plus tard.
+create table if not exists public.contest_settings_history (
+  id uuid primary key default gen_random_uuid(),
+  changed_at timestamptz not null default now(),
+  admin_email text not null,
+  field_path text not null,
+  old_value text,
+  new_value text
+);
+
+create index if not exists contest_settings_history_changed_at_idx
+  on public.contest_settings_history (changed_at desc);
+
+alter table public.contest_settings_history enable row level security;
 -- Aucune policy publique : lu/écrit uniquement par le service role.

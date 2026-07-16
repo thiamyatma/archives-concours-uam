@@ -19,9 +19,11 @@ import {
 import { DateField } from "@/components/admin/date-field";
 import { ContestBanner } from "@/components/contest-banner";
 import { ContestCountdown } from "@/components/contest-countdown";
+import { ContestStatsRow, type ContestStatsValues } from "@/components/contest-stats-row";
 import { updateContestSettings } from "@/lib/actions/contest-settings";
 import type { BannerType, ContestSettings, CountdownPosition } from "@/lib/contest/types";
 import type { ContestSettingsInput } from "@/lib/contest/schema";
+import type { ContestSettingsHistoryEntry } from "@/lib/contest/history";
 
 const MESSAGE_FIELDS: { key: keyof ContestSettings["messages"]; label: string }[] = [
   { key: "beforeRegistration", label: "Avant les inscriptions" },
@@ -55,17 +57,30 @@ function toInput(s: ContestSettings): ContestSettingsInput {
     countdown: s.countdown,
     buttons: s.buttons,
     info: s.info,
+    seo: s.seo,
+    stats: s.stats,
   };
 }
 
-export function ContestSettingsForm({ initial }: { initial: ContestSettings }) {
+type SettingsGroup =
+  "messages" | "banner" | "countdown" | "buttons" | "info" | "seo" | "stats";
+
+export function ContestSettingsForm({
+  initial,
+  history,
+  statsValues,
+}: {
+  initial: ContestSettings;
+  history: ContestSettingsHistoryEntry[];
+  statsValues: ContestStatsValues;
+}) {
   const [settings, setSettings] = useState<ContestSettings>(initial);
   const [saving, setSaving] = useState(false);
 
   function patch(update: Partial<ContestSettings>) {
     setSettings((current) => ({ ...current, ...update }));
   }
-  function patchGroup<G extends "messages" | "banner" | "countdown" | "buttons" | "info">(
+  function patchGroup<G extends SettingsGroup>(
     group: G,
     value: Partial<ContestSettings[G]>
   ) {
@@ -98,6 +113,9 @@ export function ContestSettingsForm({ initial }: { initial: ContestSettings }) {
             <TabsTrigger value="countdown">Compte à rebours</TabsTrigger>
             <TabsTrigger value="buttons">Boutons</TabsTrigger>
             <TabsTrigger value="info">Infos concours</TabsTrigger>
+            <TabsTrigger value="stats">Statistiques</TabsTrigger>
+            <TabsTrigger value="seo">SEO</TabsTrigger>
+            <TabsTrigger value="history">Historique</TabsTrigger>
           </TabsList>
 
           {/* Général */}
@@ -286,7 +304,13 @@ export function ContestSettingsForm({ initial }: { initial: ContestSettings }) {
                 checked={settings.countdown.showProgress}
                 onCheckedChange={(v) => patchGroup("countdown", { showProgress: v })}
               />
-              <Field label="Position du widget flottant (bientôt)" htmlFor="cd-position">
+              <SwitchField
+                id="cd-floating"
+                label="Activer le widget flottant (sur tout le site)"
+                checked={settings.countdown.floatingWidget}
+                onCheckedChange={(v) => patchGroup("countdown", { floatingWidget: v })}
+              />
+              <Field label="Position du widget flottant" htmlFor="cd-position">
                 <Select
                   value={settings.countdown.position}
                   onValueChange={(v) =>
@@ -408,6 +432,124 @@ export function ContestSettingsForm({ initial }: { initial: ContestSettings }) {
               </Field>
             </SectionCard>
           </TabsContent>
+
+          {/* Statistiques */}
+          <TabsContent value="stats">
+            <SectionCard title="Statistiques affichées sur la page d'accueil">
+              <SwitchField
+                id="stats-exams"
+                label="Nombre d'épreuves"
+                checked={settings.stats.showExams}
+                onCheckedChange={(v) => patchGroup("stats", { showExams: v })}
+              />
+              <SwitchField
+                id="stats-downloads"
+                label="Nombre de téléchargements"
+                checked={settings.stats.showDownloads}
+                onCheckedChange={(v) => patchGroup("stats", { showDownloads: v })}
+              />
+              <SwitchField
+                id="stats-views"
+                label="Vues des épreuves"
+                checked={settings.stats.showViews}
+                onCheckedChange={(v) => patchGroup("stats", { showViews: v })}
+              />
+              <p className="text-muted-foreground text-xs">
+                Il n&apos;existe pas de compteur de visites global du site (Google
+                Analytics n&apos;est pas exploitable côté serveur) : « Vues des épreuves »
+                compte les consultations réelles des pages d&apos;épreuve, déjà suivies en
+                base.
+              </p>
+            </SectionCard>
+          </TabsContent>
+
+          {/* SEO */}
+          <TabsContent value="seo">
+            <SectionCard title="Référencement de la page d'accueil">
+              <Field label="Titre SEO" htmlFor="seo-title">
+                <Input
+                  id="seo-title"
+                  value={settings.seo.title}
+                  placeholder="Vide = titre par défaut du site"
+                  onChange={(e) => patchGroup("seo", { title: e.target.value })}
+                />
+              </Field>
+              <Field label="Description SEO" htmlFor="seo-description">
+                <Textarea
+                  id="seo-description"
+                  rows={3}
+                  value={settings.seo.description}
+                  placeholder="Vide = description par défaut du site"
+                  onChange={(e) => patchGroup("seo", { description: e.target.value })}
+                />
+              </Field>
+              <Field label="Image Open Graph (URL)" htmlFor="seo-og-image">
+                <Input
+                  id="seo-og-image"
+                  value={settings.seo.ogImageUrl}
+                  placeholder="https://…"
+                  onChange={(e) => patchGroup("seo", { ogImageUrl: e.target.value })}
+                />
+              </Field>
+              <Field label="Mots-clés (séparés par des virgules)" htmlFor="seo-keywords">
+                <Input
+                  id="seo-keywords"
+                  value={settings.seo.keywords}
+                  onChange={(e) => patchGroup("seo", { keywords: e.target.value })}
+                />
+              </Field>
+            </SectionCard>
+          </TabsContent>
+
+          {/* Historique */}
+          <TabsContent value="history">
+            <SectionCard title="Historique des modifications">
+              {history.length === 0 ? (
+                <p className="text-muted-foreground text-sm">
+                  Aucune modification enregistrée pour le moment.
+                </p>
+              ) : (
+                <div className="overflow-x-auto">
+                  <table className="w-full text-left text-sm">
+                    <thead>
+                      <tr className="text-muted-foreground border-b text-xs">
+                        <th className="py-2 pr-4 font-medium">Date</th>
+                        <th className="py-2 pr-4 font-medium">Administrateur</th>
+                        <th className="py-2 pr-4 font-medium">Champ</th>
+                        <th className="py-2 pr-4 font-medium">Ancienne valeur</th>
+                        <th className="py-2 font-medium">Nouvelle valeur</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {history.map((entry) => (
+                        <tr key={entry.id} className="border-b last:border-0">
+                          <td className="text-muted-foreground py-2 pr-4 whitespace-nowrap">
+                            {new Date(entry.changedAt).toLocaleString("fr-FR")}
+                          </td>
+                          <td className="py-2 pr-4">{entry.adminEmail}</td>
+                          <td className="py-2 pr-4 font-mono text-xs">
+                            {entry.fieldPath}
+                          </td>
+                          <td
+                            className="max-w-40 truncate py-2 pr-4"
+                            title={entry.oldValue ?? ""}
+                          >
+                            {entry.oldValue ?? "—"}
+                          </td>
+                          <td
+                            className="max-w-40 truncate py-2"
+                            title={entry.newValue ?? ""}
+                          >
+                            {entry.newValue ?? "—"}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              )}
+            </SectionCard>
+          </TabsContent>
         </Tabs>
 
         <Button type="button" onClick={handleSave} disabled={saving}>
@@ -421,6 +563,7 @@ export function ContestSettingsForm({ initial }: { initial: ContestSettings }) {
           <p className="text-muted-foreground text-sm font-medium">Aperçu en direct</p>
           <ContestBanner banner={settings.banner} />
           <ContestCountdown settings={settings} />
+          <ContestStatsRow toggles={settings.stats} values={statsValues} />
         </div>
       </aside>
     </div>

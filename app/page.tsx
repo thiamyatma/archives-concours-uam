@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import { Building2, CalendarDays, LayoutGrid, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -5,15 +6,42 @@ import { DepartementCard } from "@/components/shared/departement-card";
 import { StatsSection, type StatItem } from "@/components/shared/stats-section";
 import { ContestBanner } from "@/components/contest-banner";
 import { ContestCountdown } from "@/components/contest-countdown";
+import { ContestStatsRow } from "@/components/contest-stats-row";
 import { getContentManifest } from "@/lib/data/departements";
 import { getContestSettings } from "@/lib/contest/settings";
+import { getDownloadStats } from "@/lib/data/download-stats";
+import { getExamPageViewsTotal } from "@/lib/contest/page-views";
 import { SITE_SLOGAN } from "@/lib/constants";
+
+/**
+ * SEO éditable depuis /admin/parametres (onglet SEO). Un champ vide ne
+ * remplace pas la valeur par défaut du layout racine (`app/layout.tsx`) —
+ * Next.js fusionne les métadonnées champ par champ.
+ */
+export async function generateMetadata(): Promise<Metadata> {
+  const { seo } = await getContestSettings();
+  const keywords = seo.keywords
+    .split(",")
+    .map((k) => k.trim())
+    .filter(Boolean);
+
+  return {
+    title: seo.title || undefined,
+    description: seo.description || undefined,
+    keywords: keywords.length > 0 ? keywords : undefined,
+    openGraph: seo.ogImageUrl ? { images: [{ url: seo.ogImageUrl }] } : undefined,
+  };
+}
 
 export default async function HomePage() {
   const manifest = getContentManifest();
   // Paramètres du concours chargés depuis Supabase (cachés + revalidés après
   // édition admin — voir lib/contest/settings.ts). Plus aucune date en dur.
   const contestSettings = await getContestSettings();
+  const [downloadStats, examViews] = await Promise.all([
+    getDownloadStats(),
+    getExamPageViewsTotal(),
+  ]);
 
   const stats: StatItem[] = [
     { icon: Building2, label: "Départements", value: manifest.totalDepartements },
@@ -52,6 +80,14 @@ export default async function HomePage() {
       <section className="mx-auto max-w-3xl space-y-4 px-4 pt-16 sm:px-6">
         <ContestBanner banner={contestSettings.banner} />
         <ContestCountdown settings={contestSettings} />
+        <ContestStatsRow
+          toggles={contestSettings.stats}
+          values={{
+            exams: manifest.totalSessions,
+            downloads: downloadStats.totalDownloads,
+            views: examViews,
+          }}
+        />
       </section>
 
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
