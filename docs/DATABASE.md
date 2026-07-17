@@ -93,18 +93,28 @@ indépendant de Google Analytics), rate-limitée par IP+département+année.
 
 ## `qcm_attempts`
 
-| Colonne        | Type          | Notes                                  |
-| -------------- | ------------- | -------------------------------------- |
-| `id`           | `uuid` (PK)   |                                        |
-| `groupe`       | `text`        | `contentGroup`, ex. `dsti-dgae-dstaan` |
-| `annee`        | `integer`     |                                        |
-| `matiere`      | `text`        | slug, ex. `mathematiques`              |
-| `completed_at` | `timestamptz` |                                        |
+| Colonne            | Type          | Notes                                                  |
+| ------------------ | ------------- | ------------------------------------------------------ |
+| `id`               | `uuid` (PK)   |                                                        |
+| `groupe`           | `text`        | `contentGroup`, ex. `dsti-dgae-dstaan`                 |
+| `annee`            | `integer`     |                                                        |
+| `matiere`          | `text`        | slug, ex. `mathematiques`                              |
+| `departement_code` | `text`        | nullable ; département d'accès, ex. `dsti`             |
+| `candidate_id`     | `text`        | nullable ; jeton anonyme de navigateur (pas un compte) |
+| `total_questions`  | `integer`     | nullable                                               |
+| `correct_answers`  | `integer`     | nullable                                               |
+| `score_percent`    | `integer`     | nullable, 0-100 (contrainte `check`)                   |
+| `duration_seconds` | `integer`     | nullable                                               |
+| `completed_at`     | `timestamptz` |                                                        |
 
-Log insert-only, une correction QCM générée (clic sur « Voir ma correction »,
-voir [qcm-entrainement.md](qcm-entrainement.md)), rate-limitée par
-IP+groupe+année+matière. Ne contient jamais les réponses du candidat ni son
-score — uniquement de quoi compter les utilisations pour le dashboard admin.
+Log insert-only, une tentative QCM terminée (clic sur « Voir ma correction »,
+voir [qcm-entrainement.md](qcm-entrainement.md)), rate-limitée par IP. Ne
+contient jamais le détail des réponses, seulement le score agrégé + la durée.
+Les colonnes de détail sont nullable : les toutes premières lignes (quand
+seul le comptage existait) restent valides sans score. `candidate_id` relie
+les tentatives d'un même appareil pour le suivi de progression — anonyme, ce
+n'est pas un compte utilisateur. Alimente le tableau de bord Analytics QCM
+(`/admin/analytics`).
 
 ## `action_rate_limits`
 

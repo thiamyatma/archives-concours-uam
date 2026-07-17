@@ -84,22 +84,59 @@ questions complètes (bonne réponse incluse) en props. Il gère localement :
    affichés par question, bilan complet en haut de page
    (`components/qcm/qcm-summary.tsx`).
 
-Les réponses du candidat et le score ne sont ni envoyés ni persistés côté
-serveur — recharger la page réinitialise la session, un « Recommencer »
-explicite fait de même volontairement. Ce choix (aucune API dédiée à la
-correction elle-même) est délibéré : il n'y a pas d'enjeu de triche à
-empêcher pour un outil d'auto-entraînement pédagogique, contrairement à un
-examen surveillé.
+Les **réponses détaillées** du candidat (quelle option pour quelle question)
+ne sont jamais envoyées ni persistées côté serveur — recharger la page
+réinitialise la session, un « Recommencer » explicite fait de même. Ce choix
+(aucune API dédiée à la correction elle-même) est délibéré : il n'y a pas
+d'enjeu de triche à empêcher pour un outil d'auto-entraînement pédagogique,
+contrairement à un examen surveillé.
 
-Seul événement compté côté serveur : au même clic sur « Voir ma correction »,
-`lib/actions/qcm.ts#recordQcmAttempt` (Server Action, best-effort,
-rate-limitée par IP hashée comme `recordDocumentView`) insère une ligne
-anonyme dans `qcm_attempts` (groupe, année, matière, horodatage — jamais les
-réponses ni le score). Ce compteur alimente la carte « Corrections QCM
-générées » du dashboard admin (`lib/data/qcm-stats.ts#getQcmAttemptsTotal`,
-`app/admin/(protected)/page.tsx`) — un compteur d'événements comme
-`exam_document_views`/`pdf_downloads`, pas un suivi de visiteurs identifiés
-(aucun compte candidat n'existe).
+Au clic sur « Voir ma correction », `lib/actions/qcm.ts#recordQcmAttempt`
+(Server Action, best-effort, rate-limitée par IP hashée) insère une ligne
+**anonyme** dans `qcm_attempts` : groupe, année, matière, département, +
+score agrégé (nombre de bonnes réponses, pourcentage), durée, et un
+`candidate_id` (jeton aléatoire de navigateur en localStorage,
+`lib/qcm/candidate-id.ts` — pas un compte). Seul l'agrégat est transmis,
+jamais le détail des réponses. Ces données alimentent le tableau de bord
+Analytics QCM (voir la section suivante).
+
+## Tableau de bord Analytics QCM (`/admin/analytics`)
+
+Réservé à l'admin (`force-dynamic`, sous `app/admin/(protected)/`). Donne à
+l'administrateur une vue détaillée de l'usage des QCM.
+
+- **Données** : `lib/qcm/analytics.ts` (server-only) fait **une seule requête
+  filtrée par vue** sur `qcm_attempts` (filtres département/année/matière/
+  période poussés en base via les index de la table), puis
+  `lib/qcm/analytics-compute.ts` — **calcul pur, testé unitairement** —
+  produit tous les indicateurs, graphiques et insights. Choix assumé :
+  agrégation en TypeScript plutôt qu'en RPC PL/pgSQL (volume modeste, logique
+  vérifiable par tests, pas de fonction SQL à exécuter/valider hors
+  environnement). Les index couvrent `completed_at`, `candidate_id`,
+  `departement_code` et le triplet `(groupe, annee, matiere)` déjà présent.
+- **Filtres** interactifs (département, année, matière, période) : le premier
+  rendu est calculé côté serveur (URL partageable via `searchParams`), puis
+  `lib/hooks/use-qcm-analytics.ts` rafraîchit via la Server Action
+  `fetchQcmAnalyticsAction` (protégée `requireAdminSession`) sans recharger la
+  page.
+- **Contenu** : 6 cartes (taux de réussite moyen, meilleur score, score
+  moyen, QCM réalisés, temps moyen, candidats uniques), graphiques Recharts
+  (évolution, score moyen/jour, pie par matière, barres par département,
+  temps moyen par matière), tableau des meilleurs scores (score puis durée la
+  plus courte à égalité), section **Insights** (matière la plus réussie/la
+  plus difficile, heures de pointe, département le plus actif, tendance du
+  taux de réussite, % de candidats qui progressent), et **export CSV / Excel**
+  (`lib/qcm/analytics-export.ts` ; l'« Excel » est un CSV `;` + BOM UTF-8
+  qu'Excel ouvre nativement — pas de dépendance type SheetJS pour un besoin
+  admin ponctuel).
+- **Progression des candidats** (`/admin/analytics/candidats` + détail par
+  `candidate_id`) : grâce au jeton anonyme, liste des appareils actifs et,
+  pour chacun, courbe de progression des scores + historique des tentatives.
+  Ce n'est pas un suivi nominatif : `candidate_id` identifie un navigateur,
+  pas une personne.
+
+Le compteur global « Corrections QCM générées » du dashboard principal
+(`/admin`, `lib/data/qcm-stats.ts`) reste inchangé.
 
 ### Niveaux (`resume.niveau`)
 

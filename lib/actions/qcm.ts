@@ -6,36 +6,59 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getClientIp } from "@/lib/http/client-ip";
 import { checkActionRateLimit } from "@/lib/rate-limit";
 
-// Assez large pour ne pas gêner un candidat qui relance le QCM plusieurs
-// fois de suite (bouton « Recommencer »), assez court pour qu'un même
-// visiteur ne gonfle pas indéfiniment le compteur en boucle.
+// Fenêtre + plafond volontairement larges : on VEUT enregistrer les vraies
+// reprises d'un candidat (bouton « Recommencer »), le rate-limit ne sert
+// qu'à empêcher un flux scripté d'inonder la table.
 const ATTEMPT_RATE_LIMIT_WINDOW_SECONDS = 10 * 60;
+const ATTEMPT_RATE_LIMIT = 40;
 
 const attemptSchema = z.object({
-  groupe: z.string().min(1),
+  groupe: z.string().min(1).max(100),
   annee: z.number().int().min(2000).max(2100),
-  matiere: z.string().min(1),
+  matiere: z.string().min(1).max(100),
+  departementCode: z.string().min(1).max(50),
+  // Jeton aléatoire de navigateur (crypto.randomUUID), pas un compte.
+  candidateId: z.string().min(8).max(64),
+  totalQuestions: z.number().int().min(1).max(500),
+  correctAnswers: z.number().int().min(0).max(500),
+  // Toléré dans le payload (le client l'envoie) mais JAMAIS stocké tel quel :
+  // recalculé serveur depuis correctAnswers/totalQuestions — sinon cette
+  // action publique permettrait d'insérer un « 100 % » avec zéro bonne
+  // réponse et de polluer le classement du dashboard admin.
+  scorePercent: z.number().int().min(0).max(100),
+  durationSeconds: z
+    .number()
+    .int()
+    .min(0)
+    .max(24 * 60 * 60),
 });
 
+export type RecordQcmAttemptInput = z.input<typeof attemptSchema>;
+
 /**
- * Best-effort : compte une correction QCM générée (clic sur « Voir ma
- * correction », voir components/qcm/qcm-runner.tsx) pour le dashboard admin.
- * Même esprit que recordDocumentView (lib/actions/download-pdf.ts) : jamais
- * bloquant pour le candidat, aucune erreur ne remonte au client.
+ * Best-effort : enregistre une tentative QCM terminée (clic sur « Voir ma
+ * correction », voir components/qcm/qcm-runner.tsx) pour le tableau de bord
+ * Analytics QCM (/admin/analytics). Jamais bloquant pour le candidat, aucune
+ * erreur ne remonte au client. Anonyme : `candidateId` est un jeton de
+ * navigateur, pas un compte ; les réponses détaillées ne sont pas envoyées,
+ * seulement le score agrégé et la durée.
  */
-export async function recordQcmAttempt(
-  groupe: string,
-  annee: number,
-  matiere: string
-): Promise<void> {
-  const parsed = attemptSchema.safeParse({ groupe, annee, matiere });
+export async function recordQcmAttempt(input: RecordQcmAttemptInput): Promise<void> {
+  const parsed = attemptSchema.safeParse(input);
   if (!parsed.success) return;
+
+  const data = parsed.data;
+  // Garde-fou de cohérence : un score qui dépasse le nombre de questions est
+  // rejeté silencieusement plutôt qu'enregistré comme donnée douteuse.
+  if (data.correctAnswers > data.totalQuestions) return;
+  // Seule valeur de score faisant foi (voir commentaire du schéma).
+  const scorePercent = Math.round((data.correctAnswers / data.totalQuestions) * 100);
 
   const ip = getClientIp(await headers());
   const allowed = await checkActionRateLimit(
-    `${ip}|${parsed.data.groupe}|${parsed.data.annee}|${parsed.data.matiere}`,
+    ip,
     "qcm_attempt",
-    1,
+    ATTEMPT_RATE_LIMIT,
     ATTEMPT_RATE_LIMIT_WINDOW_SECONDS
   );
   if (!allowed) return;
@@ -43,9 +66,15 @@ export async function recordQcmAttempt(
   try {
     const supabase = createServiceClient();
     await supabase.from("qcm_attempts").insert({
-      groupe: parsed.data.groupe,
-      annee: parsed.data.annee,
-      matiere: parsed.data.matiere,
+      groupe: data.groupe,
+      annee: data.annee,
+      matiere: data.matiere,
+      departement_code: data.departementCode,
+      candidate_id: data.candidateId,
+      total_questions: data.totalQuestions,
+      correct_answers: data.correctAnswers,
+      score_percent: scorePercent,
+      duration_seconds: data.durationSeconds,
     });
   } catch {
     // ignoré intentionnellement
