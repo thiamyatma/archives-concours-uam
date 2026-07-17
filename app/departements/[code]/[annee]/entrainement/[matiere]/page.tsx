@@ -99,6 +99,7 @@ export default async function EntrainementQcmPage({
         groupe={departement.contentGroup}
         annee={annee}
         matiereSlug={matiere}
+        departementCode={departement.code}
         questions={data.questions}
         images={images}
       />

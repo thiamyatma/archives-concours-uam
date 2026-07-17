@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Check, RotateCcw, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -12,21 +12,25 @@ import { corrigerQcm, type QcmCorrectedQuestion } from "@/lib/qcm/scoring";
 import type { Lettre, QcmQuestion } from "@/lib/qcm/types";
 import { cn } from "@/lib/utils";
 import { recordQcmAttempt } from "@/lib/actions/qcm";
+import { getOrCreateCandidateId } from "@/lib/qcm/candidate-id";
 
 const LETTRES: Lettre[] = ["A", "B", "C", "D"];
 
 /**
  * Composant client de l'entraînement QCM : sélection des réponses, puis
  * correction complète une fois que le candidat clique sur « Voir ma
- * correction ». Aucune bonne réponse n'est signalée avant ce moment — tout
- * l'état (réponses, soumission) reste local à la session du navigateur,
- * rien n'est envoyé ni persisté côté serveur.
+ * correction ». Aucune bonne réponse n'est signalée avant ce moment. Les
+ * réponses détaillées restent locales au navigateur ; seul le score agrégé
+ * (nombre de bonnes réponses, pourcentage, durée) est envoyé — anonymement,
+ * via un jeton de navigateur — au clic sur « Voir ma correction », pour le
+ * tableau de bord Analytics QCM (voir lib/actions/qcm.ts).
  */
 export function QcmRunner({
   matiere,
   groupe,
   annee,
   matiereSlug,
+  departementCode,
   questions,
   images,
 }: {
@@ -34,11 +38,19 @@ export function QcmRunner({
   groupe: string;
   annee: number;
   matiereSlug: string;
+  departementCode: string;
   questions: QcmQuestion[];
   images: Partial<Record<number, string>>;
 }) {
   const [reponses, setReponses] = useState<Map<number, Lettre>>(new Map());
   const [resultat, setResultat] = useState<ReturnType<typeof corrigerQcm> | null>(null);
+  // Instant de départ du QCM, réinitialisé à chaque « Recommencer » pour
+  // mesurer la durée réelle de la tentative en cours. Fixé au montage (pas
+  // pendant le rendu : `Date.now()` y serait impur).
+  const debutRef = useRef<number | null>(null);
+  useEffect(() => {
+    debutRef.current = Date.now();
+  }, []);
 
   const nombreReponses = reponses.size;
   const toutesRepondues = nombreReponses === questions.length;
@@ -52,13 +64,28 @@ export function QcmRunner({
   }
 
   function voirCorrection() {
-    setResultat(corrigerQcm(matiere, questions, reponses));
-    void recordQcmAttempt(groupe, annee, matiereSlug);
+    const correction = corrigerQcm(matiere, questions, reponses);
+    setResultat(correction);
+    const durationSeconds = Math.round(
+      (Date.now() - (debutRef.current ?? Date.now())) / 1000
+    );
+    void recordQcmAttempt({
+      groupe,
+      annee,
+      matiere: matiereSlug,
+      departementCode,
+      candidateId: getOrCreateCandidateId(),
+      totalQuestions: questions.length,
+      correctAnswers: correction.resume.score ?? 0,
+      scorePercent: correction.resume.pourcentage ?? 0,
+      durationSeconds,
+    });
   }
 
   function recommencer() {
     setReponses(new Map());
     setResultat(null);
+    debutRef.current = Date.now();
   }
 
   return (

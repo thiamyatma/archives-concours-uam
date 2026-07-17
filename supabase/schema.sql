@@ -468,18 +468,35 @@ alter table public.exam_document_views enable row level security;
 -- service role, même principe que pdf_downloads/admin_session_state.
 
 -- Une ligne par correction QCM générée (clic sur « Voir ma correction »,
--- voir docs/qcm-entrainement.md) — même principe que exam_document_views :
--- un compteur d'événements, pas un suivi de visiteurs identifiés.
+-- voir docs/qcm-entrainement.md) — un événement anonyme, pas un suivi de
+-- visiteurs identifiés. candidate_id est un jeton aléatoire de navigateur
+-- (localStorage), pas un compte : il permet le suivi de progression d'un
+-- même appareil pour le tableau de bord Analytics QCM (/admin/analytics).
+-- Colonnes de détail nullable (ajoutées après coup, voir la migration
+-- 20260725000000_qcm_attempts_analytics.sql) : les toutes premières lignes,
+-- enregistrées quand seul le comptage existait, restent valides sans score.
 create table if not exists public.qcm_attempts (
   id uuid primary key default gen_random_uuid(),
   groupe text not null,
   annee integer not null,
   matiere text not null,
+  departement_code text,
+  candidate_id text,
+  total_questions integer,
+  correct_answers integer,
+  score_percent integer check (score_percent is null or (score_percent between 0 and 100)),
+  duration_seconds integer,
   completed_at timestamptz not null default now()
 );
 
 create index if not exists qcm_attempts_lookup_idx
   on public.qcm_attempts (groupe, annee, matiere);
+create index if not exists qcm_attempts_completed_at_idx
+  on public.qcm_attempts (completed_at desc);
+create index if not exists qcm_attempts_candidate_idx
+  on public.qcm_attempts (candidate_id, completed_at);
+create index if not exists qcm_attempts_departement_idx
+  on public.qcm_attempts (departement_code);
 
 alter table public.qcm_attempts enable row level security;
 -- Aucune policy publique : lu/écrit uniquement par le service role.

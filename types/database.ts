@@ -183,6 +183,12 @@ export interface Database {
           groupe: string;
           annee: number;
           matiere: string;
+          departement_code: string | null;
+          candidate_id: string | null;
+          total_questions: number | null;
+          correct_answers: number | null;
+          score_percent: number | null;
+          duration_seconds: number | null;
           completed_at: string;
         };
         Insert: {
@@ -190,6 +196,12 @@ export interface Database {
           groupe: string;
           annee: number;
           matiere: string;
+          departement_code?: string | null;
+          candidate_id?: string | null;
+          total_questions?: number | null;
+          correct_answers?: number | null;
+          score_percent?: number | null;
+          duration_seconds?: number | null;
           completed_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["qcm_attempts"]["Insert"]>;
