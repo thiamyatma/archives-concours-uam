@@ -41,7 +41,10 @@ const PERIOD_LABELS: Record<QcmPeriod, string> = {
   year: "12 derniers mois",
 };
 
-function downloadFile(content: string, filename: string, mime: string) {
+function downloadFile(content: string, baseName: string, ext: string, mime: string) {
+  // Date résolue au clic (pas pendant le rendu — resterait figée et impure).
+  const stamp = new Date().toISOString().slice(0, 10);
+  const filename = `${baseName}-${stamp}.${ext}`;
   const blob = new Blob([content], { type: mime });
   const url = URL.createObjectURL(blob);
   const a = document.createElement("a");
@@ -68,7 +71,6 @@ export function QcmAnalyticsDashboard({
   );
 
   const hasData = data.summary.totalAttempts > 0;
-  const today = new Date().toISOString().slice(0, 10);
 
   const periodEvolution = [
     { label: "Aujourd'hui", count: data.periodCounts.today },
@@ -134,7 +136,8 @@ export function QcmAnalyticsDashboard({
             onClick={() =>
               downloadFile(
                 analyticsToCsv(data),
-                `qcm-analytics-${today}.csv`,
+                "qcm-analytics",
+                "csv",
                 "text/csv;charset=utf-8"
               )
             }
@@ -149,7 +152,8 @@ export function QcmAnalyticsDashboard({
             onClick={() =>
               downloadFile(
                 analyticsToExcel(data),
-                `qcm-analytics-${today}.xls`,
+                "qcm-analytics",
+                "xls",
                 "application/vnd.ms-excel;charset=utf-8"
               )
             }

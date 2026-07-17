@@ -21,6 +21,10 @@ const attemptSchema = z.object({
   candidateId: z.string().min(8).max(64),
   totalQuestions: z.number().int().min(1).max(500),
   correctAnswers: z.number().int().min(0).max(500),
+  // Toléré dans le payload (le client l'envoie) mais JAMAIS stocké tel quel :
+  // recalculé serveur depuis correctAnswers/totalQuestions — sinon cette
+  // action publique permettrait d'insérer un « 100 % » avec zéro bonne
+  // réponse et de polluer le classement du dashboard admin.
   scorePercent: z.number().int().min(0).max(100),
   durationSeconds: z
     .number()
@@ -47,6 +51,8 @@ export async function recordQcmAttempt(input: RecordQcmAttemptInput): Promise<vo
   // Garde-fou de cohérence : un score qui dépasse le nombre de questions est
   // rejeté silencieusement plutôt qu'enregistré comme donnée douteuse.
   if (data.correctAnswers > data.totalQuestions) return;
+  // Seule valeur de score faisant foi (voir commentaire du schéma).
+  const scorePercent = Math.round((data.correctAnswers / data.totalQuestions) * 100);
 
   const ip = getClientIp(await headers());
   const allowed = await checkActionRateLimit(
@@ -67,7 +73,7 @@ export async function recordQcmAttempt(input: RecordQcmAttemptInput): Promise<vo
       candidate_id: data.candidateId,
       total_questions: data.totalQuestions,
       correct_answers: data.correctAnswers,
-      score_percent: data.scorePercent,
+      score_percent: scorePercent,
       duration_seconds: data.durationSeconds,
     });
   } catch {

@@ -74,7 +74,9 @@ export function analyticsToCsv(analytics: QcmAnalytics): string {
   return toCsv(buildAnalyticsRows(analytics), ",");
 }
 
-/** Variante « Excel » : point-virgule + BOM UTF-8 (ouverture directe fr-FR). */
+/** Variante « Excel » : point-virgule + BOM UTF-8 (ouverture directe fr-FR).
+ * BOM en échappement explicite ("\uFEFF") : un caractère invisible littéral
+ * dans le source survivrait mal aux refactors/copier-coller. */
 export function analyticsToExcel(analytics: QcmAnalytics): string {
-  return `﻿${toCsv(buildAnalyticsRows(analytics), ";")}`;
+  return "\uFEFF" + toCsv(buildAnalyticsRows(analytics), ";");
 }

@@ -25,6 +25,10 @@ export default async function QcmCandidateDetailPage({
 }: {
   params: Promise<{ candidateId: string }>;
 }) {
+  // decodeURIComponent volontairement conservé : le décodage des params
+  // dynamiques a varié entre versions de Next. Pour nos ids (UUID/base36,
+  // jamais de « % »), décoder une valeur déjà décodée est un no-op — alors
+  // que ne pas décoder casserait si Next transmettait la valeur encodée.
   const { candidateId } = await params;
   const progression = await getQcmCandidateProgression(decodeURIComponent(candidateId));
   if (!progression) notFound();
