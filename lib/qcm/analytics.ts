@@ -1,5 +1,7 @@
 import "server-only";
 import { createServiceClient } from "@/lib/supabase/service";
+import { DEPARTEMENTS } from "@/lib/departements";
+import { listQcmAnnees, listQcmMatieres } from "@/lib/qcm/data";
 import {
   computeAnalytics,
   computeCandidateProgression,
@@ -93,31 +95,44 @@ export interface QcmFilterOptions {
   matieres: string[];
 }
 
-/** Valeurs distinctes présentes en base, pour peupler les listes de filtres. */
+/**
+ * Options des listes de filtres. Base : la config statique des départements
+ * et le contenu QCM du repo (tous les départements/années/matières pour
+ * lesquels un entraînement existe) — ainsi les listes sont complètes même
+ * quand les tentatives en base n'ont pas encore de `departement_code`
+ * (lignes antérieures à la migration analytics) ou qu'aucune tentative n'a
+ * été faite pour une matière. Les valeurs distinctes trouvées en base sont
+ * fusionnées par-dessus, au cas où la base contiendrait un couple
+ * année/matière qui n'a plus de grille dans le repo.
+ */
 export async function getQcmFilterOptions(): Promise<QcmFilterOptions> {
-  let supabase: ReturnType<typeof createServiceClient>;
-  try {
-    supabase = createServiceClient();
-  } catch {
-    return { departements: [], annees: [], matieres: [] };
-  }
-
-  const { data, error } = await supabase
-    .from("qcm_attempts")
-    .select("departement_code, annee, matiere")
-    .limit(MAX_ROWS);
-  if (error || !data) return { departements: [], annees: [], matieres: [] };
-
-  const departements = new Set<string>();
+  const departements = DEPARTEMENTS.map((d) => d.code);
   const annees = new Set<number>();
   const matieres = new Set<string>();
-  for (const row of data) {
-    if (row.departement_code) departements.add(row.departement_code);
-    annees.add(row.annee);
-    matieres.add(row.matiere);
+
+  for (const groupe of new Set(DEPARTEMENTS.map((d) => d.contentGroup))) {
+    for (const annee of listQcmAnnees(groupe)) {
+      annees.add(annee);
+      for (const matiere of listQcmMatieres(groupe, annee)) matieres.add(matiere);
+    }
   }
+
+  try {
+    const supabase = createServiceClient();
+    const { data } = await supabase
+      .from("qcm_attempts")
+      .select("annee, matiere")
+      .limit(MAX_ROWS);
+    for (const row of data ?? []) {
+      annees.add(row.annee);
+      matieres.add(row.matiere);
+    }
+  } catch {
+    // Base indisponible : les options issues du contenu suffisent.
+  }
+
   return {
-    departements: Array.from(departements).sort(),
+    departements,
     annees: Array.from(annees).sort((a, b) => b - a),
     matieres: Array.from(matieres).sort(),
   };
