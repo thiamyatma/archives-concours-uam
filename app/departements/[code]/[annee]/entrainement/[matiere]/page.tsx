@@ -61,7 +61,7 @@ export default async function EntrainementQcmPage({
   const resolved = await resolveParams(params);
   if (!resolved) notFound();
 
-  const { departement, annee, data } = resolved;
+  const { departement, annee, matiere, data } = resolved;
 
   const images: Partial<Record<number, string>> = {};
   for (const question of data.questions) {
@@ -94,7 +94,14 @@ export default async function EntrainementQcmPage({
         </p>
       </div>
 
-      <QcmRunner matiere={data.matiere} questions={data.questions} images={images} />
+      <QcmRunner
+        matiere={data.matiere}
+        groupe={departement.contentGroup}
+        annee={annee}
+        matiereSlug={matiere}
+        questions={data.questions}
+        images={images}
+      />
     </div>
   );
 }

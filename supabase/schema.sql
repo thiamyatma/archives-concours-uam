@@ -467,6 +467,23 @@ alter table public.exam_document_views enable row level security;
 -- Aucune policy publique sur les 3 tables : lu/écrit uniquement par le
 -- service role, même principe que pdf_downloads/admin_session_state.
 
+-- Une ligne par correction QCM générée (clic sur « Voir ma correction »,
+-- voir docs/qcm-entrainement.md) — même principe que exam_document_views :
+-- un compteur d'événements, pas un suivi de visiteurs identifiés.
+create table if not exists public.qcm_attempts (
+  id uuid primary key default gen_random_uuid(),
+  groupe text not null,
+  annee integer not null,
+  matiere text not null,
+  completed_at timestamptz not null default now()
+);
+
+create index if not exists qcm_attempts_lookup_idx
+  on public.qcm_attempts (groupe, annee, matiere);
+
+alter table public.qcm_attempts enable row level security;
+-- Aucune policy publique : lu/écrit uniquement par le service role.
+
 create or replace function public.get_exam_documents_with_stats()
 returns table (
   id uuid,

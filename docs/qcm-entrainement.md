@@ -69,7 +69,7 @@ titre de section Markdown (`ÉPREUVE DE MATHÉMATIQUES`) via
 `lib/qcm/slug.ts#slugifyMatiereTitle` — pas de table figée, toute nouvelle
 matière obtient son slug automatiquement.
 
-## Déroulé côté candidat (aucun serveur impliqué)
+## Déroulé côté candidat
 
 `components/qcm/qcm-runner.tsx` est un Client Component qui reçoit les
 questions complètes (bonne réponse incluse) en props. Il gère localement :
@@ -84,11 +84,22 @@ questions complètes (bonne réponse incluse) en props. Il gère localement :
    affichés par question, bilan complet en haut de page
    (`components/qcm/qcm-summary.tsx`).
 
-Rien n'est envoyé ni persisté côté serveur — recharger la page réinitialise
-la session, un « Recommencer » explicite fait de même volontairement. Ce
-choix (aucune API dédiée à la correction) est délibéré : il n'y a pas
-d'enjeu de triche à empêcher pour un outil d'auto-entraînement pédagogique,
-contrairement à un examen surveillé.
+Les réponses du candidat et le score ne sont ni envoyés ni persistés côté
+serveur — recharger la page réinitialise la session, un « Recommencer »
+explicite fait de même volontairement. Ce choix (aucune API dédiée à la
+correction elle-même) est délibéré : il n'y a pas d'enjeu de triche à
+empêcher pour un outil d'auto-entraînement pédagogique, contrairement à un
+examen surveillé.
+
+Seul événement compté côté serveur : au même clic sur « Voir ma correction »,
+`lib/actions/qcm.ts#recordQcmAttempt` (Server Action, best-effort,
+rate-limitée par IP hashée comme `recordDocumentView`) insère une ligne
+anonyme dans `qcm_attempts` (groupe, année, matière, horodatage — jamais les
+réponses ni le score). Ce compteur alimente la carte « Corrections QCM
+générées » du dashboard admin (`lib/data/qcm-stats.ts#getQcmAttemptsTotal`,
+`app/admin/(protected)/page.tsx`) — un compteur d'événements comme
+`exam_document_views`/`pdf_downloads`, pas un suivi de visiteurs identifiés
+(aucun compte candidat n'existe).
 
 ### Niveaux (`resume.niveau`)
 
