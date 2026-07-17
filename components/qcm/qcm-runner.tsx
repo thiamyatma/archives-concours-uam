@@ -11,6 +11,7 @@ import { QcmSummary } from "@/components/qcm/qcm-summary";
 import { corrigerQcm, type QcmCorrectedQuestion } from "@/lib/qcm/scoring";
 import type { Lettre, QcmQuestion } from "@/lib/qcm/types";
 import { cn } from "@/lib/utils";
+import { recordQcmAttempt } from "@/lib/actions/qcm";
 
 const LETTRES: Lettre[] = ["A", "B", "C", "D"];
 
@@ -23,10 +24,16 @@ const LETTRES: Lettre[] = ["A", "B", "C", "D"];
  */
 export function QcmRunner({
   matiere,
+  groupe,
+  annee,
+  matiereSlug,
   questions,
   images,
 }: {
   matiere: string;
+  groupe: string;
+  annee: number;
+  matiereSlug: string;
   questions: QcmQuestion[];
   images: Partial<Record<number, string>>;
 }) {
@@ -46,6 +53,7 @@ export function QcmRunner({
 
   function voirCorrection() {
     setResultat(corrigerQcm(matiere, questions, reponses));
+    void recordQcmAttempt(groupe, annee, matiereSlug);
   }
 
   function recommencer() {

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { FileDown, LogOut } from "lucide-react";
+import { FileDown, GraduationCap, LogOut } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import {
@@ -13,13 +13,17 @@ import {
 import { DownloadBarChart } from "@/components/admin/download-bar-chart";
 import { logoutAdmin } from "@/lib/actions/admin-auth";
 import { getDownloadStats } from "@/lib/data/download-stats";
+import { getQcmAttemptsTotal } from "@/lib/data/qcm-stats";
 import { formatNumber } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Admin — Statistiques" };
 export const dynamic = "force-dynamic";
 
 export default async function AdminPage() {
-  const stats = await getDownloadStats();
+  const [stats, qcmAttempts] = await Promise.all([
+    getDownloadStats(),
+    getQcmAttemptsTotal(),
+  ]);
 
   return (
     <div>
@@ -40,7 +44,7 @@ export default async function AdminPage() {
         </form>
       </div>
 
-      <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-2">
+      <div className="mb-10 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <Card>
           <CardContent className="flex items-center gap-3 py-2">
             <span className="bg-primary/10 text-primary flex size-10 items-center justify-center rounded-full">
@@ -65,6 +69,21 @@ export default async function AdminPage() {
               </p>
               <p className="text-muted-foreground text-xs">
                 Sessions distinctes téléchargées
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+        <Card>
+          <CardContent className="flex items-center gap-3 py-2">
+            <span className="bg-primary/10 text-primary flex size-10 items-center justify-center rounded-full">
+              <GraduationCap className="size-5" aria-hidden="true" />
+            </span>
+            <div>
+              <p className="text-2xl font-bold tabular-nums">
+                {formatNumber(qcmAttempts)}
+              </p>
+              <p className="text-muted-foreground text-xs">
+                Corrections QCM générées (« Voir ma correction »)
               </p>
             </div>
           </CardContent>

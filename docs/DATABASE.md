@@ -91,6 +91,21 @@ année (le doublon est rejeté à l'import) — voir [pdf-downloads.md](pdf-down
 Log insert-only, une consultation de page épreuve (compteur admin,
 indépendant de Google Analytics), rate-limitée par IP+département+année.
 
+## `qcm_attempts`
+
+| Colonne        | Type          | Notes                                  |
+| -------------- | ------------- | -------------------------------------- |
+| `id`           | `uuid` (PK)   |                                        |
+| `groupe`       | `text`        | `contentGroup`, ex. `dsti-dgae-dstaan` |
+| `annee`        | `integer`     |                                        |
+| `matiere`      | `text`        | slug, ex. `mathematiques`              |
+| `completed_at` | `timestamptz` |                                        |
+
+Log insert-only, une correction QCM générée (clic sur « Voir ma correction »,
+voir [qcm-entrainement.md](qcm-entrainement.md)), rate-limitée par
+IP+groupe+année+matière. Ne contient jamais les réponses du candidat ni son
+score — uniquement de quoi compter les utilisations pour le dashboard admin.
+
 ## `action_rate_limits`
 
 | Colonne      | Type          | Notes                                              |

@@ -177,6 +177,24 @@ export interface Database {
         Update: Partial<Database["public"]["Tables"]["exam_document_views"]["Insert"]>;
         Relationships: [];
       };
+      qcm_attempts: {
+        Row: {
+          id: string;
+          groupe: string;
+          annee: number;
+          matiere: string;
+          completed_at: string;
+        };
+        Insert: {
+          id?: string;
+          groupe: string;
+          annee: number;
+          matiere: string;
+          completed_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["qcm_attempts"]["Insert"]>;
+        Relationships: [];
+      };
       admin_users: {
         Row: {
           id: string;
