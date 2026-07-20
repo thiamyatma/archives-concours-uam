@@ -33,7 +33,10 @@ const TESTIMONIALS = [
  */
 export function ThiamSciencesPromo() {
   return (
-    <section className="mx-auto max-w-6xl px-4 pb-20 sm:px-6">
+    <section
+      id="thiam-sciences"
+      className="mx-auto max-w-6xl scroll-mt-20 px-4 pt-16 sm:px-6"
+    >
       <Card className="border-primary/20 from-primary/5 to-card overflow-hidden bg-gradient-to-b py-0">
         <CardContent className="grid gap-8 p-6 sm:p-8 lg:grid-cols-[auto_1fr] lg:items-start">
           <div className="flex flex-row items-center gap-3 lg:flex-col lg:items-start">

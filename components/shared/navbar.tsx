@@ -20,6 +20,7 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/departements", label: "Départements" },
   { href: "/assistant", label: "Assistant IA" },
+  { href: "/#thiam-sciences", label: "Thiam Sciences" },
 ];
 
 export function Navbar() {

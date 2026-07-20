@@ -104,6 +104,8 @@ export default async function HomePage() {
         />
       </section>
 
+      <ThiamSciencesPromo />
+
       <section className="mx-auto max-w-6xl px-4 py-16 sm:px-6">
         <StatsSection items={stats} />
       </section>
@@ -122,8 +124,6 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
-
-      <ThiamSciencesPromo />
     </>
   );
 }
