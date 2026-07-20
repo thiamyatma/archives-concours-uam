@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { contestSettingsSchema } from "./schema";
+import { contestSettingsSchema, describeValidationError } from "./schema";
 
 const validInput = {
   year: 2026,
@@ -97,5 +97,41 @@ describe("contestSettingsSchema", () => {
       contestSettingsSchema.safeParse({ ...validInput, contestDate: "pas-une-date" })
         .success
     ).toBe(false);
+  });
+});
+
+describe("describeValidationError", () => {
+  it("indique le champ et la longueur atteinte pour un dépassement de longueur", () => {
+    const input = { ...validInput, seo: { ...validInput.seo, title: "x".repeat(85) } };
+    const result = contestSettingsSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("unreachable");
+
+    expect(describeValidationError(result.error, input)).toBe(
+      "seo.title : 85/70 caractères"
+    );
+  });
+
+  it("retombe sur le message Zod brut pour une erreur qui n'est pas une longueur", () => {
+    const input = { ...validInput, banner: { ...validInput.banner, type: "purple" } };
+    const result = contestSettingsSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("unreachable");
+
+    expect(describeValidationError(result.error, input)).toContain("banner.type");
+  });
+
+  it("plafonne à 3 problèmes rapportés", () => {
+    const input = {
+      ...validInput,
+      officialName: "",
+      seo: { ...validInput.seo, title: "x".repeat(85), keywords: "y".repeat(400) },
+      banner: { ...validInput.banner, type: "purple" },
+    };
+    const result = contestSettingsSchema.safeParse(input);
+    expect(result.success).toBe(false);
+    if (result.success) throw new Error("unreachable");
+
+    expect(describeValidationError(result.error, input).split(" — ")).toHaveLength(3);
   });
 });

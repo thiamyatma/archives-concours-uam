@@ -3,7 +3,11 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminSession } from "@/lib/actions/admin-auth";
 import { createServiceClient } from "@/lib/supabase/service";
-import { contestSettingsSchema, type ContestSettingsInput } from "@/lib/contest/schema";
+import {
+  contestSettingsSchema,
+  describeValidationError,
+  type ContestSettingsInput,
+} from "@/lib/contest/schema";
 import { CONTEST_SETTINGS_TAG, getContestSettings } from "@/lib/contest/settings";
 import { diffContestSettings } from "@/lib/contest/history-diff";
 import { recordContestSettingsHistory } from "@/lib/contest/history";
@@ -21,7 +25,9 @@ export async function updateContestSettings(
 
   const parsed = contestSettingsSchema.safeParse(input);
   if (!parsed.success) {
-    return { error: "Données invalides. Vérifiez les champs." };
+    return {
+      error: `Données invalides — ${describeValidationError(parsed.error, input)}`,
+    };
   }
   const s = parsed.data;
 
