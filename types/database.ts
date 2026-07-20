@@ -241,6 +241,7 @@ export interface Database {
           info: Record<string, unknown>;
           seo: Record<string, unknown>;
           stats: Record<string, unknown>;
+          partner: Record<string, unknown>;
           updated_at: string;
         };
         Insert: {
@@ -260,6 +261,7 @@ export interface Database {
           info?: Record<string, unknown>;
           seo?: Record<string, unknown>;
           stats?: Record<string, unknown>;
+          partner?: Record<string, unknown>;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["contest_settings"]["Insert"]>;

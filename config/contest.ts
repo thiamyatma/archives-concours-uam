@@ -72,4 +72,10 @@ export const DEFAULT_CONTEST_SETTINGS: ContestSettings = {
     showDownloads: true,
     showViews: true,
   },
+  partner: {
+    enabled: true,
+    registrationUrl: "https://my.moneyfusion.net/6a5d6d2812d1319228efbad8",
+    phoneDisplay: "+221 76 942 52 91",
+    phoneHref: "tel:+221769425291",
+  },
 };

@@ -581,6 +581,7 @@ create table if not exists public.contest_settings (
   info jsonb not null default '{}'::jsonb,
   seo jsonb not null default '{}'::jsonb,
   stats jsonb not null default '{}'::jsonb,
+  partner jsonb not null default '{}'::jsonb,
   updated_at timestamptz not null default now(),
   constraint contest_settings_singleton check (id)
 );

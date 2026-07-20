@@ -75,6 +75,13 @@ const statsSchema = z.object({
   showViews: z.boolean(),
 });
 
+const partnerSchema = z.object({
+  enabled: z.boolean(),
+  registrationUrl: z.string().max(500),
+  phoneDisplay: z.string().max(50),
+  phoneHref: z.string().max(50),
+});
+
 export const contestSettingsSchema = z.object({
   year: z.number().int().min(2000).max(2100),
   officialName: z.string().min(1, "Nom officiel requis.").max(200),
@@ -91,6 +98,7 @@ export const contestSettingsSchema = z.object({
   info: infoSchema,
   seo: seoSchema,
   stats: statsSchema,
+  partner: partnerSchema,
 });
 
 export type ContestSettingsInput = z.input<typeof contestSettingsSchema>;
