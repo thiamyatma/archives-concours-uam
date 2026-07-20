@@ -7,6 +7,7 @@ import { StatsSection, type StatItem } from "@/components/shared/stats-section";
 import { ContestBanner } from "@/components/contest-banner";
 import { ContestCountdown } from "@/components/contest-countdown";
 import { ContestStatsRow } from "@/components/contest-stats-row";
+import { ThiamSciencesPromo } from "@/components/thiam-sciences-promo";
 import { getContentManifest } from "@/lib/data/departements";
 import { getContestSettings } from "@/lib/contest/settings";
 import { getDownloadStats } from "@/lib/data/download-stats";
@@ -121,6 +122,8 @@ export default async function HomePage() {
           ))}
         </div>
       </section>
+
+      <ThiamSciencesPromo />
     </>
   );
 }
