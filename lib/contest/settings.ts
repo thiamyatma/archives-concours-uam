@@ -8,6 +8,7 @@ import type {
   ContestButtons,
   ContestInfo,
   ContestMessages,
+  ContestPartner,
   ContestSeo,
   ContestSettings,
   ContestStatsToggles,
@@ -39,6 +40,7 @@ type ContestSettingsRow = {
   info: Record<string, unknown>;
   seo: Record<string, unknown>;
   stats: Record<string, unknown>;
+  partner: Record<string, unknown>;
 };
 
 async function fetchRow(): Promise<ContestSettingsRow | null> {
@@ -47,7 +49,7 @@ async function fetchRow(): Promise<ContestSettingsRow | null> {
     const { data, error } = await supabase
       .from("contest_settings")
       .select(
-        "year, official_name, subtitle, description, registration_opens_at, registration_closes_at, contest_date, results_date, messages, banner, countdown, buttons, info, seo, stats"
+        "year, official_name, subtitle, description, registration_opens_at, registration_closes_at, contest_date, results_date, messages, banner, countdown, buttons, info, seo, stats, partner"
       )
       .eq("id", true)
       .maybeSingle();
@@ -92,6 +94,7 @@ function mapRow(row: ContestSettingsRow): ContestSettings {
     info: { ...d.info, ...(row.info as Partial<ContestInfo>) },
     seo: { ...d.seo, ...(row.seo as Partial<ContestSeo>) },
     stats: { ...d.stats, ...(row.stats as Partial<ContestStatsToggles>) },
+    partner: { ...d.partner, ...(row.partner as Partial<ContestPartner>) },
   };
 }
 

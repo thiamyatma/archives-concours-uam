@@ -44,6 +44,12 @@ const validInput = {
   },
   seo: { title: "", description: "", ogImageUrl: "", keywords: "" },
   stats: { showExams: true, showDownloads: true, showViews: true },
+  partner: {
+    enabled: true,
+    registrationUrl: "https://example.com/pay",
+    phoneDisplay: "+221 00 000 00 00",
+    phoneHref: "tel:+22100000000",
+  },
 };
 
 describe("contestSettingsSchema", () => {

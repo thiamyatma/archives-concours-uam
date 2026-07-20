@@ -70,6 +70,17 @@ export interface ContestStatsToggles {
   showViews: boolean;
 }
 
+/** Encart partenaire de la page d'accueil (voir components/thiam-sciences-promo.tsx).
+ * `registrationUrl`/`phoneHref` étaient en dur dans le code — un lien de
+ * paiement ne doit pas nécessiter un déploiement pour être mis à jour, et
+ * doit rester vérifiable dans l'historique des modifications (section 12). */
+export interface ContestPartner {
+  enabled: boolean;
+  registrationUrl: string;
+  phoneDisplay: string;
+  phoneHref: string;
+}
+
 export interface ContestSettings {
   year: number;
   officialName: string;
@@ -86,6 +97,7 @@ export interface ContestSettings {
   info: ContestInfo;
   seo: ContestSeo;
   stats: ContestStatsToggles;
+  partner: ContestPartner;
 }
 
 export type ContestPhase =

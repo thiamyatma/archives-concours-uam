@@ -51,3 +51,9 @@ export const trackShareSubject = (params?: AnalyticsEventParams) =>
 
 export const trackDownloadSubject = (params?: AnalyticsEventParams) =>
   trackEvent(ANALYTICS_EVENTS.DOWNLOAD_SUBJECT, params);
+
+export const trackPartnerSignupClick = (params?: AnalyticsEventParams) =>
+  trackEvent(ANALYTICS_EVENTS.PARTNER_SIGNUP_CLICK, params);
+
+export const trackPartnerCallClick = (params?: AnalyticsEventParams) =>
+  trackEvent(ANALYTICS_EVENTS.PARTNER_CALL_CLICK, params);

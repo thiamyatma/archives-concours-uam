@@ -18,6 +18,8 @@ export const ANALYTICS_EVENTS = {
   REPORT_DOCUMENT: "report_document",
   SHARE_SUBJECT: "share_subject",
   DOWNLOAD_SUBJECT: "download_subject",
+  PARTNER_SIGNUP_CLICK: "partner_signup_click",
+  PARTNER_CALL_CLICK: "partner_call_click",
 } as const;
 
 export type AnalyticsEventName = (typeof ANALYTICS_EVENTS)[keyof typeof ANALYTICS_EVENTS];

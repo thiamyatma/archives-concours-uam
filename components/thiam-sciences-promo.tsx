@@ -1,13 +1,10 @@
 import Image from "next/image";
-import { ArrowRight, CalendarDays, CheckCircle2, Phone, Wallet } from "lucide-react";
+import { CalendarDays, CheckCircle2, Wallet } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { TestimonialsCarousel } from "@/components/testimonials-carousel";
-
-const REGISTRATION_URL = "https://my.moneyfusion.net/6a5d6d2812d1319228efbad8";
-const PHONE_DISPLAY = "+221 76 942 52 91";
-const PHONE_HREF = "tel:+221769425291";
+import { ThiamSciencesCtaButtons } from "@/components/thiam-sciences-cta-buttons";
+import { getContestSettings } from "@/lib/contest/settings";
 
 const PROGRAM_ITEMS = [
   "Correction détaillée d'anciennes épreuves",
@@ -30,8 +27,16 @@ const TESTIMONIALS = [
  * accompagnement payant au concours, distinct des archives gratuites du
  * site. D'où le badge « Partenaire » : le site reste par ailleurs non
  * affilié à l'administration de l'UAM (voir README).
+ *
+ * Le lien d'inscription (paiement) et le numéro de téléphone viennent de
+ * `contest_settings.partner`, éditable depuis /admin/parametres — pas en
+ * dur dans le code, pour rester modifiable sans déploiement et tracé dans
+ * l'historique des modifications.
  */
-export function ThiamSciencesPromo() {
+export async function ThiamSciencesPromo() {
+  const { partner } = await getContestSettings();
+  if (!partner.enabled) return null;
+
   return (
     <section
       id="thiam-sciences"
@@ -92,20 +97,11 @@ export function ThiamSciencesPromo() {
               </span>
             </div>
 
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Button asChild size="lg">
-                <a href={REGISTRATION_URL} target="_blank" rel="noopener noreferrer">
-                  S&apos;inscrire maintenant
-                  <ArrowRight className="size-4" aria-hidden="true" />
-                </a>
-              </Button>
-              <Button asChild size="lg" variant="outline">
-                <a href={PHONE_HREF}>
-                  <Phone className="size-4" aria-hidden="true" />
-                  {PHONE_DISPLAY}
-                </a>
-              </Button>
-            </div>
+            <ThiamSciencesCtaButtons
+              registrationUrl={partner.registrationUrl}
+              phoneDisplay={partner.phoneDisplay}
+              phoneHref={partner.phoneHref}
+            />
           </div>
         </CardContent>
 
