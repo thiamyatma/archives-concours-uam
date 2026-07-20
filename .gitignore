@@ -45,3 +45,7 @@ supabase/.temp
 next-env.d.ts
 
 .vercel
+
+# outillage IA local (skills du plugin caveman, config agents) — perso, non versionné
+/.agents/
+/.claude/
