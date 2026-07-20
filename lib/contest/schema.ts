@@ -102,3 +102,41 @@ export const contestSettingsSchema = z.object({
 });
 
 export type ContestSettingsInput = z.input<typeof contestSettingsSchema>;
+
+/**
+ * Message d'erreur lisible pour l'admin à partir d'un échec de validation
+ * (voir lib/actions/contest-settings.ts) : jusqu'ici un seul message figé
+ * ("Données invalides. Vérifiez les champs.") remontait quel que soit le
+ * champ en cause, sans dire lequel ni pourquoi — ex. un titre SEO de 85
+ * caractères contre une limite de 70. Pour les dépassements de longueur (le
+ * cas le plus fréquent), on affiche la longueur atteinte et la limite ;
+ * sinon on retombe sur le message Zod brut. Plafonné à 3 problèmes pour
+ * rester lisible dans un toast.
+ */
+export function describeValidationError(error: z.ZodError, input: unknown): string {
+  return error.issues
+    .slice(0, 3)
+    .map((issue) => {
+      const path = issue.path.join(".");
+      if (issue.code === "too_big" || issue.code === "too_small") {
+        const value = issue.path.reduce<unknown>(
+          (acc, key) =>
+            acc && typeof acc === "object"
+              ? (acc as Record<string, unknown>)[key as string]
+              : undefined,
+          input
+        );
+        const limit =
+          "maximum" in issue
+            ? issue.maximum
+            : "minimum" in issue
+              ? issue.minimum
+              : undefined;
+        if (typeof value === "string" && typeof limit === "number") {
+          return `${path} : ${value.length}/${limit} caractères`;
+        }
+      }
+      return `${path} : ${issue.message}`;
+    })
+    .join(" — ");
+}

@@ -24,6 +24,7 @@ import { updateContestSettings } from "@/lib/actions/contest-settings";
 import type { BannerType, ContestSettings, CountdownPosition } from "@/lib/contest/types";
 import type { ContestSettingsInput } from "@/lib/contest/schema";
 import type { ContestSettingsHistoryEntry } from "@/lib/contest/history";
+import { cn } from "@/lib/utils";
 
 const MESSAGE_FIELDS: { key: keyof ContestSettings["messages"]; label: string }[] = [
   { key: "beforeRegistration", label: "Avant les inscriptions" },
@@ -475,6 +476,7 @@ export function ContestSettingsForm({
                   placeholder="Vide = titre par défaut du site"
                   onChange={(e) => patchGroup("seo", { title: e.target.value })}
                 />
+                <CharCount value={settings.seo.title} max={70} />
               </Field>
               <Field label="Description SEO" htmlFor="seo-description">
                 <Textarea
@@ -484,6 +486,7 @@ export function ContestSettingsForm({
                   placeholder="Vide = description par défaut du site"
                   onChange={(e) => patchGroup("seo", { description: e.target.value })}
                 />
+                <CharCount value={settings.seo.description} max={300} />
               </Field>
               <Field label="Image Open Graph (URL)" htmlFor="seo-og-image">
                 <Input
@@ -492,6 +495,7 @@ export function ContestSettingsForm({
                   placeholder="https://…"
                   onChange={(e) => patchGroup("seo", { ogImageUrl: e.target.value })}
                 />
+                <CharCount value={settings.seo.ogImageUrl} max={500} />
               </Field>
               <Field label="Mots-clés (séparés par des virgules)" htmlFor="seo-keywords">
                 <Input
@@ -499,6 +503,7 @@ export function ContestSettingsForm({
                   value={settings.seo.keywords}
                   onChange={(e) => patchGroup("seo", { keywords: e.target.value })}
                 />
+                <CharCount value={settings.seo.keywords} max={300} />
               </Field>
             </SectionCard>
           </TabsContent>
@@ -646,6 +651,23 @@ function Field({
       <Label htmlFor={htmlFor}>{label}</Label>
       {children}
     </div>
+  );
+}
+
+/** Compteur de caractères sous un champ à limite serrée (ex. titre SEO,
+ * max 70) : évite de découvrir le dépassement seulement au message
+ * d'erreur générique de la sauvegarde. */
+function CharCount({ value, max }: { value: string; max: number }) {
+  const over = value.length > max;
+  return (
+    <p
+      className={cn(
+        "text-right text-xs",
+        over ? "text-destructive" : "text-muted-foreground"
+      )}
+    >
+      {value.length}/{max}
+    </p>
   );
 }
 
