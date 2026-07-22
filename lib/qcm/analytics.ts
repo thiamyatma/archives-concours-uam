@@ -1,4 +1,5 @@
 import "server-only";
+import { unstable_cache } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/service";
 import { DEPARTEMENTS } from "@/lib/departements";
 import { listQcmAnnees, listQcmMatieres } from "@/lib/qcm/data";
@@ -24,14 +25,31 @@ import type { Database } from "@/types/database";
  * (`analytics-compute.ts`, testé). Défensif comme le reste des lectures
  * Supabase : repli sur un jeu vide si la base est indisponible, jamais
  * d'erreur remontée à la page admin.
+ *
+ * Les lectures publiques sont enveloppées dans `unstable_cache` (TTL court) :
+ * la page admin est `force-dynamic` et le hook de filtres relance une
+ * requête à chaque changement — sans cache, deux chargements ou un
+ * aller-retour de filtre identique referaient la même requête. Le tableau
+ * de bord tolère quelques dizaines de secondes de fraîcheur.
  */
 
 type QcmAttemptDbRow = Database["public"]["Tables"]["qcm_attempts"]["Row"];
+
+// Colonnes réellement utilisées par `normalize` (tout sauf `id`) : `select`
+// explicite plutôt que `*`, pour ne transférer que le nécessaire.
+const ATTEMPT_COLUMNS =
+  "groupe, annee, matiere, departement_code, candidate_id, total_questions, correct_answers, score_percent, duration_seconds, completed_at";
 
 // Plafond de sécurité : borne le volume rapatrié même si la table grossit
 // beaucoup. Au-delà, les stats resteraient représentatives (échantillon des
 // plus récents, ordre completed_at desc).
 const MAX_ROWS = 50_000;
+
+// Fraîcheur du tableau de bord : court, car admin-only et non critique.
+const ANALYTICS_REVALIDATE_SECONDS = 60;
+// Les options de filtres viennent surtout du contenu du repo (quasi fixe) :
+// on peut cacher plus longtemps.
+const FILTER_OPTIONS_REVALIDATE_SECONDS = 300;
 
 function normalize(row: QcmAttemptDbRow): QcmAttemptRow {
   // `?? null` : avant l'application de la migration analytics, PostgREST
@@ -62,7 +80,7 @@ async function fetchRows(filters: QcmAnalyticsFilters): Promise<QcmAttemptRow[]>
 
   let query = supabase
     .from("qcm_attempts")
-    .select("*")
+    .select(ATTEMPT_COLUMNS)
     .order("completed_at", { ascending: false })
     .limit(MAX_ROWS);
 
@@ -79,15 +97,17 @@ async function fetchRows(filters: QcmAnalyticsFilters): Promise<QcmAttemptRow[]>
     console.error("getQcmAnalytics a échoué:", error.message);
     return [];
   }
-  return (data ?? []).map(normalize);
+  return ((data as QcmAttemptDbRow[] | null) ?? []).map(normalize);
 }
 
-export async function getQcmAnalytics(
-  filters: QcmAnalyticsFilters
-): Promise<QcmAnalytics> {
-  const rows = await fetchRows(filters);
-  return computeAnalytics(rows, Date.now());
-}
+export const getQcmAnalytics = unstable_cache(
+  async (filters: QcmAnalyticsFilters): Promise<QcmAnalytics> => {
+    const rows = await fetchRows(filters);
+    return computeAnalytics(rows, Date.now());
+  },
+  ["qcm-analytics"],
+  { revalidate: ANALYTICS_REVALIDATE_SECONDS }
+);
 
 export interface QcmFilterOptions {
   departements: string[];
@@ -105,68 +125,81 @@ export interface QcmFilterOptions {
  * fusionnées par-dessus, au cas où la base contiendrait un couple
  * année/matière qui n'a plus de grille dans le repo.
  */
-export async function getQcmFilterOptions(): Promise<QcmFilterOptions> {
-  const departements = DEPARTEMENTS.map((d) => d.code);
-  const annees = new Set<number>();
-  const matieres = new Set<string>();
+export const getQcmFilterOptions = unstable_cache(
+  async (): Promise<QcmFilterOptions> => {
+    const departements = DEPARTEMENTS.map((d) => d.code);
+    const annees = new Set<number>();
+    const matieres = new Set<string>();
 
-  for (const groupe of new Set(DEPARTEMENTS.map((d) => d.contentGroup))) {
-    for (const annee of listQcmAnnees(groupe)) {
-      annees.add(annee);
-      for (const matiere of listQcmMatieres(groupe, annee)) matieres.add(matiere);
+    for (const groupe of new Set(DEPARTEMENTS.map((d) => d.contentGroup))) {
+      for (const annee of listQcmAnnees(groupe)) {
+        annees.add(annee);
+        for (const matiere of listQcmMatieres(groupe, annee)) matieres.add(matiere);
+      }
     }
-  }
 
-  try {
-    const supabase = createServiceClient();
-    const { data } = await supabase
-      .from("qcm_attempts")
-      .select("annee, matiere")
-      .limit(MAX_ROWS);
-    for (const row of data ?? []) {
-      annees.add(row.annee);
-      matieres.add(row.matiere);
+    try {
+      const supabase = createServiceClient();
+      const { data } = await supabase
+        .from("qcm_attempts")
+        .select("annee, matiere")
+        .limit(MAX_ROWS);
+      for (const row of data ?? []) {
+        annees.add(row.annee);
+        matieres.add(row.matiere);
+      }
+    } catch {
+      // Base indisponible : les options issues du contenu suffisent.
     }
-  } catch {
-    // Base indisponible : les options issues du contenu suffisent.
-  }
 
-  return {
-    departements,
-    annees: Array.from(annees).sort((a, b) => b - a),
-    matieres: Array.from(matieres).sort(),
-  };
-}
+    return {
+      departements,
+      annees: Array.from(annees).sort((a, b) => b - a),
+      matieres: Array.from(matieres).sort(),
+    };
+  },
+  ["qcm-filter-options"],
+  { revalidate: FILTER_OPTIONS_REVALIDATE_SECONDS }
+);
 
 /** Candidats (jetons anonymes) ayant au moins une tentative rattachable. */
-export async function getQcmCandidates(): Promise<QcmCandidateSummary[]> {
-  const rows = await fetchRows({
-    departement: null,
-    annee: null,
-    matiere: null,
-    period: "all",
-  });
-  return computeCandidatesList(rows);
-}
+export const getQcmCandidates = unstable_cache(
+  async (): Promise<QcmCandidateSummary[]> => {
+    const rows = await fetchRows({
+      departement: null,
+      annee: null,
+      matiere: null,
+      period: "all",
+    });
+    return computeCandidatesList(rows);
+  },
+  ["qcm-candidates"],
+  { revalidate: ANALYTICS_REVALIDATE_SECONDS }
+);
 
 /** Progression détaillée d'un candidat, ou `null` si aucune tentative rattachée. */
-export async function getQcmCandidateProgression(
-  candidateId: string
-): Promise<QcmCandidateProgression | null> {
-  let supabase: ReturnType<typeof createServiceClient>;
-  try {
-    supabase = createServiceClient();
-  } catch {
-    return null;
-  }
+export const getQcmCandidateProgression = unstable_cache(
+  async (candidateId: string): Promise<QcmCandidateProgression | null> => {
+    let supabase: ReturnType<typeof createServiceClient>;
+    try {
+      supabase = createServiceClient();
+    } catch {
+      return null;
+    }
 
-  const { data, error } = await supabase
-    .from("qcm_attempts")
-    .select("*")
-    .eq("candidate_id", candidateId)
-    .order("completed_at", { ascending: true })
-    .limit(MAX_ROWS);
-  if (error || !data || data.length === 0) return null;
+    const { data, error } = await supabase
+      .from("qcm_attempts")
+      .select(ATTEMPT_COLUMNS)
+      .eq("candidate_id", candidateId)
+      .order("completed_at", { ascending: true })
+      .limit(MAX_ROWS);
+    if (error || !data || data.length === 0) return null;
 
-  return computeCandidateProgression(candidateId, data.map(normalize));
-}
+    return computeCandidateProgression(
+      candidateId,
+      (data as QcmAttemptDbRow[]).map(normalize)
+    );
+  },
+  ["qcm-candidate-progression"],
+  { revalidate: ANALYTICS_REVALIDATE_SECONDS }
+);
