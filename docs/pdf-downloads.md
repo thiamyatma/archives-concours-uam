@@ -133,10 +133,17 @@ Aucune policy publique sur `exam_documents`, `exam_document_departments`,
    (`lib/actions/download-pdf.ts`) résout directement le document publié lié
    à ce département+année (plus de `storage.list()` en boucle — une requête
    en base, plus rapide que l'ancien système à base de dossiers partagés).
-2. **Au clic** : `getExamPdfDownloadUrl` génère une **URL signée** de 60
-   secondes (`createSignedUrl(path, 60, { download: fileName })`),
-   enregistre un événement dans `pdf_downloads` (best-effort), renvoie
-   l'URL. Le navigateur télécharge directement depuis Supabase Storage.
+2. **Au clic** : `getExamPdfDownloadUrl` renvoie une **URL signée** (TTL 1 h,
+   disposition `attachment`), **mise en cache et partagée** par (département,
+   année) via `unstable_cache` (revalidate 50 min, tag
+   `EXAM_PREVIEW_CACHE_TAG` invalidé par les mutations admin) — comme
+   l'aperçu. Le rate-limit (30 / h par IP) et le log `pdf_downloads`
+   (best-effort) restent **par clic**. Objectif : un re-téléchargement du
+   même fichier réutilise une URL stable → le fichier est servi depuis le
+   cache CDN (egress _cached_, moins cher) au lieu d'être re-téléchargé plein
+   tarif avec une URL unique. Combiné au `Cache-Control: max-age` long posé à
+   l'upload (`PDF_UPLOAD_CACHE_CONTROL_SECONDS`, contenu immuable), c'est le
+   principal levier de réduction de l'egress Storage.
 3. Toast de succès/erreur (`sonner`), événement GA4 `download_subject`, et
    `recordDocumentView` (compteur de consultations, best-effort,
    rate-limité par IP+département+année pour éviter qu'un simple rechargement
