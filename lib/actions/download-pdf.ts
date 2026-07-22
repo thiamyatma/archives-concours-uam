@@ -2,9 +2,10 @@
 
 import { z } from "zod";
 import { headers } from "next/headers";
+import { unstable_cache } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getDepartementByCode } from "@/lib/departements";
-import { PDF_BUCKET } from "@/lib/pdf/constants";
+import { EXAM_PREVIEW_CACHE_TAG, PDF_BUCKET } from "@/lib/pdf/constants";
 import { getClientIp } from "@/lib/http/client-ip";
 import { checkActionRateLimit } from "@/lib/rate-limit";
 
@@ -12,9 +13,23 @@ const SIGNED_URL_TTL_SECONDS = 60;
 // Plus longue que le TTL de téléchargement : une lecture inline peut durer
 // plusieurs minutes (visionneuse PDF native du navigateur dans une iframe).
 const PREVIEW_URL_TTL_SECONDS = 60 * 60;
+// Durée de mise en cache (Next Data Cache) de l'URL signée d'aperçu, plus
+// courte que son TTL : une URL régénérée toutes les 50 min reste toujours
+// valide au moins 10 min quand elle est servie. Effet : une seule URL
+// signée par (département, année) est partagée par tous les visiteurs et
+// tous les rechargements de la fenêtre — le fichier peut alors réellement
+// être mis en cache par le navigateur et le CDN (même clé d'URL stable),
+// au lieu d'être re-téléchargé à chaque montage avec une URL unique.
+const PREVIEW_CACHE_REVALIDATE_SECONDS = 50 * 60;
 const DOWNLOAD_RATE_LIMIT = 30;
 const DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 const VIEW_RATE_LIMIT_WINDOW_SECONDS = 30 * 60;
+// Aperçu PDF : la génération d'URL est déjà globalement plafonnée par le
+// cache ci-dessus (≤ 1 par 50 min par épreuve) ; ce rate-limit ne fait que
+// contenir le martèlement scripté de l'action elle-même. Assez large pour
+// qu'un visiteur légitime puisse rouvrir l'aperçu plusieurs fois.
+const PREVIEW_RATE_LIMIT = 8;
+const PREVIEW_RATE_LIMIT_WINDOW_SECONDS = 30 * 60;
 
 const requestSchema = z.object({
   departementCode: z.string().min(1),
@@ -160,9 +175,55 @@ export async function getExamPdfDownloadUrl(
 }
 
 /**
- * Comme `getExamPdfDownloadUrl`, mais pour un affichage inline ("Consulter",
- * visionneuse intégrée) — TTL plus long, pas de log dans `pdf_downloads`
- * (ce n'est pas un téléchargement).
+ * Génère (sans cache) l'URL signée d'aperçu pour une épreuve publiée.
+ * Isolée pour être enveloppée par `unstable_cache` : elle crée son propre
+ * client Supabase (rien de non-sérialisable en argument), à la manière de
+ * lib/contest/settings.ts#fetchRow.
+ */
+async function generatePreviewUrl(
+  departementCode: string,
+  annee: number
+): Promise<string | null> {
+  let supabase: ReturnType<typeof createServiceClient>;
+  try {
+    supabase = createServiceClient();
+  } catch {
+    return null;
+  }
+
+  const document = await findPublishedDocument(supabase, departementCode, annee);
+  if (!document) return null;
+
+  const { data, error } = await supabase.storage
+    .from(PDF_BUCKET)
+    .createSignedUrl(document.storagePath, PREVIEW_URL_TTL_SECONDS);
+
+  if (error || !data) return null;
+  return data.signedUrl;
+}
+
+// URL signée mise en cache par (département, année) : réutilisée pendant sa
+// fenêtre de revalidation par tous les visiteurs, au lieu d'un
+// `createSignedUrl` (et d'une URL unique) à chaque appel. Invalidée par les
+// actions admin via le tag `EXAM_PREVIEW_CACHE_TAG` (voir
+// lib/actions/exam-documents.ts) pour ne jamais servir un lien vers un
+// `storage_path` obsolète après un remplacement.
+const getCachedPreviewUrl = unstable_cache(
+  generatePreviewUrl,
+  ["exam-document-preview"],
+  {
+    revalidate: PREVIEW_CACHE_REVALIDATE_SECONDS,
+    tags: [EXAM_PREVIEW_CACHE_TAG],
+  }
+);
+
+/**
+ * URL signée pour un affichage inline ("Consulter", visionneuse intégrée) —
+ * TTL plus long, pas de log dans `pdf_downloads` (ce n'est pas un
+ * téléchargement). N'est appelée qu'au clic explicite de l'utilisateur
+ * (jamais au montage de la page). L'URL est mise en cache et partagée
+ * (voir `getCachedPreviewUrl`), et l'action est rate-limitée en défense
+ * contre un appel scripté.
  */
 export async function getDocumentPreviewUrl(
   departementCode: string,
@@ -174,27 +235,21 @@ export async function getDocumentPreviewUrl(
   const departement = getDepartementByCode(parsed.data.departementCode);
   if (!departement) return { error: "Département introuvable." };
 
-  let supabase: ReturnType<typeof createServiceClient>;
-  try {
-    supabase = createServiceClient();
-  } catch {
-    return { error: "Consultation momentanément indisponible." };
+  const ip = getClientIp(await headers());
+  const allowed = await checkActionRateLimit(
+    `${ip}|${departement.code}|${parsed.data.annee}`,
+    "document_preview",
+    PREVIEW_RATE_LIMIT,
+    PREVIEW_RATE_LIMIT_WINDOW_SECONDS
+  );
+  if (!allowed) {
+    return { error: "Trop de consultations. Réessayez dans quelques minutes." };
   }
 
-  const document = await findPublishedDocument(
-    supabase,
-    departement.code,
-    parsed.data.annee
-  );
-  if (!document) return { error: "Aucun PDF disponible pour cette session." };
+  const url = await getCachedPreviewUrl(departement.code, parsed.data.annee);
+  if (!url) return { error: "Aucun PDF disponible pour cette session." };
 
-  const { data, error } = await supabase.storage
-    .from(PDF_BUCKET)
-    .createSignedUrl(document.storagePath, PREVIEW_URL_TTL_SECONDS);
-
-  if (error || !data) return { error: "Impossible de générer le lien de consultation." };
-
-  return { url: data.signedUrl };
+  return { url };
 }
 
 /**

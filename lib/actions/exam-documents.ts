@@ -1,16 +1,32 @@
 "use server";
 
 import { z } from "zod";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
 import { requireAdminSession } from "@/lib/actions/admin-auth";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getDepartementByCode } from "@/lib/departements";
 import { buildDocumentStoragePath } from "@/lib/pdf/slugify";
-import { MAX_PDF_SIZE_BYTES, PDF_BUCKET } from "@/lib/pdf/constants";
+import {
+  EXAM_PREVIEW_CACHE_TAG,
+  MAX_PDF_SIZE_BYTES,
+  PDF_BUCKET,
+} from "@/lib/pdf/constants";
 import { formatFileSize } from "@/lib/format";
 import { env } from "@/lib/env";
 
 const ADMIN_PAGE_PATH = "/admin/epreuves";
+
+/**
+ * Après toute mutation d'un document, rafraîchit la page d'admin ET invalide
+ * le cache des URL signées d'aperçu (voir lib/actions/download-pdf.ts) : sans
+ * ça, un aperçu pourrait rester en cache vers un fichier déplacé/supprimé/
+ * dépublié. Tag global (pas par épreuve) : volume de mutations admin
+ * négligeable, la simplicité prime.
+ */
+function revalidateAfterDocumentChange(): void {
+  revalidatePath(ADMIN_PAGE_PATH);
+  revalidateTag(EXAM_PREVIEW_CACHE_TAG);
+}
 
 const departementCodesSchema = z.array(z.string().min(1)).min(1);
 const anneeSchema = z.number().int().min(2000).max(2100);
@@ -215,7 +231,7 @@ export async function confirmUpload(
       await supabase.storage.from(PDF_BUCKET).remove([existing.storage_path]);
     }
 
-    revalidatePath(ADMIN_PAGE_PATH);
+    revalidateAfterDocumentChange();
     return { success: true, id: replaceDocumentId };
   }
 
@@ -256,7 +272,7 @@ export async function confirmUpload(
     };
   }
 
-  revalidatePath(ADMIN_PAGE_PATH);
+  revalidateAfterDocumentChange();
   return { success: true, id: inserted.id };
 }
 
@@ -332,7 +348,7 @@ export async function updateDocumentMetadata(
     };
   }
 
-  revalidatePath(ADMIN_PAGE_PATH);
+  revalidateAfterDocumentChange();
   return { success: true };
 }
 
@@ -353,7 +369,7 @@ export async function toggleDocumentStatus(
     .eq("id", parsed.data.id);
   if (error) return { error: "Échec de la mise à jour du statut." };
 
-  revalidatePath(ADMIN_PAGE_PATH);
+  revalidateAfterDocumentChange();
   return { success: true };
 }
 
@@ -395,6 +411,6 @@ export async function deleteDocument(
     );
   }
 
-  revalidatePath(ADMIN_PAGE_PATH);
+  revalidateAfterDocumentChange();
   return { success: true };
 }

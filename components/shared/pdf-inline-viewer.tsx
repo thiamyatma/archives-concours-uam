@@ -1,16 +1,26 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { Loader2 } from "lucide-react";
+import { useState } from "react";
+import { FileText, Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getDocumentPreviewUrl } from "@/lib/actions/download-pdf";
 
+type ViewerState =
+  | { status: "idle" }
+  | { status: "loading" }
+  | { status: "ready"; url: string }
+  | { status: "error"; message: string };
+
 /**
- * Affiche le PDF directement dans la page (visionneuse native du
- * navigateur via `<iframe>`), pas juste un lien vers un nouvel onglet.
- * L'URL signée est récupérée côté client au montage (jamais au build ni
- * dans le Server Component de la page — voir docs/pdf-downloads.md) : la
- * page qui englobe ce composant reste statique/cachée, seul ce composant
- * fait un aller Supabase.
+ * Affiche le PDF dans la page (visionneuse native du navigateur via
+ * `<iframe>`), mais UNIQUEMENT après un clic explicite sur « Consulter le
+ * PDF » — jamais au montage. Objectif : ne plus déclencher un
+ * téléchargement complet du fichier à chaque affichage de page (bots,
+ * simples chargements, rechargements), première cause d'egress Supabase.
+ * L'URL signée est récupérée côté client au clic (la page englobante reste
+ * statique/cachée) ; elle est mise en cache et partagée côté serveur (voir
+ * lib/actions/download-pdf.ts) pour que le fichier bénéficie du cache
+ * navigateur/CDN.
  */
 export function PdfInlineViewer({
   departementCode,
@@ -19,41 +29,41 @@ export function PdfInlineViewer({
   departementCode: string;
   annee: number;
 }) {
-  const [url, setUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const [state, setState] = useState<ViewerState>({ status: "idle" });
 
-  useEffect(() => {
-    let cancelled = false;
-
-    getDocumentPreviewUrl(departementCode, annee).then((result) => {
-      if (cancelled) return;
-      if ("error" in result) setError(result.error);
-      else setUrl(result.url);
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [departementCode, annee]);
-
-  if (error) {
-    return <p className="text-destructive text-center text-sm">{error}</p>;
+  async function consulter() {
+    setState({ status: "loading" });
+    const result = await getDocumentPreviewUrl(departementCode, annee);
+    if ("error" in result) setState({ status: "error", message: result.error });
+    else setState({ status: "ready", url: result.url });
   }
 
-  if (!url) {
+  if (state.status === "ready") {
     return (
-      <div className="text-muted-foreground flex items-center justify-center gap-2 py-16 text-sm">
-        <Loader2 className="size-4 animate-spin" aria-hidden="true" />
-        Chargement du PDF…
-      </div>
+      <iframe
+        src={state.url}
+        title="Épreuve (PDF)"
+        className="h-[80vh] w-full rounded-lg border"
+      />
     );
   }
 
   return (
-    <iframe
-      src={url}
-      title="Épreuve (PDF)"
-      className="h-[80vh] w-full rounded-lg border"
-    />
+    <div className="flex flex-col items-center gap-3 py-10 text-center">
+      <p className="text-muted-foreground text-sm">
+        Le PDF de cette épreuve s&apos;affiche à la demande.
+      </p>
+      <Button type="button" onClick={consulter} disabled={state.status === "loading"}>
+        {state.status === "loading" ? (
+          <Loader2 className="size-4 animate-spin" aria-hidden="true" />
+        ) : (
+          <FileText className="size-4" aria-hidden="true" />
+        )}
+        {state.status === "loading" ? "Chargement…" : "Consulter le PDF"}
+      </Button>
+      {state.status === "error" && (
+        <p className="text-destructive text-sm">{state.message}</p>
+      )}
+    </div>
   );
 }
