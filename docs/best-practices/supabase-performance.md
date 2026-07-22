@@ -144,7 +144,10 @@ piloté par les **robots** et la **répétition**, pas par le nombre d'humains.
 
 ### Requêtes base
 
-- Lister explicitement les colonnes, jamais `select("*")`.
+- Lister explicitement les colonnes, jamais `select("*")` — **règle ESLint
+  appliquée** (`no-restricted-syntax` dans `eslint.config.mjs`), donc bloquée
+  en CI. La forme COUNT `select("*", { count, head: true })` reste autorisée :
+  elle ne renvoie aucune ligne, donc aucun octet de données.
 - Pousser les filtres **en base** (`.eq`, `.gte`), avec les index qui vont
   avec — ne jamais filtrer en mémoire ce que SQL peut filtrer.
 - Borner le volume (`limit`) même quand la table est petite aujourd'hui.
@@ -247,7 +250,9 @@ piloté par les **robots** et la **répétition**, pas par le nombre d'humains.
 
 ### Base de données
 
-- [ ] Pas de `select("*")` — colonnes explicites.
+- [ ] Pas de `select("*")` — colonnes explicites (vérifié automatiquement
+      par ESLint, mais rester attentif aux colonnes inutiles listées à la
+      main).
 - [ ] Filtres poussés en base, index présents.
 - [ ] `limit` borné.
 
