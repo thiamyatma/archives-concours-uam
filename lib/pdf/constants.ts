@@ -10,3 +10,12 @@ export const PDF_BUCKET = "exam-pdfs";
 export const MAX_PDF_SIZE_BYTES = 52_428_800;
 
 export const PDF_MIME_TYPE = "application/pdf";
+
+/**
+ * Tag de revalidation du cache des URL signées d'aperçu (voir
+ * lib/actions/download-pdf.ts#getDocumentPreviewUrl). Invalidé par toute
+ * action admin qui change le fichier ou sa disponibilité (publication,
+ * remplacement, déplacement, suppression) — sinon un aperçu caché
+ * pointerait vers un `storage_path` obsolète après un remplacement.
+ */
+export const EXAM_PREVIEW_CACHE_TAG = "exam-document-preview";

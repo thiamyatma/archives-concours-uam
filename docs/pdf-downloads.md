@@ -92,11 +92,19 @@ uniquement en PDF ait immédiatement une page publique, sans redéploiement :
    inchangé).
 2. Si absent, `getPdfOnlyDocument` (`lib/data/exam-documents.ts`) cherche un
    document **publié** lié à ce département+année ; si trouvé, une vue de
-   repli est rendue (titre, description éventuelle, bouton télécharger, et
-   le PDF affiché **directement dans la page** via `PdfInlineViewer` — une
-   `iframe` pointant vers une URL signée récupérée côté client au montage,
-   TTL d'1h car une lecture peut durer plusieurs minutes) au lieu des
-   sections Markdown.
+   repli est rendue (titre, description éventuelle, bouton télécharger, et un
+   bouton **« Consulter le PDF »**) au lieu des sections Markdown. Le PDF
+   n'est **jamais chargé au montage** : `PdfInlineViewer` n'appelle
+   `getDocumentPreviewUrl` qu'au clic explicite, puis affiche une `iframe`
+   vers l'URL signée. Cette URL (TTL 1 h, une lecture pouvant durer plusieurs
+   minutes) est **mise en cache et partagée** par (département, année)
+   pendant 50 min (`unstable_cache`, tag `EXAM_PREVIEW_CACHE_TAG` invalidé
+   par toute mutation admin d'un document) : tous les visiteurs de la fenêtre
+   partagent la même URL, donc le fichier bénéficie réellement du cache
+   navigateur/CDN au lieu d'être re-téléchargé avec une URL unique à chaque
+   fois. L'action est aussi rate-limitée (défense anti-script). Objectif :
+   couper l'egress Supabase dû au rechargement automatique du fichier à
+   chaque affichage de page.
 3. Sinon, 404 normal.
 
 Next.js met ensuite ce rendu en cache comme une page statique classique
