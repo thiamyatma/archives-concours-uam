@@ -9,18 +9,21 @@ import { EXAM_PREVIEW_CACHE_TAG, PDF_BUCKET } from "@/lib/pdf/constants";
 import { getClientIp } from "@/lib/http/client-ip";
 import { checkActionRateLimit } from "@/lib/rate-limit";
 
-const SIGNED_URL_TTL_SECONDS = 60;
-// Plus longue que le TTL de téléchargement : une lecture inline peut durer
-// plusieurs minutes (visionneuse PDF native du navigateur dans une iframe).
+// TTL des URL signées de téléchargement et d'aperçu. 1 h : assez pour une
+// lecture inline (plusieurs minutes) ou un téléchargement lent, et surtout
+// pour survivre à la fenêtre de mise en cache ci-dessous. Ce sont des PDF
+// d'épreuves publics (aucune confidentialité) — une URL partageable 1 h ne
+// pose pas de risque, la génération restant plafonnée par le rate-limit.
+const SIGNED_URL_TTL_SECONDS = 60 * 60;
 const PREVIEW_URL_TTL_SECONDS = 60 * 60;
-// Durée de mise en cache (Next Data Cache) de l'URL signée d'aperçu, plus
-// courte que son TTL : une URL régénérée toutes les 50 min reste toujours
-// valide au moins 10 min quand elle est servie. Effet : une seule URL
-// signée par (département, année) est partagée par tous les visiteurs et
-// tous les rechargements de la fenêtre — le fichier peut alors réellement
-// être mis en cache par le navigateur et le CDN (même clé d'URL stable),
-// au lieu d'être re-téléchargé à chaque montage avec une URL unique.
-const PREVIEW_CACHE_REVALIDATE_SECONDS = 50 * 60;
+// Durée de mise en cache (Next Data Cache) des URL signées, plus courte que
+// leur TTL : une URL régénérée toutes les 50 min reste toujours valide au
+// moins 10 min quand elle est servie. Effet : une seule URL signée par
+// (département, année) est partagée par tous les visiteurs et tous les
+// re-téléchargements de la fenêtre — le fichier a alors une clé d'URL stable,
+// donc réellement mis en cache par le navigateur/CDN au lieu d'être
+// re-téléchargé (uncached) avec une URL unique à chaque fois.
+const SIGNED_URL_CACHE_REVALIDATE_SECONDS = 50 * 60;
 const DOWNLOAD_RATE_LIMIT = 30;
 const DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS = 60 * 60;
 const VIEW_RATE_LIMIT_WINDOW_SECONDS = 30 * 60;
@@ -104,9 +107,49 @@ export async function checkExamPdfAvailability(
 }
 
 /**
- * Génère une URL signée de courte durée pour le PDF de la session, et
- * enregistre l'événement dans `pdf_downloads`. N'est appelée qu'au clic
- * (jamais au build, jamais au montage de la page).
+ * Génère (sans cache) l'URL signée de téléchargement (avec disposition
+ * `attachment`) pour une épreuve publiée. Isolée pour être enveloppée par
+ * `unstable_cache`, comme `generatePreviewUrl`.
+ */
+async function generateDownloadData(
+  departementCode: string,
+  annee: number
+): Promise<{ url: string; fileName: string } | null> {
+  let supabase: ReturnType<typeof createServiceClient>;
+  try {
+    supabase = createServiceClient();
+  } catch {
+    return null;
+  }
+
+  const document = await findPublishedDocument(supabase, departementCode, annee);
+  if (!document) return null;
+
+  const { data, error } = await supabase.storage
+    .from(PDF_BUCKET)
+    .createSignedUrl(document.storagePath, SIGNED_URL_TTL_SECONDS, {
+      download: document.fileName,
+    });
+
+  if (error || !data) return null;
+  return { url: data.signedUrl, fileName: document.fileName };
+}
+
+// URL de téléchargement mise en cache et partagée par (département, année) —
+// même principe que l'aperçu : un re-téléchargement du même fichier réutilise
+// l'URL stable au lieu d'en régénérer une unique (donc uncached). Invalidée
+// par les mutations admin via `EXAM_PREVIEW_CACHE_TAG`.
+const getCachedDownloadData = unstable_cache(
+  generateDownloadData,
+  ["exam-document-download"],
+  { revalidate: SIGNED_URL_CACHE_REVALIDATE_SECONDS, tags: [EXAM_PREVIEW_CACHE_TAG] }
+);
+
+/**
+ * URL signée de téléchargement pour le PDF de la session. N'est appelée
+ * qu'au clic (jamais au build/montage). L'URL est mise en cache et partagée
+ * (`getCachedDownloadData`) pour que les re-téléchargements bénéficient du
+ * cache CDN ; le rate-limit et le log `pdf_downloads` restent par clic.
  */
 export async function getExamPdfDownloadUrl(
   departementCode: string,
@@ -133,45 +176,25 @@ export async function getExamPdfDownloadUrl(
     return { error: "Trop de téléchargements. Réessayez dans quelques minutes." };
   }
 
-  let supabase: ReturnType<typeof createServiceClient>;
-  try {
-    supabase = createServiceClient();
-  } catch {
-    return { error: "Téléchargement momentanément indisponible." };
-  }
-
-  const document = await findPublishedDocument(
-    supabase,
-    departement.code,
-    parsed.data.annee
-  );
-  if (!document) {
+  const download = await getCachedDownloadData(departement.code, parsed.data.annee);
+  if (!download) {
     return { error: "Aucun PDF disponible pour cette session." };
   }
 
-  const { data, error } = await supabase.storage
-    .from(PDF_BUCKET)
-    .createSignedUrl(document.storagePath, SIGNED_URL_TTL_SECONDS, {
-      download: document.fileName,
-    });
-
-  if (error || !data) {
-    return { error: "Impossible de générer le lien de téléchargement." };
-  }
-
-  // Best-effort : un échec du log (réseau, etc.) ne doit jamais empêcher
-  // de renvoyer l'URL déjà générée avec succès.
+  // Log par clic (jamais mis en cache) : un événement par téléchargement réel.
+  // Best-effort — un échec du log ne doit pas empêcher de renvoyer l'URL.
   try {
+    const supabase = createServiceClient();
     await supabase.from("pdf_downloads").insert({
       departement_code: departement.code,
       annee: parsed.data.annee,
-      file_name: document.fileName,
+      file_name: download.fileName,
     });
   } catch {
     // ignoré intentionnellement
   }
 
-  return { url: data.signedUrl, fileName: document.fileName };
+  return { url: download.url, fileName: download.fileName };
 }
 
 /**
@@ -212,7 +235,7 @@ const getCachedPreviewUrl = unstable_cache(
   generatePreviewUrl,
   ["exam-document-preview"],
   {
-    revalidate: PREVIEW_CACHE_REVALIDATE_SECONDS,
+    revalidate: SIGNED_URL_CACHE_REVALIDATE_SECONDS,
     tags: [EXAM_PREVIEW_CACHE_TAG],
   }
 );

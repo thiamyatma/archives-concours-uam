@@ -6,6 +6,7 @@ import {
   createUploadUrl,
   type ConfirmUploadResult,
 } from "@/lib/actions/exam-documents";
+import { PDF_UPLOAD_CACHE_CONTROL_SECONDS } from "@/lib/pdf/constants";
 
 export type UploadStatus = "idle" | "uploading" | "success" | "error";
 
@@ -120,7 +121,7 @@ function putFileWithProgress(
     // Ne jamais fixer Content-Type manuellement : le navigateur doit poser
     // lui-même le boundary multipart/form-data.
     const formData = new FormData();
-    formData.append("cacheControl", "3600");
+    formData.append("cacheControl", PDF_UPLOAD_CACHE_CONTROL_SECONDS);
     formData.append("", file);
     xhr.send(formData);
   });
