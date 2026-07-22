@@ -9,6 +9,13 @@ interroger pour ces pages. Ce qui reste ci-dessous couvre le rendu des
 pages départements/archives et l'assistant IA (seule partie du site qui
 parle encore à Supabase).
 
+> **Coût et egress** — ce document traite du **rendu** (statique/ISR,
+> déduplication). Pour le **volume de données transféré** et son coût
+> (cache des fichiers, URL signées, rate-limit, checklist avant mise en
+> production), voir
+> [best-practices/supabase-performance.md](best-practices/supabase-performance.md),
+> écrit après un incident réel de ~9 Go d'egress.
+
 ## Sommaire
 
 - [Départements et archives : rendu 100% statique](#départements-et-archives--rendu-100-statique)
