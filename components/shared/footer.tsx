@@ -1,9 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
-import { Mail } from "lucide-react";
-import { SITE_NAME, SITE_SLOGAN, CONTACT_EMAIL } from "@/lib/constants";
+import { SITE_NAME, SITE_SLOGAN } from "@/lib/constants";
 import { DEPARTEMENTS } from "@/lib/departements";
-import { TrackContactLink } from "@/components/analytics/track-contact-link";
 
 export function Footer() {
   return (
@@ -21,13 +19,6 @@ export function Footer() {
             <span className="font-semibold">{SITE_NAME}</span>
           </Link>
           <p className="text-muted-foreground mt-3 max-w-sm text-sm">{SITE_SLOGAN}</p>
-          <p className="text-muted-foreground mt-4 flex items-center gap-2 text-sm">
-            <Mail className="size-4" aria-hidden="true" />
-            <TrackContactLink
-              email={CONTACT_EMAIL}
-              className="hover:text-primary hover:underline"
-            />
-          </p>
         </div>
 
         <div>
