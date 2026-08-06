@@ -17,17 +17,17 @@ composants composables (`Button`, `DialogTrigger`, etc.) supportent la prop
 
 ## `components/shared/`
 
-| Composant              | Type   | Rôle                                                                                    |
-| ---------------------- | ------ | --------------------------------------------------------------------------------------- |
-| `Navbar`               | client | Logo (mark recadré), nav principale, menu mobile (Sheet)                                |
-| `Footer`               | server | Logo complet, liens départements/navigation, mention non-affiliation                    |
-| `DepartementCard`      | server | Carte département (nom, description, nb de sessions, lien archives)                     |
-| `DepartementYearsList` | client | Liste des années Markdown (props) fusionnée avec les années PDF-seul (fetch au montage) |
-| `MarkdownRenderer`     | server | Rend une chaîne Markdown (react-markdown + remark-gfm/math + KaTeX)                     |
-| `StatsSection`         | server | Tuiles de statistiques génériques (page d'accueil)                                      |
-| `DownloadPdfButton`    | client | Bouton de téléchargement PDF (vérification + URL signée + toast)                        |
-| `PdfInlineViewer`      | client | Visionneuse PDF intégrée (`iframe`) pour la page de repli PDF-seul                      |
-| `RecordDocumentView`   | client | Compte une consultation de page (sans rendu), indépendant de GA4                        |
+| Composant              | Type   | Rôle                                                                             |
+| ---------------------- | ------ | -------------------------------------------------------------------------------- |
+| `Navbar`               | client | Logo (mark recadré), nav principale, menu mobile (Sheet)                         |
+| `Footer`               | server | Logo complet, liens départements/navigation, mention non-affiliation             |
+| `DepartementCard`      | server | Carte département (nom, description, nb de sessions, lien archives)              |
+| `DepartementYearsList` | server | Liste des années disponibles (Markdown + PDF-seul, fusionnées côté serveur)      |
+| `MarkdownRenderer`     | server | Rend une chaîne Markdown (react-markdown + remark-gfm/math + KaTeX)              |
+| `StatsSection`         | server | Tuiles de statistiques génériques (page d'accueil)                               |
+| `DownloadPdfButton`    | client | Bouton de téléchargement PDF (disponibilité en prop, URL signée au clic + toast) |
+| `PdfInlineViewer`      | client | Visionneuse PDF intégrée (`iframe`) pour la page de repli PDF-seul               |
+| `RecordDocumentView`   | client | Compte une consultation de page (sans rendu), indépendant de GA4                 |
 
 ## `components/admin/`
 

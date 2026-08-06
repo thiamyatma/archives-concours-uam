@@ -24,8 +24,11 @@ Navigateur
    │     lib/data/departements.ts ──► lib/content/*.ts ──► content/archives/**
    │     rendu HTML au build pour les combinaisons connues (Markdown)
    │     rendu à la demande (mis en cache ensuite) pour un PDF-seul inconnu
-   │     │     lib/data/exam-documents.ts ──► lib/supabase/service.ts ──► Supabase
+   │     │     lib/data/exam-documents.ts (unstable_cache, tag)
+   │     │       ──► lib/supabase/service.ts ──► Supabase
+   │     │       disponibilité du PDF + années PDF-seul, figées dans le HTML
    │     └─ DownloadPdfButton (Client Component isolé)
+   │           au CLIC uniquement :
    │           lib/actions/download-pdf.ts ──► lib/supabase/service.ts ──► Supabase (PDF)
    │
    ├─ app/assistant + app/api/chat/route.ts
@@ -170,8 +173,9 @@ Supabase sur des pages qui n'en avaient jamais eu besoin. Détail complet :
 Les hooks React personnalisés vont dans `lib/hooks/use-<nom>.ts` :
 
 - `useAnalytics()` — émetteurs d'événements GA4 typés.
-- `useDownloadPdf(departementCode, annee)` — cycle de vie du téléchargement
-  PDF (vérification, état, déclenchement, toast, événement GA4).
+- `useDownloadPdf(departementCode, annee, available)` — téléchargement PDF
+  (état, déclenchement au clic, toast, événement GA4). La disponibilité est
+  résolue côté serveur au rendu de la page, pas au montage.
 - `useFileUpload()` — upload direct navigateur → Supabase Storage avec
   progression réelle (`XMLHttpRequest`, voir
   [`docs/pdf-downloads.md`](./pdf-downloads.md)), utilisé par la page

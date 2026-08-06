@@ -5,22 +5,24 @@ import { Button } from "@/components/ui/button";
 import { useDownloadPdf } from "@/lib/hooks/use-download-pdf";
 
 /**
- * Bouton de téléchargement du PDF combiné d'une session d'examen. Vérifie
- * la disponibilité au montage (côté client, via Server Action) : la page
- * qui l'englobe reste 100% statique, elle n'a jamais besoin de savoir si
- * un PDF existe (voir docs/pdf-downloads.md).
+ * Bouton de téléchargement du PDF combiné d'une session d'examen. La
+ * disponibilité (`available`) est résolue côté serveur au rendu de la page et
+ * figée dans le HTML statique : plus de vérification au montage, donc aucune
+ * requête déclenchée par une simple visite (voir docs/pdf-downloads.md).
  */
 export function DownloadPdfButton({
   departementCode,
   annee,
+  available,
   className,
 }: {
   departementCode: string;
   annee: number;
+  available: boolean;
   className?: string;
 }) {
-  const { status, download } = useDownloadPdf(departementCode, annee);
-  const isBusy = status === "checking" || status === "downloading";
+  const { status, download } = useDownloadPdf(departementCode, annee, available);
+  const isBusy = status === "downloading";
 
   return (
     <Button

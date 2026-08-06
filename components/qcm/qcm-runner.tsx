@@ -176,6 +176,11 @@ function QcmQuestionCard({
             src={imageUrl}
             alt={`Illustration de la question ${question.numero}`}
             className="mt-2 max-h-64 rounded-lg border object-contain"
+            // Toutes les questions sont rendues d'un coup : sans `lazy`, une
+            // grille de logique télécharge toutes ses illustrations au
+            // chargement alors qu'on en voit une ou deux.
+            loading="lazy"
+            decoding="async"
           />
         )}
       </CardHeader>

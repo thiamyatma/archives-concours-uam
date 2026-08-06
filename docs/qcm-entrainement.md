@@ -158,10 +158,15 @@ décroissant (une question « Difficile » ratée pèse plus qu'une « Facile »
 ## Illustrations (questions de logique visuelles)
 
 Quelques questions de logique renvoient à une image déjà utilisée par
-l'épreuve Markdown (`public/archives/<groupe>/<annee>/q<numero>.jpg`,
+l'épreuve Markdown (`public/archives/<groupe>/<annee>/q<numero>.webp`,
 voir `docs/ARCHITECTURE.md`). `lib/qcm/images.ts#getQuestionImageUrl` vérifie
 simplement l'existence du fichier — ce chemin n'est pas stocké dans le JSON
 (hors du schéma demandé), il est recalculé par la page à chaque requête.
+
+Toutes les questions étant rendues d'un coup, ces images portent
+`loading="lazy"` et sont servies avec un `Cache-Control` d'un an
+(`next.config.ts`) — voir `docs/PERFORMANCE.md`. Corollaire : corriger une
+illustration impose un **nouveau nom de fichier**.
 
 ## Limites et défauts assumés
 

@@ -170,6 +170,10 @@ piloté par les **robots** et la **répétition**, pas par le nombre d'humains.
 | #42 | `cacheControl` à l'upload porté à **1 an** ; URL de **téléchargement** également cachée et partagée (rate-limit et log conservés **par clic**)                                                                |
 | —   | **Objets existants corrigés** : les 4 PDF passés de `no-cache`/`3600` à `max-age=31536000` (octets vérifiés intacts après re-upload)                                                                          |
 | #43 | Lectures du dashboard Analytics QCM mises en cache (`unstable_cache`) + `select` explicite                                                                                                                    |
+| —   | Disponibilité du PDF et années PDF-seul lues **au rendu** (cachées, invalidées par tag) au lieu d'un `useEffect` par visite ; `revalidatePath` des routes publiques ajouté aux mutations admin                |
+| —   | `Cache-Control: max-age=31536000, immutable` sur `public/archives/**` (défaut Vercel : `max-age=0, must-revalidate`) + `loading="lazy"` sur les illustrations d'épreuve et de QCM                             |
+| —   | Comptage des vues fusionné en une RPC (`record_exam_document_view`) au lieu de rate-limit + insert, et déclenché après un délai d'engagement client — écarte le trafic robot                                  |
+| —   | Illustrations d'archives converties en WebP q82 : 309 Ko → 108 Ko (−65 %), qualité visuellement identique                                                                                                     |
 
 ## Impacts
 

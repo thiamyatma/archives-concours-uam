@@ -90,6 +90,9 @@ année (le doublon est rejeté à l'import) — voir [pdf-downloads.md](pdf-down
 
 Log insert-only, une consultation de page épreuve (compteur admin,
 indépendant de Google Analytics), rate-limitée par IP+département+année.
+Écrit uniquement par `record_exam_document_view` (voir RPC), et seulement
+après un délai d'engagement côté client — un crawler qui rend la page et
+passe à la suivante n'est pas compté.
 
 ## `qcm_attempts`
 
@@ -198,7 +201,14 @@ Une ligne par champ modifié à chaque enregistrement depuis
   atomique (verrou advisory) pour le rate-limit du RAG.
 - `check_action_rate_limit(p_key_hash, p_action, p_limit, p_window_seconds)`
   — limiteur générique par clé+action, même principe, utilisé pour
-  `admin_login`, `pdf_download` et `document_view`.
+  `admin_login`, `pdf_download`, `document_preview` et `qcm_attempt`.
+- `record_exam_document_view(p_key_hash, p_departement_code, p_annee, p_window_seconds)`
+  — limitation **et** enregistrement de la vue dans la même transaction.
+  Appelée sur chaque page épreuve consultée, d'où la fusion : deux
+  allers-retours réseau par vue devenaient le double de connexions pour un
+  seul événement. Plafond implicite de 1 par fenêtre (`exists` plutôt qu'un
+  `count`), la seule valeur qu'ait jamais utilisée ce compteur. Écrit dans
+  `action_rate_limits` avec l'action `document_view`, comme avant.
 
 ## RLS
 

@@ -5,6 +5,7 @@
 
 # Avoid noisy diffs on generated/binary-ish assets.
 *.png binary
+*.jpg binary
 *.webp binary
 *.ico binary
 package-lock.json -diff linguist-generated

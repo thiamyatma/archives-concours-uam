@@ -16,16 +16,49 @@ import { env } from "@/lib/env";
 
 const ADMIN_PAGE_PATH = "/admin/epreuves";
 
+interface DocumentLink {
+  departement_code: string;
+  annee: number;
+}
+
+/** Départements + années auxquels un document est rattaché. */
+async function fetchDocumentLinks(
+  supabase: ReturnType<typeof createServiceClient>,
+  documentId: string
+): Promise<DocumentLink[]> {
+  const { data } = await supabase
+    .from("exam_document_departments")
+    .select("departement_code, annee")
+    .eq("document_id", documentId);
+  return data ?? [];
+}
+
 /**
- * Après toute mutation d'un document, rafraîchit la page d'admin ET invalide
- * le cache des URL signées d'aperçu (voir lib/actions/download-pdf.ts) : sans
+ * Après toute mutation d'un document : rafraîchit la page d'admin, invalide
+ * le cache des URL signées d'aperçu (voir lib/actions/download-pdf.ts) — sans
  * ça, un aperçu pourrait rester en cache vers un fichier déplacé/supprimé/
- * dépublié. Tag global (pas par épreuve) : volume de mutations admin
- * négligeable, la simplicité prime.
+ * dépublié — et régénère les pages publiques concernées.
+ *
+ * Les pages publiques lisent désormais la disponibilité du PDF et les années
+ * PDF-seul côté serveur (lib/data/exam-documents.ts), pour qu'une visite ne
+ * coûte aucune requête. `revalidatePath` par route touchée est le pendant
+ * obligatoire de ce choix : le `revalidateTag` ci-dessous purge la donnée
+ * cachée, mais on ne compte pas dessus pour régénérer un HTML déjà prérendu.
+ * Tag global (pas par épreuve) : volume de mutations admin négligeable, la
+ * simplicité prime.
  */
-function revalidateAfterDocumentChange(): void {
+function revalidateAfterDocumentChange(links: DocumentLink[]): void {
   revalidatePath(ADMIN_PAGE_PATH);
   revalidateTag(EXAM_PREVIEW_CACHE_TAG);
+
+  const seen = new Set<string>();
+  for (const { departement_code, annee } of links) {
+    const key = `${departement_code}/${annee}`;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    revalidatePath(`/departements/${departement_code}`);
+    revalidatePath(`/departements/${departement_code}/${annee}`);
+  }
 }
 
 const departementCodesSchema = z.array(z.string().min(1)).min(1);
@@ -231,7 +264,10 @@ export async function confirmUpload(
       await supabase.storage.from(PDF_BUCKET).remove([existing.storage_path]);
     }
 
-    revalidateAfterDocumentChange();
+    // Un remplacement ne touche pas la table de liaison : les routes à
+    // régénérer sont celles déjà rattachées au document, pas celles du
+    // formulaire.
+    revalidateAfterDocumentChange(await fetchDocumentLinks(supabase, replaceDocumentId));
     return { success: true, id: replaceDocumentId };
   }
 
@@ -272,7 +308,9 @@ export async function confirmUpload(
     };
   }
 
-  revalidateAfterDocumentChange();
+  revalidateAfterDocumentChange(
+    departementCodes.map((code) => ({ departement_code: code, annee }))
+  );
   return { success: true, id: inserted.id };
 }
 
@@ -319,6 +357,10 @@ export async function updateDocumentMetadata(
     return { error: `Un document existe déjà pour ${conflicts.join(", ")} en ${annee}.` };
   }
 
+  // Lues AVANT le remplacement des liaisons : une année/un département retiré
+  // doit voir sa page publique régénérée lui aussi.
+  const previousLinks = await fetchDocumentLinks(supabase, id);
+
   const newPath = buildDocumentStoragePath(departementCodes, annee, existing.file_name);
   if (newPath !== existing.storage_path) {
     const { error: moveError } = await supabase.storage
@@ -348,7 +390,10 @@ export async function updateDocumentMetadata(
     };
   }
 
-  revalidateAfterDocumentChange();
+  revalidateAfterDocumentChange([
+    ...previousLinks,
+    ...departementCodes.map((code) => ({ departement_code: code, annee })),
+  ]);
   return { success: true };
 }
 
@@ -369,7 +414,7 @@ export async function toggleDocumentStatus(
     .eq("id", parsed.data.id);
   if (error) return { error: "Échec de la mise à jour du statut." };
 
-  revalidateAfterDocumentChange();
+  revalidateAfterDocumentChange(await fetchDocumentLinks(supabase, parsed.data.id));
   return { success: true };
 }
 
@@ -392,6 +437,10 @@ export async function deleteDocument(
     .maybeSingle();
   if (!existing) return { error: "Document introuvable." };
 
+  // Lues avant la suppression : les liaisons partent en cascade avec le
+  // document, on n'aurait plus de quoi cibler les pages à régénérer.
+  const links = await fetchDocumentLinks(supabase, parsed.data.id);
+
   const { error: deleteError } = await supabase
     .from("exam_documents")
     .delete()
@@ -411,6 +460,6 @@ export async function deleteDocument(
     );
   }
 
-  revalidateAfterDocumentChange();
+  revalidateAfterDocumentChange(links);
   return { success: true };
 }

@@ -8,6 +8,7 @@ import {
   getDepartementAnnees,
   getDepartementByCode,
 } from "@/lib/data/departements";
+import { getPublishedPdfYears } from "@/lib/data/exam-documents";
 
 // Tous les départements sont connus statiquement : un code hors de cette
 // liste doit 404 immédiatement, pas être généré à la demande.
@@ -41,7 +42,15 @@ export default async function DepartementDetailPage({
   const departement = getDepartementByCode(code);
   if (!departement) notFound();
 
-  const annees = getDepartementAnnees(departement.code);
+  // Années issues du Markdown (résolues au build, sans réseau) + années qui
+  // n'ont qu'un PDF publié. La lecture Supabase est cachée et invalidée par
+  // tag à chaque mutation admin (lib/data/exam-documents.ts) : la page reste
+  // statique et une visite ne déclenche plus aucune requête — contrairement
+  // à l'ancien complément côté client. Le compteur « Années archivées »
+  // couvre du coup les deux sources, comme la liste.
+  const anneesMarkdown = getDepartementAnnees(departement.code);
+  const anneesPdf = await getPublishedPdfYears(departement.code);
+  const annees = [...new Set([...anneesMarkdown, ...anneesPdf])].sort((a, b) => b - a);
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-14 sm:px-6">
