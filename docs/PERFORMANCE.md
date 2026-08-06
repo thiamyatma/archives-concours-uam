@@ -19,7 +19,10 @@ parle encore à Supabase).
 ## Sommaire
 
 - [Départements et archives : rendu 100% statique](#départements-et-archives--rendu-100-statique)
+- [Les métadonnées PDF sont lues au rendu, pas au montage](#les-métadonnées-pdf-sont-lues-au-rendu-pas-au-montage)
+- [La seule écriture restante sur le chemin d'une visite](#la-seule-écriture-restante-sur-le-chemin-dune-visite)
 - [Pourquoi aucun cache n'est nécessaire ici](#pourquoi-aucun-cache-nest-nécessaire-ici)
+- [Assets statiques : cache long et chargement paresseux](#assets-statiques--cache-long-et-chargement-paresseux)
 - [Déduplication de requêtes (React cache())](#déduplication-de-requêtes-react-cache)
 - [Rendu Markdown sans JavaScript client](#rendu-markdown-sans-javascript-client)
 - [Assistant IA (RAG)](#assistant-ia-rag)
@@ -43,9 +46,8 @@ cache comme une page statique classique pour les requêtes suivantes.
 Exception scopée et bornée : elle ne coûte un aller réseau qu'une fois par
 nouvelle combinaison département+année jamais vue, jamais pour les pages
 Markdown déjà connues au build. `/departements/[code]` s'enrichit lui aussi
-en listant ces années PDF-seul, mais via une petite amélioration
-**côté client** (`DepartementYearsList`) — la page elle-même reste
-statique, sans appel réseau côté serveur.
+en listant ces années PDF-seul, résolues **côté serveur** au rendu — voir la
+section suivante.
 
 Conséquence directe pour le reste du site : **aucune fonction serverless ne
 lit le système de fichiers à l'exécution** en dehors du cas ci-dessus.
@@ -66,6 +68,61 @@ ci-dessous. Écart de fraîcheur accepté (au plus 1h) pour de simples
 compteurs informatifs — contrairement à `/admin` (`force-dynamic`, toujours
 à jour, car outil d'administration).
 
+## Les métadonnées PDF sont lues au rendu, pas au montage
+
+Deux informations des pages publiques viennent encore de Supabase : la
+**disponibilité du PDF** d'une épreuve (état du bouton « Télécharger ») et
+les **années qui n'ont qu'un PDF publié** (liste d'un département). Elles
+étaient récupérées par des Server Actions appelées dans un `useEffect`, pour
+garder les pages 100% statiques.
+
+Ce choix coûtait cher au mauvais endroit : la valeur est **identique pour
+tous les visiteurs**, mais elle était recalculée **à chaque affichage** —
+1 à 2 invocations serverless et 2 à 4 requêtes Supabase par vue, robots
+compris (les crawlers exécutent le JS). Cent visites d'une page épreuve =
+deux cents invocations et quatre cents requêtes, pour une réponse toujours
+identique.
+
+Les deux lectures sont désormais faites **côté serveur au rendu de la page**
+(`getPublishedDocument`, `getPublishedPdfYears` dans
+`lib/data/exam-documents.ts`), enveloppées dans `unstable_cache` avec le tag
+`EXAM_PREVIEW_CACHE_TAG`. Les pages restent `●` (SSG) dans la sortie de
+`next build` — la valeur est figée dans le HTML — et **une visite ne coûte
+plus aucune requête**.
+
+Contrepartie assumée : l'invalidation devient obligatoire. Toute mutation
+admin (`lib/actions/exam-documents.ts`) appelle
+`revalidateAfterDocumentChange(links)`, qui purge le tag **et** régénère par
+`revalidatePath` les routes publiques rattachées (`/departements/[code]` et
+`/departements/[code]/[annee]`). Les liaisons sont lues **avant** toute
+suppression/remplacement, sinon on n'aurait plus de quoi cibler les pages à
+régénérer. Un `revalidate` d'une heure sur le cache sert de filet en cas de
+tag manqué.
+
+Effet de bord bienvenu : `DepartementYearsList` n'a plus d'état, c'est
+redevenu un Server Component (moins de JS client), et le compteur « Années
+archivées » couvre enfin les mêmes années que la liste affichée.
+
+## La seule écriture restante sur le chemin d'une visite
+
+`recordDocumentView` alimente le compteur « consultations » du dashboard
+admin. Une écriture ne se cache pas — elle reste donc sur le chemin de
+chaque visite. Deux garde-fous, faute de pouvoir la supprimer :
+
+**Un seul aller-retour.** L'action enchaînait un `check_action_rate_limit`
+puis un `insert`. La RPC `record_exam_document_view` fait les deux dans la
+même transaction (même table `action_rate_limits`, même verrou advisory,
+même limitation par IP+département+année) — deux appels réseau deviennent
+un.
+
+**Un délai d'engagement côté client.** `RecordDocumentView` n'appelle
+l'action qu'après 4 secondes, et seulement si l'onglet est toujours monté et
+visible. Un crawler rend la page et passe à la suivante ; personne ne
+consulte réellement une épreuve en moins de quatre secondes. Heuristique
+assumée : elle écarte l'essentiel du trafic automatisé sans jamais rejeter
+un lecteur réel. Effet secondaire souhaitable — le compteur admin devient
+plus honnête, puisqu'il cesse de gonfler avec les passages de robots.
+
 ## Pourquoi aucun cache n'est nécessaire ici
 
 L'ancienne architecture (documents en base) avait deux niveaux de cache
@@ -74,6 +131,36 @@ L'ancienne architecture (documents en base) avait deux niveaux de cache
 fois pour toutes au build, il n'y a plus rien à mettre en cache à
 l'exécution : le HTML généré au build **est** déjà le résultat final,
 servi tel quel (éventuellement via un CDN) pour chaque requête.
+
+## Assets statiques : cache long et chargement paresseux
+
+Les illustrations d'épreuves (`public/archives/**`) sont des scans
+d'archives : le contenu d'un chemin donné ne change jamais. Deux réglages,
+pour une raison identique à celle des PDF — l'egress est piloté par la
+répétition, pas par le nombre de visiteurs.
+
+**`Cache-Control`.** Vercel sert `public/` avec `max-age=0,
+must-revalidate` par défaut : chaque affichage re-demande les images. Le
+`headers()` de `next.config.ts` pose `max-age=31536000, immutable` sur
+`/archives/:path*`. Contrepartie : corriger une illustration impose un
+**nouveau nom de fichier** (un navigateur qui l'a déjà ne la redemandera
+pas) — même règle que les PDF dans Storage, où un remplacement crée un
+nouveau `storage_path`.
+
+**Format.** Les illustrations sont des **WebP** (qualité 82), converties
+depuis les JPEG d'origine : 309 Ko → 108 Ko au total, soit **−65 %** à
+qualité visuellement identique (du trait noir sur blanc, aucun artefact
+visible sur les indices ni les liaisons chimiques). Le WebP sans perte a été
+écarté après mesure — il pesait plus lourd que le JPEG source (551 Ko), le
+bruit de compression déjà présent dans les originaux devant alors être
+conservé fidèlement.
+
+**`loading="lazy"`.** Une page épreuve compte jusqu'à 6 images,
+toutes situées loin dans le document ; la page d'entraînement QCM rend
+toutes les questions d'un coup. Sans `lazy`, tout est téléchargé au
+chargement, y compris par un robot qui ne fera jamais défiler. L'attribut
+est posé sur les images du Markdown (`components.img` dans
+`markdown-renderer.tsx`) et sur celles du QCM (`qcm-runner.tsx`).
 
 ## Déduplication de requêtes (React `cache()`)
 

@@ -114,11 +114,14 @@ combinaison département+année, jamais pour les pages Markdown déjà connues
 au build.
 
 Pour que ces épreuves soient aussi **listées** (pas seulement atteignables
-par lien direct), `DepartementYearsList` (`/departements/[code]`) est un
-Client Component qui fusionne, au montage, les années PDF-seul (`Server
-Action getAdditionalYears`) avec la liste Markdown déjà affichée par le
-serveur — la page elle-même reste 100% statique, comme le reste du site
-(voir `docs/PERFORMANCE.md`).
+par lien direct), `/departements/[code]` fusionne **côté serveur** les années
+PDF-seul (`getPublishedPdfYears`, `lib/data/exam-documents.ts`) avec la liste
+issue du Markdown. La lecture est cachée par département (`unstable_cache`,
+tag `EXAM_PREVIEW_CACHE_TAG`) : la page reste 100% statique et une visite ne
+déclenche aucune requête. Auparavant `DepartementYearsList` faisait ce
+complément au montage, côté client — deux requêtes Supabase **par visite**,
+robots compris, pour une valeur identique pour tout le monde (voir
+`docs/PERFORMANCE.md`).
 
 ## Permissions (RLS)
 
@@ -128,11 +131,15 @@ Aucune policy publique sur `exam_documents`, `exam_document_departments`,
 
 ## Flux de téléchargement (page publique)
 
-1. **Au montage du bouton** (`components/shared/download-pdf-button.tsx`,
-   `lib/hooks/use-download-pdf.ts`) : `checkExamPdfAvailability`
-   (`lib/actions/download-pdf.ts`) résout directement le document publié lié
-   à ce département+année (plus de `storage.list()` en boucle — une requête
-   en base, plus rapide que l'ancien système à base de dossiers partagés).
+1. **Au rendu de la page** (serveur) : `getPublishedDocument`
+   (`lib/data/exam-documents.ts`) résout directement le document publié lié à
+   ce département+année (plus de `storage.list()` en boucle — une résolution
+   via la table de liaison). La lecture est cachée par (département, année)
+   et invalidée par `EXAM_PREVIEW_CACHE_TAG` ; le résultat est figé dans le
+   HTML statique et passé en prop `available` à `DownloadPdfButton`. Aucune
+   vérification au montage : une visite (humain ou robot) ne coûte plus ni
+   invocation serverless ni requête Supabase. Le même appel fournit le nom et
+   la description du document pour la page de repli PDF-seul.
 2. **Au clic** : `getExamPdfDownloadUrl` renvoie une **URL signée** (TTL 1 h,
    disposition `attachment`), **mise en cache et partagée** par (département,
    année) via `unstable_cache` (revalidate 50 min, tag

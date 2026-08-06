@@ -15,7 +15,7 @@ import {
   getDepartementAnnees,
   getDepartementByCode,
 } from "@/lib/data/departements";
-import { getPdfOnlyDocument } from "@/lib/data/exam-documents";
+import { getPublishedDocument } from "@/lib/data/exam-documents";
 import { listQcmMatieres } from "@/lib/qcm/data";
 import { slugifyMatiereTitle } from "@/lib/qcm/slug";
 
@@ -65,8 +65,13 @@ export default async function DepartementAnneePage({
   if (!departement || !Number.isInteger(annee)) notFound();
 
   const content = getConcoursContent(departement.code, annee);
-  const pdfOnly = content ? null : await getPdfOnlyDocument(departement.code, annee);
-  if (!content && !pdfOnly) notFound();
+  // Une seule résolution, cachée et invalidée par tag (voir
+  // lib/data/exam-documents.ts) : elle sert à la fois de contenu de repli
+  // quand aucun Markdown n'existe et de disponibilité du bouton de
+  // téléchargement. Résolue ici plutôt qu'au montage côté client — la page
+  // reste statique et une visite ne coûte plus aucune requête Supabase.
+  const pdfDocument = await getPublishedDocument(departement.code, annee);
+  if (!content && !pdfDocument) notFound();
 
   const matieresQcm = new Set(listQcmMatieres(departement.contentGroup, annee));
 
@@ -81,7 +86,11 @@ export default async function DepartementAnneePage({
             Retour à {departement.nom}
           </Link>
         </Button>
-        <DownloadPdfButton departementCode={departement.code} annee={annee} />
+        <DownloadPdfButton
+          departementCode={departement.code}
+          annee={annee}
+          available={pdfDocument !== null}
+        />
       </div>
 
       {content ? (
@@ -128,9 +137,9 @@ export default async function DepartementAnneePage({
             <CardTitle className="text-brand-blue text-center text-xl sm:text-2xl">
               {departement.nom} — {annee}
             </CardTitle>
-            {pdfOnly?.description && (
+            {pdfDocument?.description && (
               <p className="text-muted-foreground text-center text-sm">
-                {pdfOnly.description}
+                {pdfDocument.description}
               </p>
             )}
           </CardHeader>

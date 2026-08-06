@@ -337,6 +337,15 @@ export interface Database {
         };
         Returns: boolean;
       };
+      record_exam_document_view: {
+        Args: {
+          p_key_hash: string;
+          p_departement_code: string;
+          p_annee: number;
+          p_window_seconds: number;
+        };
+        Returns: boolean;
+      };
       get_exam_documents_with_stats: {
         Args: Record<string, never>;
         Returns: {

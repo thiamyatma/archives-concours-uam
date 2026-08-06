@@ -4,7 +4,7 @@ import path from "node:path";
 
 /**
  * Certaines questions de logique renvoient à une image plutôt qu'à du texte
- * (`content/archives/**` utilise déjà `/archives/<groupe>/<annee>/q<numero>.jpg`
+ * (`content/archives/**` utilise déjà `/archives/<groupe>/<annee>/q<numero>.webp`
  * pour ces mêmes questions — voir docs/ARCHITECTURE.md). Le JSON QCM ne stocke
  * pas ce chemin (il n'apparaît pas dans le schéma demandé) : on le déduit ici
  * en vérifiant simplement l'existence du fichier.
@@ -14,7 +14,7 @@ export function getQuestionImageUrl(
   annee: number,
   numero: number
 ): string | null {
-  const relative = `${groupe}/${annee}/q${numero}.jpg`;
+  const relative = `${groupe}/${annee}/q${numero}.webp`;
   const filePath = path.join(process.cwd(), "public", "archives", relative);
   return fs.existsSync(filePath) ? `/archives/${relative}` : null;
 }

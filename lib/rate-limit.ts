@@ -2,7 +2,14 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { createServiceClient } from "@/lib/supabase/service";
 
-function hashKey(key: string) {
+/**
+ * Hachage de la clé de limitation (IP, éventuellement composée avec la
+ * ressource visée). Exporté pour les actions qui ont leur propre RPC
+ * fusionnée — `record_exam_document_view` par exemple — et doivent produire
+ * exactement la même clé que `checkActionRateLimit`, puisqu'elles partagent
+ * la table `action_rate_limits`.
+ */
+export function hashRateLimitKey(key: string) {
   return createHash("sha256").update(key).digest("hex");
 }
 
@@ -20,7 +27,7 @@ export async function checkActionRateLimit(
 ): Promise<boolean> {
   const supabase = createServiceClient();
   const { data, error } = await supabase.rpc("check_action_rate_limit", {
-    p_key_hash: hashKey(ip),
+    p_key_hash: hashRateLimitKey(ip),
     p_action: action,
     p_limit: limit,
     p_window_seconds: windowSeconds,

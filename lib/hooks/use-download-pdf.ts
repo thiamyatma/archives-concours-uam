@@ -1,37 +1,29 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import {
-  checkExamPdfAvailability,
-  getExamPdfDownloadUrl,
-} from "@/lib/actions/download-pdf";
+import { useState } from "react";
+import { getExamPdfDownloadUrl } from "@/lib/actions/download-pdf";
 import { useAnalytics } from "@/lib/hooks/use-analytics";
 import { toast } from "sonner";
 
-export type DownloadStatus =
-  "checking" | "available" | "unavailable" | "downloading" | "error";
+export type DownloadStatus = "available" | "unavailable" | "downloading" | "error";
 
 /**
- * Gère le cycle de vie complet du téléchargement d'un PDF d'épreuve :
- * vérification de disponibilité au montage (léger, sans générer d'URL),
- * puis génération d'URL signée + déclenchement du téléchargement au clic.
- * Réutilisable partout où un bouton de téléchargement PDF est nécessaire.
+ * Gère le téléchargement d'un PDF d'épreuve : génération de l'URL signée +
+ * déclenchement du téléchargement, **au clic uniquement**. La disponibilité
+ * n'est plus vérifiée au montage — elle est résolue côté serveur au rendu de
+ * la page (cachée et invalidée par tag, voir lib/data/exam-documents.ts) et
+ * passée en prop, pour qu'une simple visite ne coûte plus ni invocation
+ * serverless ni requête Supabase.
  */
-export function useDownloadPdf(departementCode: string, annee: number) {
-  const [status, setStatus] = useState<DownloadStatus>("checking");
+export function useDownloadPdf(
+  departementCode: string,
+  annee: number,
+  available: boolean
+) {
+  const [status, setStatus] = useState<DownloadStatus>(
+    available ? "available" : "unavailable"
+  );
   const { trackDownloadSubject } = useAnalytics();
-
-  useEffect(() => {
-    let cancelled = false;
-
-    checkExamPdfAvailability(departementCode, annee).then(({ available }) => {
-      if (!cancelled) setStatus(available ? "available" : "unavailable");
-    });
-
-    return () => {
-      cancelled = true;
-    };
-  }, [departementCode, annee]);
 
   async function download() {
     setStatus("downloading");
@@ -42,7 +34,7 @@ export function useDownloadPdf(departementCode: string, annee: number) {
       if ("error" in result) {
         // "error" (pas "unavailable") : un échec ponctuel (réseau, Storage)
         // reste réessayable, contrairement à "unavailable" qui signifie
-        // "ce PDF n'existe vraiment pas" (vérifié au montage).
+        // "ce PDF n'existe vraiment pas" (résolu au rendu de la page).
         setStatus("error");
         toast.error(result.error);
         return;

@@ -5,9 +5,10 @@ import { headers } from "next/headers";
 import { unstable_cache } from "next/cache";
 import { createServiceClient } from "@/lib/supabase/service";
 import { getDepartementByCode } from "@/lib/departements";
+import { fetchPublishedDocument } from "@/lib/data/exam-documents";
 import { EXAM_PREVIEW_CACHE_TAG, PDF_BUCKET } from "@/lib/pdf/constants";
 import { getClientIp } from "@/lib/http/client-ip";
-import { checkActionRateLimit } from "@/lib/rate-limit";
+import { checkActionRateLimit, hashRateLimitKey } from "@/lib/rate-limit";
 
 // TTL des URL signées de téléchargement et d'aperçu. 1 h : assez pour une
 // lecture inline (plusieurs minutes) ou un téléchargement lent, et surtout
@@ -39,72 +40,8 @@ const requestSchema = z.object({
   annee: z.number().int().min(2000).max(2100),
 });
 
-export interface PdfAvailability {
-  available: boolean;
-}
-
 export type PdfDownloadResult = { url: string; fileName: string } | { error: string };
 export type PdfPreviewResult = { url: string } | { error: string };
-
-interface PublishedDocument {
-  storagePath: string;
-  fileName: string;
-}
-
-/**
- * Document publié lié à ce (département, année), ou `null`. Une résolution
- * directe (via la table de liaison), plus de `storage.list()` en boucle
- * comme l'ancien système à base de dossiers partagés.
- */
-async function findPublishedDocument(
-  supabase: ReturnType<typeof createServiceClient>,
-  departementCode: string,
-  annee: number
-): Promise<PublishedDocument | null> {
-  const { data: link } = await supabase
-    .from("exam_document_departments")
-    .select("document_id")
-    .eq("departement_code", departementCode)
-    .eq("annee", annee)
-    .maybeSingle();
-  if (!link) return null;
-
-  const { data: document } = await supabase
-    .from("exam_documents")
-    .select("storage_path, file_name")
-    .eq("id", link.document_id)
-    .eq("statut", "publie")
-    .maybeSingle();
-  if (!document) return null;
-
-  return { storagePath: document.storage_path, fileName: document.file_name };
-}
-
-/** Vérifie si un PDF est disponible pour (département, année), sans le télécharger. */
-export async function checkExamPdfAvailability(
-  departementCode: string,
-  annee: number
-): Promise<PdfAvailability> {
-  const parsed = requestSchema.safeParse({ departementCode, annee });
-  if (!parsed.success) return { available: false };
-
-  const departement = getDepartementByCode(parsed.data.departementCode);
-  if (!departement) return { available: false };
-
-  try {
-    const supabase = createServiceClient();
-    const document = await findPublishedDocument(
-      supabase,
-      departement.code,
-      parsed.data.annee
-    );
-    return { available: document !== null };
-  } catch {
-    // Service role indisponible (env non configuré) : traiter comme
-    // "non disponible" plutôt que de faire planter le bouton.
-    return { available: false };
-  }
-}
 
 /**
  * Génère (sans cache) l'URL signée de téléchargement (avec disposition
@@ -115,15 +52,15 @@ async function generateDownloadData(
   departementCode: string,
   annee: number
 ): Promise<{ url: string; fileName: string } | null> {
+  const document = await fetchPublishedDocument(departementCode, annee);
+  if (!document) return null;
+
   let supabase: ReturnType<typeof createServiceClient>;
   try {
     supabase = createServiceClient();
   } catch {
     return null;
   }
-
-  const document = await findPublishedDocument(supabase, departementCode, annee);
-  if (!document) return null;
 
   const { data, error } = await supabase.storage
     .from(PDF_BUCKET)
@@ -207,15 +144,15 @@ async function generatePreviewUrl(
   departementCode: string,
   annee: number
 ): Promise<string | null> {
+  const document = await fetchPublishedDocument(departementCode, annee);
+  if (!document) return null;
+
   let supabase: ReturnType<typeof createServiceClient>;
   try {
     supabase = createServiceClient();
   } catch {
     return null;
   }
-
-  const document = await findPublishedDocument(supabase, departementCode, annee);
-  if (!document) return null;
 
   const { data, error } = await supabase.storage
     .from(PDF_BUCKET)
@@ -275,53 +212,21 @@ export async function getDocumentPreviewUrl(
   return { url };
 }
 
-/**
- * Années ayant un document PDF publié pour ce département, au-delà des
- * années déjà listées via le Markdown — utilisé pour enrichir
- * `DepartementYearsList` côté client sans rendre la page elle-même
- * dynamique (voir docs/ARCHITECTURE.md).
- */
-export async function getAdditionalYears(departementCode: string): Promise<number[]> {
-  const departement = getDepartementByCode(departementCode);
-  if (!departement) return [];
-
-  try {
-    const supabase = createServiceClient();
-    const { data: links } = await supabase
-      .from("exam_document_departments")
-      .select("document_id, annee")
-      .eq("departement_code", departement.code);
-    if (!links || links.length === 0) return [];
-
-    const { data: documents } = await supabase
-      .from("exam_documents")
-      .select("id, statut")
-      .in(
-        "id",
-        links.map((link) => link.document_id)
-      )
-      .eq("statut", "publie");
-    if (!documents) return [];
-
-    const publishedIds = new Set(documents.map((doc) => doc.id));
-    return [
-      ...new Set(
-        links
-          .filter((link) => publishedIds.has(link.document_id))
-          .map((link) => link.annee)
-      ),
-    ];
-  } catch {
-    return [];
-  }
-}
-
 const recordViewSchema = z.object({
   departementCode: z.string().min(1),
   annee: z.number().int().min(2000).max(2100),
 });
 
-/** Best-effort : compte une consultation de page pour le dashboard admin. */
+/**
+ * Best-effort : compte une consultation de page pour le dashboard admin.
+ *
+ * Un seul aller-retour (`record_exam_document_view`) : limitation ET
+ * enregistrement dans la même transaction. C'est la seule écriture qui reste
+ * sur le chemin d'une visite — elle ne peut pas être cachée, autant qu'elle
+ * ne coûte qu'un appel. Côté client, l'appel n'est déclenché qu'après un
+ * délai d'engagement (voir components/shared/record-document-view.tsx), ce
+ * qui écarte l'essentiel du trafic robot.
+ */
 export async function recordDocumentView(
   departementCode: string,
   annee: number
@@ -336,19 +241,15 @@ export async function recordDocumentView(
   // Clé composite (IP + département + année) : sinon un visiteur qui
   // consulte une épreuve bloquerait le comptage de toutes les autres
   // pendant la fenêtre de limitation.
-  const allowed = await checkActionRateLimit(
-    `${ip}|${departement.code}|${parsed.data.annee}`,
-    "document_view",
-    1,
-    VIEW_RATE_LIMIT_WINDOW_SECONDS
-  );
-  if (!allowed) return;
+  const keyHash = hashRateLimitKey(`${ip}|${departement.code}|${parsed.data.annee}`);
 
   try {
     const supabase = createServiceClient();
-    await supabase.from("exam_document_views").insert({
-      departement_code: departement.code,
-      annee: parsed.data.annee,
+    await supabase.rpc("record_exam_document_view", {
+      p_key_hash: keyHash,
+      p_departement_code: departement.code,
+      p_annee: parsed.data.annee,
+      p_window_seconds: VIEW_RATE_LIMIT_WINDOW_SECONDS,
     });
   } catch {
     // ignoré intentionnellement

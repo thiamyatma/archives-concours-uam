@@ -467,6 +467,54 @@ alter table public.exam_document_views enable row level security;
 -- Aucune policy publique sur les 3 tables : lu/écrit uniquement par le
 -- service role, même principe que pdf_downloads/admin_session_state.
 
+-- Comptage d'une consultation en UN seul aller-retour : `recordDocumentView`
+-- est appelé sur chaque page épreuve consultée, il enchaînait un
+-- check_action_rate_limit puis un insert (deux appels réseau par vue,
+-- robots compris). Même limitation (une vue par clé IP+département+année et
+-- par fenêtre), même table action_rate_limits, même verrou advisory
+-- transactionnel. Le plafond est implicitement 1 (`exists` plutôt qu'un
+-- count) : seule valeur jamais utilisée par ce compteur. La fonction
+-- générique check_action_rate_limit reste employée par les actions qui ont
+-- de vrais plafonds > 1 (téléchargement, aperçu, tentative QCM).
+create or replace function public.record_exam_document_view(
+  p_key_hash text,
+  p_departement_code text,
+  p_annee integer,
+  p_window_seconds integer
+) returns boolean
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  v_action constant text := 'document_view';
+begin
+  perform pg_advisory_xact_lock(hashtext(v_action || ':' || p_key_hash));
+
+  if exists (
+    select 1
+    from public.action_rate_limits
+    where action = v_action
+      and key_hash = p_key_hash
+      and created_at >= now() - (p_window_seconds::text || ' seconds')::interval
+  ) then
+    return false;
+  end if;
+
+  insert into public.action_rate_limits (key_hash, action)
+    values (p_key_hash, v_action);
+  insert into public.exam_document_views (departement_code, annee)
+    values (p_departement_code, p_annee);
+
+  return true;
+end;
+$$;
+
+revoke all on function public.record_exam_document_view(text, text, integer, integer)
+  from public;
+grant execute on function public.record_exam_document_view(text, text, integer, integer)
+  to service_role;
+
 -- Une ligne par correction QCM générée (clic sur « Voir ma correction »,
 -- voir docs/qcm-entrainement.md) — un événement anonyme, pas un suivi de
 -- visiteurs identifiés. candidate_id est un jeton aléatoire de navigateur
