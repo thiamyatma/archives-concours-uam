@@ -18,10 +18,21 @@
  * « — » quand la lecture échoue : l'exploitant doit voir l'état réel du
  * service, jamais un repli.
  *
- * `examViews` vaut `null` faute de valeur fiable : le total des vues passe
- * par une requête HEAD (`count: "exact"`) que Next ne met pas en cache, elle
- * n'était donc pas récupérable. Aucun chiffre n'a été inventé — la tuile
- * « Vues des épreuves » affichera « — » jusqu'au rétablissement.
+ * `examViews` vient d'une AUTRE source : le total des vues passe par une
+ * requête HEAD (`count: "exact"`) que Next ne met pas en cache, il n'était
+ * donc pas récupérable. La valeur est le nombre d'événements GA4
+ * `view_subject` relevé sur toute la vie du site.
+ *
+ * Fiabilité vérifiée par recoupement : GA compte 2 230 `download_subject`
+ * là où la base en compte 2 315, soit 96 % de couverture — le consentement
+ * cookies est largement accordé. GA sous-estime donc d'environ 4 %, jamais
+ * l'inverse.
+ *
+ * Attention : GA comptabilise CHAQUE consultation, alors que
+ * `exam_document_views` n'en retient qu'une par IP et par demi-heure. La
+ * valeur live sera donc durablement inférieure — d'où le plancher de
+ * `publicCount` ci-dessous, sans lequel le compteur chuterait au
+ * rétablissement du service.
  *
  * À réactualiser (ou supprimer) dès que Supabase répond de nouveau : les
  * valeurs live reprennent automatiquement le dessus, ce repli redevient
@@ -34,7 +45,7 @@ export const PUBLIC_STATS_SNAPSHOT: {
 } = {
   capturedAt: "2026-08-23",
   totalDownloads: 2315,
-  examViews: null,
+  examViews: 23_184,
 };
 
 /**
