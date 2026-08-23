@@ -2,16 +2,21 @@ import "server-only";
 import { createServiceClient } from "@/lib/supabase/service";
 
 export interface DownloadStats {
-  totalDownloads: number;
-  totalFilesDownloaded: number;
+  /** `null` si l'agrégat n'a pas pu être lu — voir UNAVAILABLE_STATS. */
+  totalDownloads: number | null;
+  totalFilesDownloaded: number | null;
   byDepartement: { departementCode: string; downloads: number }[];
   byAnnee: { annee: number; downloads: number }[];
   top: { departementCode: string; annee: number; fileName: string; downloads: number }[];
 }
 
-const EMPTY_STATS: DownloadStats = {
-  totalDownloads: 0,
-  totalFilesDownloaded: 0,
+// Totaux à `null` plutôt qu'à `0` : l'appelant affiche `—` (voir
+// formatCount). Un zéro affiché pendant une panne fait croire à une perte de
+// données. Les listes restent vides — une liste vide se lit d'elle-même comme
+// « rien à montrer », il n'y a pas d'ambiguïté à lever.
+const UNAVAILABLE_STATS: DownloadStats = {
+  totalDownloads: null,
+  totalFilesDownloaded: null,
   byDepartement: [],
   byAnnee: [],
   top: [],
@@ -37,7 +42,7 @@ export async function getDownloadStats(): Promise<DownloadStats> {
     supabase = createServiceClient();
   } catch (error) {
     console.error("getDownloadStats a échoué:", error);
-    return EMPTY_STATS;
+    return UNAVAILABLE_STATS;
   }
 
   const [totals, byDepartement, byAnnee, top] = await Promise.all([
@@ -63,11 +68,12 @@ export async function getDownloadStats(): Promise<DownloadStats> {
     console.error("get_top_downloaded_pdfs a échoué:", top.error.message);
   }
 
-  const totalsRow = totals.data?.[0];
+  // Échec de CETTE RPC uniquement : les 3 autres agrégats restent servis.
+  const totalsRow = totals.error ? null : totals.data?.[0];
 
   return {
-    totalDownloads: totalsRow?.total_downloads ?? 0,
-    totalFilesDownloaded: totalsRow?.total_files_downloaded ?? 0,
+    totalDownloads: totals.error ? null : (totalsRow?.total_downloads ?? 0),
+    totalFilesDownloaded: totals.error ? null : (totalsRow?.total_files_downloaded ?? 0),
     byDepartement: (byDepartement.data ?? []).map((r) => ({
       departementCode: r.departement_code,
       downloads: r.downloads,

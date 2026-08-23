@@ -2,6 +2,16 @@ export function formatNumber(value: number): string {
   return new Intl.NumberFormat("fr-FR").format(value);
 }
 
+/**
+ * Compteur dont la lecture peut échouer (Supabase indisponible). `null` est
+ * rendu `—`, jamais `0` : un repli silencieux sur zéro fait passer une panne
+ * pour une perte de données — c'est exactement ce qui s'est produit lors de
+ * la suspension du projet pour dépassement de quota.
+ */
+export function formatCount(value: number | null): string {
+  return value === null ? "—" : formatNumber(value);
+}
+
 const FILE_SIZE_UNITS = ["o", "Ko", "Mo", "Go"] as const;
 
 /** Ex. `formatFileSize(9_437_184)` -> `"9 Mo"`. */
