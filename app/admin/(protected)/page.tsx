@@ -14,7 +14,7 @@ import { DownloadBarChart } from "@/components/admin/download-bar-chart";
 import { logoutAdmin } from "@/lib/actions/admin-auth";
 import { getDownloadStats } from "@/lib/data/download-stats";
 import { getQcmAttemptsTotal } from "@/lib/data/qcm-stats";
-import { formatNumber } from "@/lib/format";
+import { formatCount, formatNumber } from "@/lib/format";
 
 export const metadata: Metadata = { title: "Admin — Statistiques" };
 export const dynamic = "force-dynamic";
@@ -52,7 +52,7 @@ export default async function AdminPage() {
             </span>
             <div>
               <p className="text-2xl font-bold tabular-nums">
-                {formatNumber(stats.totalDownloads)}
+                {formatCount(stats.totalDownloads)}
               </p>
               <p className="text-muted-foreground text-xs">Téléchargements au total</p>
             </div>
@@ -65,7 +65,7 @@ export default async function AdminPage() {
             </span>
             <div>
               <p className="text-2xl font-bold tabular-nums">
-                {formatNumber(stats.totalFilesDownloaded)}
+                {formatCount(stats.totalFilesDownloaded)}
               </p>
               <p className="text-muted-foreground text-xs">
                 Sessions distinctes téléchargées

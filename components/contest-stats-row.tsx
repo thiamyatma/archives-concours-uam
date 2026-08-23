@@ -1,11 +1,12 @@
 import { Download, Eye, FileText } from "lucide-react";
-import { formatNumber } from "@/lib/format";
+import { formatCount } from "@/lib/format";
 import type { ContestStatsToggles } from "@/lib/contest/types";
 
 export interface ContestStatsValues {
   exams: number;
-  downloads: number;
-  views: number;
+  /** `null` = lecture Supabase impossible : la tuile affiche `—`, pas `0`. */
+  downloads: number | null;
+  views: number | null;
 }
 
 /**
@@ -54,7 +55,7 @@ export function ContestStatsRow({
             <tile.icon className="size-4" aria-hidden="true" />
           </span>
           <div className="min-w-0">
-            <dd className="text-xl font-bold tabular-nums">{formatNumber(tile.value)}</dd>
+            <dd className="text-xl font-bold tabular-nums">{formatCount(tile.value)}</dd>
             <dt className="text-muted-foreground truncate text-xs">{tile.label}</dt>
           </div>
         </div>
