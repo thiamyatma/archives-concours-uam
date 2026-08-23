@@ -55,13 +55,15 @@ export async function recordQcmAttempt(input: RecordQcmAttemptInput): Promise<vo
   const scorePercent = Math.round((data.correctAnswers / data.totalQuestions) * 100);
 
   const ip = getClientIp(await headers());
-  const allowed = await checkActionRateLimit(
+  // Best-effort : aucun message n'est renvoyé au candidat, les deux refus se
+  // traitent donc pareil — on n'enregistre simplement pas.
+  const verdict = await checkActionRateLimit(
     ip,
     "qcm_attempt",
     ATTEMPT_RATE_LIMIT,
     ATTEMPT_RATE_LIMIT_WINDOW_SECONDS
   );
-  if (!allowed) return;
+  if (verdict !== "allowed") return;
 
   try {
     const supabase = createServiceClient();

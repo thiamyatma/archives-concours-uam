@@ -103,13 +103,16 @@ export async function getExamPdfDownloadUrl(
   }
 
   const ip = getClientIp(await headers());
-  const allowed = await checkActionRateLimit(
+  const verdict = await checkActionRateLimit(
     ip,
     "pdf_download",
     DOWNLOAD_RATE_LIMIT,
     DOWNLOAD_RATE_LIMIT_WINDOW_SECONDS
   );
-  if (!allowed) {
+  if (verdict === "unavailable") {
+    return { error: "Service temporairement indisponible. Réessayez plus tard." };
+  }
+  if (verdict === "denied") {
     return { error: "Trop de téléchargements. Réessayez dans quelques minutes." };
   }
 
@@ -196,13 +199,16 @@ export async function getDocumentPreviewUrl(
   if (!departement) return { error: "Département introuvable." };
 
   const ip = getClientIp(await headers());
-  const allowed = await checkActionRateLimit(
+  const verdict = await checkActionRateLimit(
     `${ip}|${departement.code}|${parsed.data.annee}`,
     "document_preview",
     PREVIEW_RATE_LIMIT,
     PREVIEW_RATE_LIMIT_WINDOW_SECONDS
   );
-  if (!allowed) {
+  if (verdict === "unavailable") {
+    return { error: "Service temporairement indisponible. Réessayez plus tard." };
+  }
+  if (verdict === "denied") {
     return { error: "Trop de consultations. Réessayez dans quelques minutes." };
   }
 

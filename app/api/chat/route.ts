@@ -32,7 +32,15 @@ export async function POST(request: Request) {
 
   const ip = getClientIp(request.headers);
   const rateLimit = await checkAndRecordRagRateLimit(ip);
-  if (!rateLimit.allowed) {
+  // 503 et non 429 : le visiteur n'a rien dépassé, c'est le service qui est
+  // hors ligne. Lui annoncer un quota atteint l'enverrait attendre en vain.
+  if (rateLimit.verdict === "unavailable") {
+    return Response.json(
+      { error: "Assistant temporairement indisponible. Réessayez plus tard." },
+      { status: 503 }
+    );
+  }
+  if (rateLimit.verdict === "denied") {
     return Response.json(
       {
         error: `Limite de ${rateLimit.limit} questions/24h atteinte pour l'assistant IA. Réessayez plus tard.`,
