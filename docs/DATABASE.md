@@ -202,6 +202,12 @@ Une ligne par champ modifié à chaque enregistrement depuis
 - `check_action_rate_limit(p_key_hash, p_action, p_limit, p_window_seconds)`
   — limiteur générique par clé+action, même principe, utilisé pour
   `admin_login`, `pdf_download`, `document_preview` et `qcm_attempt`.
+  Côté application (`lib/rate-limit.ts`), l'échec de cette RPC ne se confond
+  pas avec un quota atteint : `checkActionRateLimit` renvoie un verdict à
+  trois états (`allowed` / `denied` / `unavailable`). Les deux derniers
+  refusent le passage — jamais de vanne ouverte sur erreur — mais l'appelant
+  peut dire au visiteur s'il doit réessayer plus tard ou attendre le
+  rétablissement du service.
 - `record_exam_document_view(p_key_hash, p_departement_code, p_annee, p_window_seconds)`
   — limitation **et** enregistrement de la vue dans la même transaction.
   Appelée sur chaque page épreuve consultée, d'où la fusion : deux

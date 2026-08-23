@@ -3,6 +3,7 @@ import { createHash } from "node:crypto";
 import { createServiceClient } from "@/lib/supabase/service";
 import { env } from "@/lib/env";
 import { getClientIp } from "@/lib/http/client-ip";
+import type { RateLimitVerdict } from "@/lib/rate-limit";
 
 export { getClientIp };
 
@@ -13,7 +14,8 @@ function hashIp(ip: string) {
 }
 
 export interface RateLimitResult {
-  allowed: boolean;
+  /** Voir RateLimitVerdict : `denied` et `unavailable` refusent tous deux. */
+  verdict: RateLimitVerdict;
   remaining: number;
   limit: number;
 }
@@ -28,7 +30,18 @@ export interface RateLimitResult {
 export async function checkAndRecordRagRateLimit(ip: string): Promise<RateLimitResult> {
   const limit = env.RAG_MAX_QUESTIONS_PER_IP_PER_DAY;
   const ipHash = hashIp(ip);
-  const supabase = createServiceClient();
+
+  // On n'ouvre jamais la vanne en cas d'erreur : mieux vaut refuser que
+  // laisser passer un flux non contrôlé vers l'API Groq (facturée). Mais on
+  // dit POURQUOI on refuse — un quota atteint et une base injoignable
+  // n'appellent pas la même réaction du visiteur.
+  let supabase: ReturnType<typeof createServiceClient>;
+  try {
+    supabase = createServiceClient();
+  } catch (error) {
+    console.error("Rate-limit RAG : client indisponible", error);
+    return { verdict: "unavailable", remaining: 0, limit };
+  }
 
   const { data, error } = await supabase.rpc("check_and_record_rag_rate_limit", {
     p_ip_hash: ipHash,
@@ -37,11 +50,13 @@ export async function checkAndRecordRagRateLimit(ip: string): Promise<RateLimitR
 
   if (error) {
     console.error("Vérification du rate-limit RAG échouée:", error.message);
-    // On n'ouvre jamais la vanne en cas d'erreur : mieux vaut refuser que
-    // laisser passer un flux non contrôlé vers l'API Groq (facturée).
-    return { allowed: false, remaining: 0, limit };
+    return { verdict: "unavailable", remaining: 0, limit };
   }
 
   const row = data?.[0];
-  return { allowed: row?.allowed ?? false, remaining: row?.remaining ?? 0, limit };
+  return {
+    verdict: row?.allowed === true ? "allowed" : "denied",
+    remaining: row?.remaining ?? 0,
+    limit,
+  };
 }

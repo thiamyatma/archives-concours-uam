@@ -97,13 +97,22 @@ export async function loginAdmin(
   }
 
   const ip = getClientIp(await headers());
-  const allowed = await checkActionRateLimit(
+  const verdict = await checkActionRateLimit(
     ip,
     "admin_login",
     LOGIN_RATE_LIMIT,
     LOGIN_RATE_LIMIT_WINDOW_SECONDS
   );
-  if (!allowed) {
+  // Distinguer les deux refus : annoncer « trop de tentatives » alors que la
+  // base est injoignable envoie l'administrateur attendre un quota qui ne se
+  // videra jamais.
+  if (verdict === "unavailable") {
+    return {
+      success: false,
+      error: "Service temporairement indisponible. Réessayez plus tard.",
+    };
+  }
+  if (verdict === "denied") {
     return {
       success: false,
       error: "Trop de tentatives. Réessayez dans quelques minutes.",
