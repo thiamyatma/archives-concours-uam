@@ -36,3 +36,22 @@ export const PUBLIC_STATS_SNAPSHOT: {
   totalDownloads: 2315,
   examViews: null,
 };
+
+/**
+ * Valeur à afficher pour un compteur cumulatif public : la lecture live si
+ * elle existe, l'instantané sinon — et jamais moins que l'instantané.
+ *
+ * Le plancher compte autant que le repli. Un compteur qui *redescend* sous
+ * un chiffre déjà affiché aux candidats détruit la crédibilité bien plus
+ * sûrement qu'un chiffre un peu daté ; ça arriverait mécaniquement si la
+ * valeur figée provient d'une source qui compte plus large que la base
+ * (GA4 comptabilise chaque consultation, `exam_document_views` en retient
+ * une par IP et par demi-heure).
+ *
+ * `null` des deux côtés = rien de fiable à montrer : l'appelant affiche `—`.
+ */
+export function publicCount(live: number | null, snapshot: number | null): number | null {
+  if (live === null) return snapshot;
+  if (snapshot === null) return live;
+  return Math.max(live, snapshot);
+}
