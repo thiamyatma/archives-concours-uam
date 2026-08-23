@@ -12,6 +12,7 @@ import { getContentManifest } from "@/lib/data/departements";
 import { getContestSettings } from "@/lib/contest/settings";
 import { getDownloadStats } from "@/lib/data/download-stats";
 import { getExamPageViewsTotal } from "@/lib/contest/page-views";
+import { PUBLIC_STATS_SNAPSHOT } from "@/config/stats-snapshot";
 import { SITE_SLOGAN } from "@/lib/constants";
 
 /**
@@ -98,8 +99,14 @@ export default async function HomePage() {
           toggles={contestSettings.stats}
           values={{
             exams: manifest.totalSessions,
-            downloads: downloadStats.totalDownloads,
-            views: examViews,
+            // Repli sur le dernier total réel connu quand Supabase est
+            // injoignable (voir config/stats-snapshot.ts) : un compteur
+            // cumulatif ne décroît pas, la valeur reste donc exacte à
+            // défaut d'être fraîche. `null` subsiste si le repli n'a pas
+            // de valeur — la tuile affiche alors « — ».
+            downloads:
+              downloadStats.totalDownloads ?? PUBLIC_STATS_SNAPSHOT.totalDownloads,
+            views: examViews ?? PUBLIC_STATS_SNAPSHOT.examViews,
           }}
         />
       </section>
