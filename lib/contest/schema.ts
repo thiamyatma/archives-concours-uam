@@ -75,21 +75,6 @@ const statsSchema = z.object({
   showViews: z.boolean(),
 });
 
-// Lien "https://" ou chaîne vide — les liens WhatsApp/officiels rendus en
-// `href` public doivent exclure un schéma exécutable (ex. "javascript:").
-const httpsUrlOrEmpty = z
-  .string()
-  .max(500)
-  .refine((v) => v === "" || /^https:\/\//i.test(v), {
-    message: "Doit commencer par https:// (ou être vide).",
-  });
-
-// Un enregistrement libre plutôt qu'un objet à clés fixes : les clés sont
-// les codes département (lib/departements.ts), déjà validés à l'usage par
-// `getDepartementByCode` (lib/actions/inscriptions.ts) — pas de raison de
-// dupliquer la liste des 5 départements ici.
-const whatsappLinksSchema = z.record(z.string(), httpsUrlOrEmpty);
-
 export const contestSettingsSchema = z.object({
   year: z.number().int().min(2000).max(2100),
   officialName: z.string().min(1, "Nom officiel requis.").max(200),
@@ -106,7 +91,6 @@ export const contestSettingsSchema = z.object({
   info: infoSchema,
   seo: seoSchema,
   stats: statsSchema,
-  whatsappLinks: whatsappLinksSchema,
 });
 
 export type ContestSettingsInput = z.input<typeof contestSettingsSchema>;

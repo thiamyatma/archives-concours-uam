@@ -18,7 +18,6 @@ de l'Université Amadou Mahtar Mbow (UAM), classées par département et par ann
 - [Configuration Supabase](#configuration-supabase)
 - [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)
 - [Publier les résultats du concours](#publier-les-résultats-du-concours)
-- [Vérification "Je suis admis"](#vérification-je-suis-admis)
 - [Qualité du code](#qualité-du-code)
 - [Déploiement](#déploiement-sur-vercel)
 - [Structure du projet](#structure-du-projet)
@@ -169,24 +168,6 @@ Le bouton « Voir les Résultats » de la page d'accueil et le lien de
 navigation pointent vers `/resultats` et affichent toujours l'année
 courante (`contest_settings.year`, éditable depuis `/admin/parametres`).
 
-## Vérification "Je suis admis"
-
-Contrairement aux résultats publics ci-dessus, cette fonctionnalité gère de
-vraies coordonnées de candidats (nom + email fournis par les départements)
-— elle vit donc **en base Supabase**, jamais dans le repo git. Détail
-complet : [docs/verification-admis.md](docs/verification-admis.md).
-
-En résumé :
-
-1. Un chef de département transmet sa liste d'inscrits (nom + email).
-2. Un admin la colle dans **Admin → Inscriptions** (`/admin/inscriptions`),
-   une ligne par candidat (`nom,email`) — pas d'upload de fichier requis.
-3. Un candidat qui clique sur « Je suis admis » (page d'accueil ou
-   `/verification`) entre son nom et son email ; en cas de correspondance
-   exacte, il reçoit le lien d'invitation WhatsApp de son département
-   (configuré par département dans **Admin → Paramètres → onglet
-   WhatsApp**).
-
 ## Qualité du code
 
 ```bash
@@ -278,18 +259,14 @@ docs/                                Documentation technique (architecture, comp
 
 - Aucune donnée utilisateur n'est collectée par les pages départements/archives
   (contenu statique, pas de formulaire, pas de compte).
-- `/verification` ("Je suis admis") est la seule page qui traite une donnée
-  personnelle (nom + email), comparée à une liste importée par le
-  département — jamais publiée, jamais git-versionnée (voir
-  [docs/verification-admis.md](docs/verification-admis.md)).
-- La clé `service_role` Supabase n'est utilisée que par l'assistant IA, la
-  gestion des PDF et la vérification des admis, dans des modules serveur
-  marqués `server-only` (`lib/supabase/service.ts`), jamais exposée au client.
+- La clé `service_role` Supabase n'est utilisée que par l'assistant IA et la
+  gestion des PDF, dans des modules serveur marqués `server-only`
+  (`lib/supabase/service.ts`), jamais exposée au client.
 - Chaque Server Action admin (`lib/actions/exam-documents.ts`,
-  `lib/actions/admin-auth.ts`, `lib/actions/inscriptions.ts`) revalide
-  elle-même la session — pas seulement le layout de la page qui l'englobe.
-- Toutes les routes `/admin/*` (protégées par mot de passe, `ADMIN_PASSWORD`)
-  sont exclues du sitemap/robots.txt.
+  `lib/actions/admin-auth.ts`) revalide elle-même la session — pas
+  seulement le layout de la page qui l'englobe.
+- `/admin` et `/admin/epreuves` sont protégées par mot de passe
+  (`ADMIN_PASSWORD`) et exclue du sitemap/robots.txt.
 - Vulnérabilité trouvée ? Voir [SECURITY.md](SECURITY.md) pour la procédure de
   signalement responsable.
 
@@ -305,7 +282,6 @@ docs/                                Documentation technique (architecture, comp
 - [docs/RAG.md](docs/RAG.md) — assistant IA (scraping, retrieval, génération)
 - [docs/google-analytics.md](docs/google-analytics.md) — intégration GA4, événements, consentement
 - [docs/pdf-downloads.md](docs/pdf-downloads.md) — téléchargement PDF, bucket Storage, stats, dashboard admin
-- [docs/verification-admis.md](docs/verification-admis.md) — vérification "Je suis admis", import des inscriptions, liens WhatsApp
 
 ## Contribuer
 
