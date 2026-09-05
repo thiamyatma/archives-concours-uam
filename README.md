@@ -36,7 +36,7 @@ l'UAM de :
   (voir [docs/pdf-downloads.md](docs/pdf-downloads.md))
 - Les matières d'une épreuve apparaissent chacune dans leur propre section
 
-Cinq départements sont couverts : **DSTI, DGAE, DSTAAN, DU2ADT, DGO**. DSTI,
+Cinq départements sont couverts: **DSTI, DGAE, DSTAAN, DU2ADT, DGO**. DSTI,
 DGAE et DSTAAN partagent certaines années la même épreuve — le contenu n'est
 alors stocké qu'une seule fois (voir [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)).
 
