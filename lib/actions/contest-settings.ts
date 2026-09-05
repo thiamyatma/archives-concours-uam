@@ -56,7 +56,6 @@ export async function updateContestSettings(
     info: s.info,
     seo: s.seo,
     stats: s.stats,
-    partner: s.partner,
   });
 
   if (error) {

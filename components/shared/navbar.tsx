@@ -20,18 +20,16 @@ const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/departements", label: "Départements" },
   { href: "/assistant", label: "Assistant IA" },
-  { href: "/#thiam-sciences", label: "Thiam Sciences" },
 ];
 
-/** true si `href` pointe vers la page courante ET, s'il porte une ancre
- * (ex. `/#thiam-sciences`), vers la section actuellement affichée. */
+/** true si `href` pointe vers la page courante ET, s'il porte une ancre,
+ * vers la section actuellement affichée. */
 function isLinkActive(href: string, pathname: string, hash: string): boolean {
   const [path, anchor] = href.split("#");
   const targetPath = path || "/";
   if (anchor) return pathname === targetPath && hash === `#${anchor}`;
   // Sans ancre, "/" ne doit pas rester actif en même temps qu'un lien ancré
-  // plus précis de la même page (ex. "/#thiam-sciences") : un seul lien
-  // surligné à la fois.
+  // plus précis de la même page : un seul lien surligné à la fois.
   return targetPath === "/"
     ? pathname === "/" && hash === ""
     : pathname.startsWith(targetPath);

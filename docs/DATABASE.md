@@ -164,8 +164,12 @@ affichées sur le site. Scalaires typés + `jsonb` pour les groupes.
 | `registration_opens_at`/`_closes_at`, `contest_date`, `results_date` | `timestamptz`  | nullables — pilotent la machine à états |
 | `messages`, `banner`, `countdown`, `buttons`, `info`                 | `jsonb`        | groupes éditables                       |
 | `seo`, `stats`                                                       | `jsonb`        | SEO page d'accueil, toggles de stats    |
-| `partner`                                                            | `jsonb`        | encart partenaire (page d'accueil)      |
 | `updated_at`                                                         | `timestamptz`  | trigger                                 |
+
+`partner` (`jsonb`) existe encore en base (colonne conservée, migration
+`20260726000000_contest_settings_partner.sql`) mais n'est plus lue ni écrite
+par l'application depuis le retrait de l'encart partenaire Thiam Sciences —
+partenariat terminé.
 
 Édité depuis `/admin/parametres`, lu (caché) par `lib/contest/settings.ts` —
 voir [contest-settings.md](contest-settings.md).
