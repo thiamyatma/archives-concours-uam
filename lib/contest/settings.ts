@@ -11,6 +11,7 @@ import type {
   ContestSeo,
   ContestSettings,
   ContestStatsToggles,
+  ContestWhatsappLinks,
   CountdownOptions,
 } from "@/lib/contest/types";
 
@@ -39,6 +40,7 @@ type ContestSettingsRow = {
   info: Record<string, unknown>;
   seo: Record<string, unknown>;
   stats: Record<string, unknown>;
+  whatsapp_links: Record<string, unknown>;
 };
 
 async function fetchRow(): Promise<ContestSettingsRow | null> {
@@ -47,7 +49,7 @@ async function fetchRow(): Promise<ContestSettingsRow | null> {
     const { data, error } = await supabase
       .from("contest_settings")
       .select(
-        "year, official_name, subtitle, description, registration_opens_at, registration_closes_at, contest_date, results_date, messages, banner, countdown, buttons, info, seo, stats"
+        "year, official_name, subtitle, description, registration_opens_at, registration_closes_at, contest_date, results_date, messages, banner, countdown, buttons, info, seo, stats, whatsapp_links"
       )
       .eq("id", true)
       .maybeSingle();
@@ -92,6 +94,14 @@ function mapRow(row: ContestSettingsRow): ContestSettings {
     info: { ...d.info, ...(row.info as Partial<ContestInfo>) },
     seo: { ...d.seo, ...(row.seo as Partial<ContestSeo>) },
     stats: { ...d.stats, ...(row.stats as Partial<ContestStatsToggles>) },
+    // Contrairement aux autres groupes (interfaces à clés fixes), un cast
+    // `Partial<...>` sur ce Record ajouterait `| undefined` aux valeurs —
+    // la colonne jsonb ne contient jamais que des chaînes (écrites via
+    // whatsappLinksSchema, lib/contest/schema.ts), d'où un cast direct.
+    whatsappLinks: {
+      ...d.whatsappLinks,
+      ...(row.whatsapp_links as ContestWhatsappLinks),
+    },
   };
 }
 

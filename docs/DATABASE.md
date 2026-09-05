@@ -157,14 +157,15 @@ Comptes admin (email + mot de passe), remplacent le mot de passe unique — voir
 Ligne **singleton** (`id = true`) pilotant toutes les infos du concours
 affichées sur le site. Scalaires typés + `jsonb` pour les groupes.
 
-| Colonne                                                              | Type           | Notes                                   |
-| -------------------------------------------------------------------- | -------------- | --------------------------------------- |
-| `id`                                                                 | `boolean` (PK) | toujours `true`                         |
-| `year`, `official_name`, `subtitle`, `description`                   | scalaires      | infos générales                         |
-| `registration_opens_at`/`_closes_at`, `contest_date`, `results_date` | `timestamptz`  | nullables — pilotent la machine à états |
-| `messages`, `banner`, `countdown`, `buttons`, `info`                 | `jsonb`        | groupes éditables                       |
-| `seo`, `stats`                                                       | `jsonb`        | SEO page d'accueil, toggles de stats    |
-| `updated_at`                                                         | `timestamptz`  | trigger                                 |
+| Colonne                                                              | Type           | Notes                                                             |
+| -------------------------------------------------------------------- | -------------- | ----------------------------------------------------------------- |
+| `id`                                                                 | `boolean` (PK) | toujours `true`                                                   |
+| `year`, `official_name`, `subtitle`, `description`                   | scalaires      | infos générales                                                   |
+| `registration_opens_at`/`_closes_at`, `contest_date`, `results_date` | `timestamptz`  | nullables — pilotent la machine à états                           |
+| `messages`, `banner`, `countdown`, `buttons`, `info`                 | `jsonb`        | groupes éditables                                                 |
+| `seo`, `stats`                                                       | `jsonb`        | SEO page d'accueil, toggles de stats                              |
+| `whatsapp_links`                                                     | `jsonb`        | liens d'invitation par département (vérification "Je suis admis") |
+| `updated_at`                                                         | `timestamptz`  | trigger                                                           |
 
 `partner` (`jsonb`) existe encore en base (colonne conservée, migration
 `20260726000000_contest_settings_partner.sql`) mais n'est plus lue ni écrite
@@ -187,6 +188,38 @@ voir [contest-settings.md](contest-settings.md).
 
 Une ligne par champ modifié à chaque enregistrement depuis
 `/admin/parametres` (`lib/contest/history.ts`).
+
+## `concours_inscriptions`
+
+Liste de contrôle (nom + email) fournie par chaque département, importée
+depuis `/admin/inscriptions` — voir
+[verification-admis.md](verification-admis.md). Utilisée UNIQUEMENT pour la
+vérification "Je suis admis", jamais exposée publiquement.
+
+| Colonne                            | Type          | Notes                                                                         |
+| ---------------------------------- | ------------- | ----------------------------------------------------------------------------- |
+| `id`                               | `uuid` (PK)   |                                                                               |
+| `departement_code`                 | `text`        | ex. `dsti`                                                                    |
+| `annee`                            | `integer`     |                                                                               |
+| `nom`, `email`                     | `text`        | valeurs saisies telles quelles                                                |
+| `nom_normalise`, `email_normalise` | `text`        | calculées à l'import (`lib/text/normalize.ts`), utilisées pour la comparaison |
+| `created_at`                       | `timestamptz` |                                                                               |
+
+Contrainte unique sur `(annee, email_normalise)` : un ré-import du même
+email met à jour la ligne (upsert) au lieu de créer un doublon.
+
+## `concours_verifications`
+
+Compteur anonyme (aucune donnée personnelle) d'une vérification réussie —
+même principe que `exam_document_views`/`pdf_downloads` — pour le nombre de
+candidats ayant récupéré leur lien WhatsApp, par département.
+
+| Colonne            | Type          | Notes |
+| ------------------ | ------------- | ----- |
+| `id`               | `uuid` (PK)   |       |
+| `departement_code` | `text`        |       |
+| `annee`            | `integer`     |       |
+| `verified_at`      | `timestamptz` |       |
 
 ## RPC
 

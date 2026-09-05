@@ -1,3 +1,4 @@
+import { DEPARTEMENTS } from "@/lib/departements";
 import type { ContestSettings } from "@/lib/contest/types";
 
 /**
@@ -72,4 +73,9 @@ export const DEFAULT_CONTEST_SETTINGS: ContestSettings = {
     showDownloads: true,
     showViews: true,
   },
+  // Une clé par département (voir lib/departements.ts), vide tant que
+  // l'admin n'a rien renseigné dans /admin/parametres — la vérification
+  // "Je suis admis" (lib/actions/inscriptions.ts) traite un lien vide comme
+  // "pas encore disponible" plutôt que de renvoyer un lien cassé.
+  whatsappLinks: Object.fromEntries(DEPARTEMENTS.map((d) => [d.code, ""])),
 };

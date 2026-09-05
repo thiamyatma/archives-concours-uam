@@ -21,6 +21,7 @@ import { ContestBanner } from "@/components/contest-banner";
 import { ContestCountdown } from "@/components/contest-countdown";
 import { ContestStatsRow, type ContestStatsValues } from "@/components/contest-stats-row";
 import { updateContestSettings } from "@/lib/actions/contest-settings";
+import { DEPARTEMENTS } from "@/lib/departements";
 import type { BannerType, ContestSettings, CountdownPosition } from "@/lib/contest/types";
 import type { ContestSettingsInput } from "@/lib/contest/schema";
 import type { ContestSettingsHistoryEntry } from "@/lib/contest/history";
@@ -60,11 +61,19 @@ function toInput(s: ContestSettings): ContestSettingsInput {
     info: s.info,
     seo: s.seo,
     stats: s.stats,
+    whatsappLinks: s.whatsappLinks,
   };
 }
 
 type SettingsGroup =
-  "messages" | "banner" | "countdown" | "buttons" | "info" | "seo" | "stats";
+  | "messages"
+  | "banner"
+  | "countdown"
+  | "buttons"
+  | "info"
+  | "seo"
+  | "stats"
+  | "whatsappLinks";
 
 export function ContestSettingsForm({
   initial,
@@ -116,6 +125,7 @@ export function ContestSettingsForm({
             <TabsTrigger value="info">Infos concours</TabsTrigger>
             <TabsTrigger value="stats">Statistiques</TabsTrigger>
             <TabsTrigger value="seo">SEO</TabsTrigger>
+            <TabsTrigger value="whatsapp">WhatsApp</TabsTrigger>
             <TabsTrigger value="history">Historique</TabsTrigger>
           </TabsList>
 
@@ -503,6 +513,33 @@ export function ContestSettingsForm({
                 />
                 <CharCount value={settings.seo.keywords} max={300} />
               </Field>
+            </SectionCard>
+          </TabsContent>
+
+          {/* WhatsApp */}
+          <TabsContent value="whatsapp">
+            <SectionCard title="Liens d'invitation WhatsApp (vérification « Je suis admis »)">
+              <p className="text-muted-foreground -mt-2 text-xs">
+                Un lien par département, remis au candidat après vérification de son
+                inscription sur /verification. Laisser vide tant que le groupe n&apos;est
+                pas prêt.
+              </p>
+              {DEPARTEMENTS.map((departement) => (
+                <Field
+                  key={departement.code}
+                  label={departement.nom}
+                  htmlFor={`whatsapp-${departement.code}`}
+                >
+                  <Input
+                    id={`whatsapp-${departement.code}`}
+                    value={settings.whatsappLinks[departement.code] ?? ""}
+                    placeholder="https://chat.whatsapp.com/…"
+                    onChange={(e) =>
+                      patchGroup("whatsappLinks", { [departement.code]: e.target.value })
+                    }
+                  />
+                </Field>
+              ))}
             </SectionCard>
           </TabsContent>
 

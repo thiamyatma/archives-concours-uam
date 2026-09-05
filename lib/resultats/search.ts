@@ -2,20 +2,17 @@
  * Recherche d'un candidat admis (composants/resultats/resultats-search.tsx).
  * Pure fonction, aucune E/S — testée unitairement (voir search.test.ts).
  */
+import { normalizeSearchText } from "@/lib/text/normalize";
+
+// Réexporté : lib/text/normalize.ts est le partagé (voir aussi
+// lib/inscriptions/data.ts), mais ce module restait le point d'entrée
+// historique de cette normalisation — pas de raison de casser ses imports.
+export { normalizeSearchText };
 
 export interface SearchableCandidat {
   departementCode: string;
   nom: string;
   numero?: string;
-}
-
-/** Normalise un texte pour une comparaison insensible à la casse et aux accents. */
-export function normalizeSearchText(value: string): string {
-  return value
-    .normalize("NFD")
-    .replace(/\p{Diacritic}/gu, "")
-    .toLowerCase()
-    .trim();
 }
 
 /**
