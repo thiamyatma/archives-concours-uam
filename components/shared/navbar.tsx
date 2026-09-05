@@ -19,6 +19,7 @@ import { SITE_NAME } from "@/lib/constants";
 const NAV_LINKS = [
   { href: "/", label: "Accueil" },
   { href: "/departements", label: "Départements" },
+  { href: "/resultats", label: "Résultats" },
   { href: "/assistant", label: "Assistant IA" },
 ];
 

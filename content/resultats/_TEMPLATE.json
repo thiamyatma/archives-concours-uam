@@ -1,0 +1,7 @@
+{
+  "_comment": "MODÈLE DE RÉFÉRENCE — jamais chargé par l'application : seuls les fichiers situés dans un dossier <année>/ sont lus (content/resultats/<année>/<code département>.json, voir lib/resultats/data.ts), et ce fichier est directement sous content/resultats/. Pour publier les résultats d'un département : copier ce fichier vers content/resultats/<année>/<code>.json (ex. content/resultats/2026/dsti.json — codes départements dans lib/departements.ts : dsti, dgae, dstaan, du2adt, dgo), retirer ce champ '_comment' (ignoré silencieusement sinon, mais inutile une fois copié) et remplir 'admis'. 'numero' (numéro de table/matricule) est optionnel — l'omettre si inconnu, mais rester cohérent au sein d'un même fichier si possible pour que la recherche par numéro fonctionne. Committer et déployer : aucune modification de code n'est nécessaire.",
+  "admis": [
+    { "nom": "NOM Prénom", "numero": "24-00001" },
+    { "nom": "NOM Prénom (sans numéro connu)" }
+  ]
+}

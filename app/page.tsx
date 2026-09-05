@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Building2, CalendarDays, LayoutGrid, Search } from "lucide-react";
+import { Building2, CalendarDays, GraduationCap, LayoutGrid, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DepartementCard } from "@/components/shared/departement-card";
 import { StatsSection, type StatItem } from "@/components/shared/stats-section";
@@ -85,6 +85,12 @@ export default async function HomePage() {
               <Link href="/departements">
                 <Search className="size-4" aria-hidden="true" />
                 Consulter les épreuves
+              </Link>
+            </Button>
+            <Button asChild size="lg" variant="secondary">
+              <Link href="/resultats">
+                <GraduationCap className="size-4" aria-hidden="true" />
+                Voir les Résultats {contestSettings.year}
               </Link>
             </Button>
           </div>
