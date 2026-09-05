@@ -70,6 +70,14 @@ export interface ContestStatsToggles {
   showViews: boolean;
 }
 
+/**
+ * Liens d'invitation au groupe WhatsApp de chaque département, remis au
+ * candidat après vérification "Je suis admis" (voir
+ * lib/actions/inscriptions.ts). Clé = code département (lib/departements.ts),
+ * valeur = URL (chaîne vide = pas encore renseigné).
+ */
+export type ContestWhatsappLinks = Record<string, string>;
+
 export interface ContestSettings {
   year: number;
   officialName: string;
@@ -86,6 +94,7 @@ export interface ContestSettings {
   info: ContestInfo;
   seo: ContestSeo;
   stats: ContestStatsToggles;
+  whatsappLinks: ContestWhatsappLinks;
 }
 
 export type ContestPhase =
