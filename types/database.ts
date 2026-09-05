@@ -242,6 +242,7 @@ export interface Database {
           seo: Record<string, unknown>;
           stats: Record<string, unknown>;
           partner: Record<string, unknown>;
+          whatsapp_links: Record<string, unknown>;
           updated_at: string;
         };
         Insert: {
@@ -262,6 +263,7 @@ export interface Database {
           seo?: Record<string, unknown>;
           stats?: Record<string, unknown>;
           partner?: Record<string, unknown>;
+          whatsapp_links?: Record<string, unknown>;
           updated_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["contest_settings"]["Insert"]>;
@@ -287,6 +289,46 @@ export interface Database {
         Update: Partial<
           Database["public"]["Tables"]["contest_settings_history"]["Insert"]
         >;
+        Relationships: [];
+      };
+      concours_inscriptions: {
+        Row: {
+          id: string;
+          departement_code: string;
+          annee: number;
+          nom: string;
+          nom_normalise: string;
+          email: string;
+          email_normalise: string;
+          created_at: string;
+        };
+        Insert: {
+          id?: string;
+          departement_code: string;
+          annee: number;
+          nom: string;
+          nom_normalise: string;
+          email: string;
+          email_normalise: string;
+          created_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["concours_inscriptions"]["Insert"]>;
+        Relationships: [];
+      };
+      concours_verifications: {
+        Row: {
+          id: string;
+          departement_code: string;
+          annee: number;
+          verified_at: string;
+        };
+        Insert: {
+          id?: string;
+          departement_code: string;
+          annee: number;
+          verified_at?: string;
+        };
+        Update: Partial<Database["public"]["Tables"]["concours_verifications"]["Insert"]>;
         Relationships: [];
       };
     };

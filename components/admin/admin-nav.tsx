@@ -8,6 +8,7 @@ const LINKS = [
   { href: "/admin", label: "Statistiques" },
   { href: "/admin/analytics", label: "Analytics QCM" },
   { href: "/admin/epreuves", label: "Gestion des épreuves" },
+  { href: "/admin/inscriptions", label: "Inscriptions" },
   { href: "/admin/parametres", label: "Paramètres du concours" },
 ];
 

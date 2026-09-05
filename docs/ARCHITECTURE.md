@@ -108,6 +108,15 @@ quelle année afficher — un département sans fichier pour cette année-là
 affiche un état "non encore publié" plutôt qu'un 404, pour permettre une
 publication progressive département par département.
 
+## Vérification des admis
+
+`/verification` ("Je suis admis") est le pendant **non** git-versionné de
+`/resultats` : elle traite de vraies coordonnées de candidats (nom + email
+fournis par les départements), donc entièrement en base Supabase
+(`concours_inscriptions`, admin-only) plutôt qu'en fichiers. Détail complet
+— schéma, import admin, non-énumération, rate-limiting — dans
+[`docs/verification-admis.md`](./verification-admis.md).
+
 ## Rendu Markdown
 
 `components/shared/markdown-renderer.tsx` (Server Component) utilise
