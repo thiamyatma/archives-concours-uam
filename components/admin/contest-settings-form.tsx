@@ -60,12 +60,11 @@ function toInput(s: ContestSettings): ContestSettingsInput {
     info: s.info,
     seo: s.seo,
     stats: s.stats,
-    partner: s.partner,
   };
 }
 
 type SettingsGroup =
-  "messages" | "banner" | "countdown" | "buttons" | "info" | "seo" | "stats" | "partner";
+  "messages" | "banner" | "countdown" | "buttons" | "info" | "seo" | "stats";
 
 export function ContestSettingsForm({
   initial,
@@ -117,7 +116,6 @@ export function ContestSettingsForm({
             <TabsTrigger value="info">Infos concours</TabsTrigger>
             <TabsTrigger value="stats">Statistiques</TabsTrigger>
             <TabsTrigger value="seo">SEO</TabsTrigger>
-            <TabsTrigger value="partner">Partenaire</TabsTrigger>
             <TabsTrigger value="history">Historique</TabsTrigger>
           </TabsList>
 
@@ -505,55 +503,6 @@ export function ContestSettingsForm({
                 />
                 <CharCount value={settings.seo.keywords} max={300} />
               </Field>
-            </SectionCard>
-          </TabsContent>
-
-          {/* Partenaire */}
-          <TabsContent value="partner">
-            <SectionCard title="Encart partenaire (page d'accueil)">
-              <SwitchField
-                id="partner-enabled"
-                label="Afficher l'encart partenaire"
-                checked={settings.partner.enabled}
-                onCheckedChange={(v) => patchGroup("partner", { enabled: v })}
-              />
-              <Field
-                label="Lien d'inscription (paiement)"
-                htmlFor="partner-registration-url"
-              >
-                <Input
-                  id="partner-registration-url"
-                  value={settings.partner.registrationUrl}
-                  placeholder="https://…"
-                  onChange={(e) =>
-                    patchGroup("partner", { registrationUrl: e.target.value })
-                  }
-                />
-              </Field>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <Field label="Numéro affiché" htmlFor="partner-phone-display">
-                  <Input
-                    id="partner-phone-display"
-                    value={settings.partner.phoneDisplay}
-                    placeholder="+221 …"
-                    onChange={(e) =>
-                      patchGroup("partner", { phoneDisplay: e.target.value })
-                    }
-                  />
-                </Field>
-                <Field label="Lien d'appel (tel:)" htmlFor="partner-phone-href">
-                  <Input
-                    id="partner-phone-href"
-                    value={settings.partner.phoneHref}
-                    placeholder="tel:+221…"
-                    onChange={(e) => patchGroup("partner", { phoneHref: e.target.value })}
-                  />
-                </Field>
-              </div>
-              <p className="text-muted-foreground text-xs">
-                Le lien d&apos;inscription est un lien de paiement (MoneyFusion) : toute
-                modification est tracée dans l&apos;onglet Historique.
-              </p>
             </SectionCard>
           </TabsContent>
 
