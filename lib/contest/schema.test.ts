@@ -44,6 +44,7 @@ const validInput = {
   },
   seo: { title: "", description: "", ogImageUrl: "", keywords: "" },
   stats: { showExams: true, showDownloads: true, showViews: true },
+  whatsappLinks: { dsti: "https://chat.whatsapp.com/exemple", dgo: "" },
 };
 
 describe("contestSettingsSchema", () => {
@@ -90,6 +91,24 @@ describe("contestSettingsSchema", () => {
     expect(
       contestSettingsSchema.safeParse({ ...validInput, contestDate: "pas-une-date" })
         .success
+    ).toBe(false);
+  });
+
+  it("accepte un lien WhatsApp vide (pas encore renseigné)", () => {
+    expect(
+      contestSettingsSchema.safeParse({
+        ...validInput,
+        whatsappLinks: { dsti: "" },
+      }).success
+    ).toBe(true);
+  });
+
+  it("rejette un lien WhatsApp qui n'est pas en https:// (ex. javascript:)", () => {
+    expect(
+      contestSettingsSchema.safeParse({
+        ...validInput,
+        whatsappLinks: { dsti: "javascript:alert(1)" },
+      }).success
     ).toBe(false);
   });
 });
