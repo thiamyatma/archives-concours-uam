@@ -87,6 +87,27 @@ redéploiement. Next.js met ensuite ce rendu en cache comme une page
 statique classique — le coût réseau n'est payé qu'une fois par nouvelle
 combinaison, jamais pour les pages Markdown déjà connues au build.
 
+## Résultats du concours
+
+`/resultats` — même philosophie que les archives (contenu git-versionné,
+aucune base de données), en plus simple : pas de résolution
+propre/partagé, un fichier JSON par (département, année).
+
+- **`lib/resultats/schema.ts`** (pur, testé indirectement via
+  `data.test.ts`) — validation Zod d'un fichier `admis[]`.
+- **`lib/resultats/data.ts`** (server-only, `fs`, `cache()` React) —
+  lecture de `content/resultats/<année>/<code département>.json` ; le
+  département et l'année viennent du chemin, jamais dupliqués dans le JSON
+  (voir [README.md#publier-les-résultats-du-concours](../README.md#publier-les-résultats-du-concours)).
+- **`lib/resultats/search.ts`** (pur, testé) — normalisation
+  accent/casse-insensible et recherche par nom OU numéro de table, utilisée
+  côté client par `components/resultats/resultats-search.tsx`.
+
+La page lit `contest_settings.year` (voir section suivante) pour savoir
+quelle année afficher — un département sans fichier pour cette année-là
+affiche un état "non encore publié" plutôt qu'un 404, pour permettre une
+publication progressive département par département.
+
 ## Rendu Markdown
 
 `components/shared/markdown-renderer.tsx` (Server Component) utilise
