@@ -17,6 +17,7 @@ de l'Université Amadou Mahtar Mbow (UAM), classées par département et par ann
 - [Variables d'environnement](#variables-denvironnement)
 - [Configuration Supabase](#configuration-supabase)
 - [Ajouter une nouvelle épreuve](#ajouter-une-nouvelle-épreuve)
+- [Publier les résultats du concours](#publier-les-résultats-du-concours)
 - [Qualité du code](#qualité-du-code)
 - [Déploiement](#déploiement-sur-vercel)
 - [Structure du projet](#structure-du-projet)
@@ -144,6 +145,28 @@ géré depuis `/admin/epreuves` (upload, publication) — voir
 nécessite le second pour fonctionner, mais une épreuve avec seulement un
 PDF publié (sans ce fichier Markdown) a quand même une page publique
 minimale, générée automatiquement.
+
+## Publier les résultats du concours
+
+Comme les archives, aucune base de données : les résultats (liste des
+candidats admis) sont des fichiers JSON git-versionnés, affichés sur
+`/resultats`.
+
+1. **Partir du modèle** [`content/resultats/_TEMPLATE.json`](content/resultats/_TEMPLATE.json).
+2. Le copier vers `content/resultats/<année>/<code département>.json` (codes
+   dans `lib/departements.ts` : `dsti`, `dgae`, `dstaan`, `du2adt`, `dgo`).
+   Ex. les résultats DSTI de 2026 vont dans `content/resultats/2026/dsti.json`.
+3. Remplir `admis` : un objet `{ "nom": "...", "numero": "..." }` par
+   candidat admis (`numero`, le numéro de table, est optionnel).
+4. Committer, pousser, déployer — la page détecte automatiquement l'année
+   (dossier) et le département (nom de fichier), sans modification de code.
+   Un département sans fichier pour l'année en cours affiche simplement
+   « résultats non encore publiés » : possible de publier département par
+   département, au fil de leur sortie.
+
+Le bouton « Voir les Résultats » de la page d'accueil et le lien de
+navigation pointent vers `/resultats` et affichent toujours l'année
+courante (`contest_settings.year`, éditable depuis `/admin/parametres`).
 
 ## Qualité du code
 
