@@ -1,6 +1,6 @@
 import "server-only";
 import { createServiceClient } from "@/lib/supabase/service";
-import { normalizeSearchText } from "@/lib/text/normalize";
+import { normalizeBirthDate, normalizeSearchText } from "@/lib/text/normalize";
 import { DEPARTEMENTS } from "@/lib/departements";
 import type { InscriptionsSummary } from "@/lib/inscriptions/types";
 
@@ -21,7 +21,7 @@ export interface InscriptionMatch {
 export async function findInscription(
   annee: number,
   nom: string,
-  email: string
+  dateNaissance: string
 ): Promise<InscriptionMatch | null> {
   try {
     const supabase = createServiceClient();
@@ -29,7 +29,7 @@ export async function findInscription(
       .from("concours_inscriptions")
       .select("departement_code")
       .eq("annee", annee)
-      .eq("email_normalise", normalizeSearchText(email))
+      .eq("date_naissance_normalisee", normalizeBirthDate(dateNaissance))
       .eq("nom_normalise", normalizeSearchText(nom))
       .maybeSingle();
 

@@ -1,0 +1,604 @@
+{
+  "admis": [
+    {
+      "nom": "BA KHADIJA POULO",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "07/08/2007"
+    },
+    {
+      "nom": "BAH ABDOULAYE DJIBRIL",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "12/03/2006"
+    },
+    {
+      "nom": "CISSE MAMADOU",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "04/05/2007"
+    },
+    {
+      "nom": "COLY ALIOUNE BADARA",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "27/12/2007"
+    },
+    {
+      "nom": "DAFFE ARAMATOULAYE MADELEINE",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "22/10/2007"
+    },
+    {
+      "nom": "DIAGNE PATHE AMADOU",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "07/11/2008"
+    },
+    {
+      "nom": "DIAGNE MOHAMED RASSOUL",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "29/09/2008"
+    },
+    {
+      "nom": "DIALLO IBRAHIMA SORY",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "05/05/2007"
+    },
+    {
+      "nom": "DIALLO SOULEYMANE",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "17/12/2007"
+    },
+    {
+      "nom": "DIARRA MOUHAMED",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "16/10/2007"
+    },
+    {
+      "nom": "DIOP NDEYE",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "07/08/2005"
+    },
+    {
+      "nom": "DIOP FATIMA",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "03/01/2008"
+    },
+    {
+      "nom": "DIOP IBRAHIMA",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "07/09/2008"
+    },
+    {
+      "nom": "DIOP ABDALAHI NIANG",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "26/11/2007"
+    },
+    {
+      "nom": "DIOUF SEYDINA MOUHAMED ABDESSALAM",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "17/03/2008"
+    },
+    {
+      "nom": "FALL BABACAR YERO",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "18/11/2008"
+    },
+    {
+      "nom": "KANDE KHADIDIATOU",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "16/04/2007"
+    },
+    {
+      "nom": "MBAYE KHARY",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "03/01/2008"
+    },
+    {
+      "nom": "MBENGUE MODOU FALL",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "14/04/2008"
+    },
+    {
+      "nom": "MBODJI COUMBA THIAM",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "18/11/2006"
+    },
+    {
+      "nom": "NIANG ARAME",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "14/01/2008"
+    },
+    {
+      "nom": "SEYE MOUHAMADOU NABI MOUSTAPHA",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "30/07/2007"
+    },
+    {
+      "nom": "THIAM NDEYE CODOU",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "20/10/2008"
+    },
+    {
+      "nom": "THIAW KHOUDIA DABAKH",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "21/12/2007"
+    },
+    {
+      "nom": "THIOYE AMINE",
+      "filiere": "Systèmes Électriques et Énergétiques",
+      "dateNaissance": "13/12/2006"
+    },
+    {
+      "nom": "ANN NDEYE BINETA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "17/09/2008"
+    },
+    {
+      "nom": "ANNE NDEYE BINTA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "02/06/2007"
+    },
+    {
+      "nom": "BADJI ABA ANDRE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "25/03/2007"
+    },
+    {
+      "nom": "BAMBA AMINATA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "31/01/2009"
+    },
+    {
+      "nom": "DIA ABDOULAYE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "19/10/2007"
+    },
+    {
+      "nom": "DIAGNE JEAN CHRISTOPHE SOBEL",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "03/09/2008"
+    },
+    {
+      "nom": "DIALLO AMINATA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "15/09/2007"
+    },
+    {
+      "nom": "DIAW NDEYE FATIMA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "31/07/2007"
+    },
+    {
+      "nom": "DIOCOU BAKARY",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "12/11/2008"
+    },
+    {
+      "nom": "DIONGUE YAYE NDOUMBE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "02/02/2008"
+    },
+    {
+      "nom": "FALL SAMBA LAOBE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "28/11/2007"
+    },
+    {
+      "nom": "FAYE VALERIE FABIENNE MAYE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "26/08/2008"
+    },
+    {
+      "nom": "GUEYE MAME DIARRA BOUSSO",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "26/10/2007"
+    },
+    {
+      "nom": "KASSE NGONE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "03/11/2008"
+    },
+    {
+      "nom": "KEBE DJIBRIL",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "29/11/2008"
+    },
+    {
+      "nom": "LY AMADOU MOCTAR GUEYE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "31/03/2008"
+    },
+    {
+      "nom": "MBENGUE MARIEME",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "10/10/2007"
+    },
+    {
+      "nom": "MBOW NDEYE SOKHNA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "15/11/2006"
+    },
+    {
+      "nom": "NDIAYE AMSATOU",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "25/12/2007"
+    },
+    {
+      "nom": "NDIAYE SEYDI ABABACAR",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "29/05/2008"
+    },
+    {
+      "nom": "NDIAYE SOULEYMANE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "01/02/2008"
+    },
+    {
+      "nom": "NIANG ABDOU YACINE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "10/10/2006"
+    },
+    {
+      "nom": "SARR MALICK",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "16/05/2008"
+    },
+    {
+      "nom": "SECK FANTA",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "20/09/2007"
+    },
+    {
+      "nom": "SOW MAGUETTE",
+      "filiere": "Génie de Procédés",
+      "dateNaissance": "24/08/2006"
+    },
+    {
+      "nom": "ANNE SOULEYMANE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "23/10/2008"
+    },
+    {
+      "nom": "BA MAREME ODETTE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "24/04/2007"
+    },
+    {
+      "nom": "CAMARA AMINATA LAYE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "19/02/2008"
+    },
+    {
+      "nom": "CISSE FATIMATOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "22/07/2008"
+    },
+    {
+      "nom": "DIALLO MALICK",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "31/12/2007"
+    },
+    {
+      "nom": "DIALLO MAGUETTE SYLLA",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "24/01/2008"
+    },
+    {
+      "nom": "DIATTA BACHIR BEN CHERIF",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "26/08/2008"
+    },
+    {
+      "nom": "DIENG ALASSANE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "13/05/2008"
+    },
+    {
+      "nom": "DIOP OMAR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "11/11/2007"
+    },
+    {
+      "nom": "DIOP SOKHNA DIE FALL",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "05/10/2007"
+    },
+    {
+      "nom": "DIOP HAMIDOU THIALAW",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "17/08/2007"
+    },
+    {
+      "nom": "DIOP EL HADJI MALICK",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "11/03/2008"
+    },
+    {
+      "nom": "DIOP SERIGNE SALIOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "13/12/2007"
+    },
+    {
+      "nom": "DIOUF MAREME",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "02/01/2009"
+    },
+    {
+      "nom": "DIOUF MAMADOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "25/12/2007"
+    },
+    {
+      "nom": "FALL MOUHAMED NAZIR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "01/09/2007"
+    },
+    {
+      "nom": "FAYE JULES FRANCOIS BASILE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "05/07/2008"
+    },
+    {
+      "nom": "GRACA EMMANUEL DESIRE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "27/09/2007"
+    },
+    {
+      "nom": "GUEYE YANNICK WILLIAM JOSEPH",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "16/11/2007"
+    },
+    {
+      "nom": "GUEYE MAME FATOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "12/09/2008"
+    },
+    {
+      "nom": "GUEYE ASTOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "01/01/2009"
+    },
+    {
+      "nom": "GUEYE GOUMBA GAYE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "25/02/2008"
+    },
+    {
+      "nom": "KAERE SERIGNE MOUHAMADANE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "18/09/2007"
+    },
+    {
+      "nom": "KANE ALIOUNE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "24/10/2007"
+    },
+    {
+      "nom": "KANE GORA",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "11/06/2005"
+    },
+    {
+      "nom": "MALACK NICOLAS BIRAME",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "08/01/2007"
+    },
+    {
+      "nom": "MBENGUE MADJIGUENE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "03/12/2007"
+    },
+    {
+      "nom": "NDIAYE RAMATOULAYE",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "27/02/2008"
+    },
+    {
+      "nom": "NDIAYE KHALIFA BABACAR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "05/07/2008"
+    },
+    {
+      "nom": "NDOYE MAME COUMBA",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "15/01/2008"
+    },
+    {
+      "nom": "NDOYE MBAO",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "13/09/2008"
+    },
+    {
+      "nom": "SADIO MOHAMED MOUSTAPHA EL BACHIR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "31/10/2007"
+    },
+    {
+      "nom": "SECK ETIENNE LOUIS LATYR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "16/10/2007"
+    },
+    {
+      "nom": "SOKHNA MAME MOR",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "26/01/2009"
+    },
+    {
+      "nom": "SYLLA MOUHAMADOU TOUMANI",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "01/09/2007"
+    },
+    {
+      "nom": "SYLLA ADJA ABSATOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "21/02/2008"
+    },
+    {
+      "nom": "TALL PAPA MOR TALLA",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "20/01/2008"
+    },
+    {
+      "nom": "TAMBA MOUHAMMAD",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "THIAM MAMADOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "30/09/2008"
+    },
+    {
+      "nom": "TINE SOKHNA DIEGOU",
+      "filiere": "Ingénierie Informatique",
+      "dateNaissance": "05/10/2007"
+    },
+    {
+      "nom": "BA CIRE SOPHIE ANNA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "24/01/2008"
+    },
+    {
+      "nom": "CAMARA SOKHNA MBAYANG",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "02/03/2008"
+    },
+    {
+      "nom": "DIALLO ANTA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "11/10/2007"
+    },
+    {
+      "nom": "DIALLO MOUHAMADOU MOUSTAPHA LY",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "03/08/2008"
+    },
+    {
+      "nom": "DIENG ADJI",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "18/09/2006"
+    },
+    {
+      "nom": "DIOP NDEYE ADJI",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "21/07/2007"
+    },
+    {
+      "nom": "DIOP SODA MAREME",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "11/03/2010"
+    },
+    {
+      "nom": "DIOP SERIGNE FALLOU",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "21/09/2007"
+    },
+    {
+      "nom": "DIOUF NDEYE SIGA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "EBAH MAME CHEIKH TIDIANE",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "17/08/2007"
+    },
+    {
+      "nom": "FALL MAMA SOKHNA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "27/02/2009"
+    },
+    {
+      "nom": "FAYE IBRAHIMA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "24/08/2008"
+    },
+    {
+      "nom": "GAYE MAME AWA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "21/08/2007"
+    },
+    {
+      "nom": "GAYE SEYDINA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "04/12/2007"
+    },
+    {
+      "nom": "KA AIDA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "28/07/2008"
+    },
+    {
+      "nom": "KANE MODOU",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "20/03/2006"
+    },
+    {
+      "nom": "KANE KHADY",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "15/01/2007"
+    },
+    {
+      "nom": "KEBE MAME DIARRA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "11/10/2008"
+    },
+    {
+      "nom": "KEITA ARAME",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "MBODJ BABACAR",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "28/02/2008"
+    },
+    {
+      "nom": "NDIAYE EL HADJ ALIOUNE",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "04/12/2007"
+    },
+    {
+      "nom": "NDIAYE ABDOU AZIZ",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "17/09/2008"
+    },
+    {
+      "nom": "NDIEGUENE AICHA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "17/09/2008"
+    },
+    {
+      "nom": "NGOME VIRGINIE DIEYNABA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "12/09/2007"
+    },
+    {
+      "nom": "SANE KHADIDIATOU CAMARA",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "10/03/2007"
+    },
+    {
+      "nom": "SARR NOGAYE",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "11/05/2008"
+    },
+    {
+      "nom": "THIENDOUM ARETE",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "18/10/2007"
+    },
+    {
+      "nom": "TINE NDEYE MAREME",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "09/10/2007"
+    },
+    {
+      "nom": "WANE BINTOU COURO",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "23/01/2008"
+    },
+    {
+      "nom": "YAGUE MAME ABDOU AZIZ",
+      "filiere": "Infrastructures et Génie Civil",
+      "dateNaissance": "02/11/2007"
+    }
+  ]
+}

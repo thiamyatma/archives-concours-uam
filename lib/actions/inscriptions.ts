@@ -7,7 +7,7 @@ import { createServiceClient } from "@/lib/supabase/service";
 import { getDepartementByCode } from "@/lib/departements";
 import { getContestSettings } from "@/lib/contest/settings";
 import { findInscription } from "@/lib/inscriptions/data";
-import { normalizeSearchText } from "@/lib/text/normalize";
+import { normalizeBirthDate, normalizeSearchText } from "@/lib/text/normalize";
 import { getClientIp } from "@/lib/http/client-ip";
 import { checkActionRateLimit } from "@/lib/rate-limit";
 
@@ -19,7 +19,12 @@ const VERIFICATION_RATE_LIMIT_WINDOW_SECONDS = 15 * 60;
 
 const rowSchema = z.object({
   nom: z.string().trim().min(1).max(200),
-  email: z.string().trim().email().max(200),
+  dateNaissance: z
+    .string()
+    .trim()
+    .regex(/^\d{2}[/-]\d{2}[/-]\d{4}$/),
+  filiere: z.string().trim().max(200).optional(),
+  departementCode: z.string().trim().min(1).optional(),
 });
 
 const importSchema = z.object({
@@ -43,7 +48,8 @@ export async function importInscriptions(
 
   const parsed = importSchema.safeParse(input);
   if (!parsed.success) return { error: "Requête invalide." };
-  const { departementCode, rows } = parsed.data;
+  const { rows } = parsed.data;
+  const departementCode = parsed.data.departementCode.toLowerCase();
 
   const departement = getDepartementByCode(departementCode);
   if (!departement) return { error: "Département inconnu." };
@@ -54,22 +60,25 @@ export async function importInscriptions(
   // contenant deux fois la même clé de conflit échoue côté Postgres ("cannot
   // affect row a second time"). La dernière occurrence gagne — comportement
   // cohérent avec un ré-import complet qui écraserait la même ligne.
-  const byEmail = new Map<string, (typeof rows)[number]>();
-  for (const row of rows) byEmail.set(normalizeSearchText(row.email), row);
+  const byCandidate = new Map<string, (typeof rows)[number]>();
+  for (const row of rows) {
+    const key = `${normalizeSearchText(row.nom)}:${normalizeBirthDate(row.dateNaissance)}`;
+    byCandidate.set(key, row);
+  }
 
-  const payload = Array.from(byEmail.entries()).map(([emailNormalise, row]) => ({
+  const payload = Array.from(byCandidate.values()).map((row) => ({
     departement_code: departement.code,
     annee,
     nom: row.nom,
     nom_normalise: normalizeSearchText(row.nom),
-    email: row.email,
-    email_normalise: emailNormalise,
+    date_naissance: row.dateNaissance,
+    date_naissance_normalisee: normalizeBirthDate(row.dateNaissance),
   }));
 
   const supabase = createServiceClient();
   const { error } = await supabase
     .from("concours_inscriptions")
-    .upsert(payload, { onConflict: "annee,email_normalise" });
+    .upsert(payload, { onConflict: "annee,nom_normalise,date_naissance_normalisee" });
 
   if (error) {
     console.error("importInscriptions a échoué:", error.message);
@@ -112,7 +121,10 @@ export async function clearInscriptions(
 
 const verifySchema = z.object({
   nom: z.string().trim().min(1).max(200),
-  email: z.string().trim().email().max(200),
+  dateNaissance: z
+    .string()
+    .trim()
+    .regex(/^\d{2}[/-]\d{2}[/-]\d{4}$/),
 });
 
 export type VerifyCandidateInput = z.infer<typeof verifySchema>;
@@ -134,7 +146,7 @@ export async function verifyCandidate(
 ): Promise<VerifyCandidateResult> {
   const parsed = verifySchema.safeParse(input);
   if (!parsed.success) {
-    return { error: "Merci de renseigner votre nom et un email valide." };
+    return { error: "Merci de renseigner votre nom et une date de naissance valide." };
   }
 
   const ip = getClientIp(await headers());
@@ -152,10 +164,14 @@ export async function verifyCandidate(
   }
 
   const genericError =
-    "Aucune correspondance trouvée. Vérifiez votre nom et votre email, exactement comme utilisés lors de votre inscription au concours.";
+    "Aucune correspondance trouvée. Vérifiez votre nom et votre date de naissance, exactement comme utilisés lors de votre inscription au concours.";
 
   const settings = await getContestSettings();
-  const match = await findInscription(settings.year, parsed.data.nom, parsed.data.email);
+  const match = await findInscription(
+    settings.year,
+    parsed.data.nom,
+    parsed.data.dateNaissance
+  );
   if (!match) return { error: genericError };
 
   const departement = getDepartementByCode(match.departementCode);

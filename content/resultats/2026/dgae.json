@@ -1,0 +1,404 @@
+{
+  "admis": [
+    {
+      "nom": "DIAGNE CLARISSE FATOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "20/11/2007"
+    },
+    {
+      "nom": "DIENG MOUHAMADOU FADILOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "06/02/2008"
+    },
+    {
+      "nom": "DIENG PENDA",
+      "filiere": "Géomatique",
+      "dateNaissance": "16/02/2008"
+    },
+    {
+      "nom": "DIENG NDEYE OULEYE SY",
+      "filiere": "Géomatique",
+      "dateNaissance": "18/08/2008"
+    },
+    {
+      "nom": "DIENG ARAME",
+      "filiere": "Géomatique",
+      "dateNaissance": "30/10/2005"
+    },
+    {
+      "nom": "DIOP AISSATOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "05/11/2008"
+    },
+    {
+      "nom": "DIOP DABA NDAW",
+      "filiere": "Géomatique",
+      "dateNaissance": "18/08/2008"
+    },
+    {
+      "nom": "DIOUF DJIBRIL SAMBOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "12/06/2008"
+    },
+    {
+      "nom": "FALL CHEIKH AHMAD TIDJANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "30/01/2008"
+    },
+    {
+      "nom": "NDAO BASSIROU",
+      "filiere": "Géomatique",
+      "dateNaissance": "02/05/2007"
+    },
+    {
+      "nom": "NDAO ADAMA",
+      "filiere": "Géomatique",
+      "dateNaissance": "14/12/2006"
+    },
+    {
+      "nom": "NDIAYE NDEYE ISSA",
+      "filiere": "Géomatique",
+      "dateNaissance": "09/03/2008"
+    },
+    {
+      "nom": "NDIAYE AWA",
+      "filiere": "Géomatique",
+      "dateNaissance": "07/10/2007"
+    },
+    {
+      "nom": "SADJI CHEIKH AHMAD TIDIANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "22/04/2008"
+    },
+    {
+      "nom": "SAMB MARIANNE",
+      "filiere": "Géomatique",
+      "dateNaissance": "09/08/2007"
+    },
+    {
+      "nom": "SAMB AISSATOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "09/08/2007"
+    },
+    {
+      "nom": "SARR OUSMANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "29/01/2008"
+    },
+    {
+      "nom": "SECK FALLOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "21/03/2007"
+    },
+    {
+      "nom": "SYLLA AMADOU TIDIANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "19/11/2007"
+    },
+    {
+      "nom": "THIANDOUM IBRAHIMA JUNIOR",
+      "filiere": "Géomatique",
+      "dateNaissance": "15/12/2007"
+    },
+    {
+      "nom": "DIA SOUKEYNA",
+      "filiere": "Environnement",
+      "dateNaissance": "09/01/2007"
+    },
+    {
+      "nom": "DIALLO MOUHAMADOU LAMINE KANE",
+      "filiere": "Environnement",
+      "dateNaissance": "01/01/2008"
+    },
+    {
+      "nom": "DIEDHIOU ISSA",
+      "filiere": "Environnement",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "DIENG ROUGY",
+      "filiere": "Environnement",
+      "dateNaissance": "14/07/2008"
+    },
+    {
+      "nom": "DIENG MOUSLY",
+      "filiere": "Environnement",
+      "dateNaissance": "09/03/2005"
+    },
+    {
+      "nom": "GUEYE NDEYE KHADY",
+      "filiere": "Environnement",
+      "dateNaissance": "01/02/2008"
+    },
+    {
+      "nom": "GUEYE SAFIETOU",
+      "filiere": "Environnement",
+      "dateNaissance": "28/01/2008"
+    },
+    {
+      "nom": "KANTE MOUSSA",
+      "filiere": "Environnement",
+      "dateNaissance": "07/05/2006"
+    },
+    {
+      "nom": "KELLY ADAMA",
+      "filiere": "Environnement",
+      "dateNaissance": "04/11/2007"
+    },
+    {
+      "nom": "NDIAYE FATOU KINE",
+      "filiere": "Environnement",
+      "dateNaissance": "06/01/2008"
+    },
+    {
+      "nom": "NDIAYE RAMATOULAYE",
+      "filiere": "Environnement",
+      "dateNaissance": "22/08/2008"
+    },
+    {
+      "nom": "NDIAYE MOUHAMED EL MOCTAR",
+      "filiere": "Environnement",
+      "dateNaissance": "15/04/2008"
+    },
+    {
+      "nom": "NDIAYE MARIE",
+      "filiere": "Environnement",
+      "dateNaissance": "20/07/2007"
+    },
+    {
+      "nom": "NIANE MARIAMA DIEDHIOU",
+      "filiere": "Environnement",
+      "dateNaissance": "22/07/2007"
+    },
+    {
+      "nom": "OSEI MAME AWA ABY SANOU",
+      "filiere": "Environnement",
+      "dateNaissance": "08/04/2008"
+    },
+    {
+      "nom": "SAMBA MAME NDAK",
+      "filiere": "Environnement",
+      "dateNaissance": "06/10/2008"
+    },
+    {
+      "nom": "SECK MAME DIARRA BOUSSO",
+      "filiere": "Environnement",
+      "dateNaissance": "29/04/2008"
+    },
+    {
+      "nom": "SENE PIERRE ANTOINE MARIE DJIDIACK",
+      "filiere": "Environnement",
+      "dateNaissance": "08/12/2008"
+    },
+    {
+      "nom": "SOW CHEIKH AHMAD TIDIANE",
+      "filiere": "Environnement",
+      "dateNaissance": "04/06/2007"
+    },
+    {
+      "nom": "THIAO MOUHAMMADOU FADILOU MBACKE",
+      "filiere": "Environnement",
+      "dateNaissance": "07/05/2008"
+    },
+    {
+      "nom": "BAR SERIGNE MOUHAMADOU FADHILOU MBACKE",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "12/02/2007"
+    },
+    {
+      "nom": "DIAKHATE SOKHNA MAIMOUNA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "18/12/2006"
+    },
+    {
+      "nom": "DIEDHIOU MBAYE BABACAR",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "19/09/2007"
+    },
+    {
+      "nom": "DIOP FATOU DIBA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "01/09/2008"
+    },
+    {
+      "nom": "DIOUF MOUHAMED",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "12/05/2008"
+    },
+    {
+      "nom": "DIOUF IBRAHIMA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "GAYE MOUHAMADOU MACTAR",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "19/10/2007"
+    },
+    {
+      "nom": "GUEYE WALIMATA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "08/09/2008"
+    },
+    {
+      "nom": "KANE MOUHAMED",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "17/01/2008"
+    },
+    {
+      "nom": "NDIAYE OUMY",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "11/09/2008"
+    },
+    {
+      "nom": "NDIAYE ELISABETH ESMA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "04/03/2008"
+    },
+    {
+      "nom": "NDIAYE ALIOUNE",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "19/09/2006"
+    },
+    {
+      "nom": "NIANG AMADOU SOULEYMANE",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "26/09/2007"
+    },
+    {
+      "nom": "SALL DIEYNABA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "28/09/2008"
+    },
+    {
+      "nom": "SALL AWA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "28/11/2008"
+    },
+    {
+      "nom": "SAMB EL HADJI",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "24/07/2006"
+    },
+    {
+      "nom": "SARR OMAR",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "12/01/2008"
+    },
+    {
+      "nom": "THIAM FATOU BINTOU",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "11/07/2007"
+    },
+    {
+      "nom": "THIAM MAIMOUNA",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "20/10/2007"
+    },
+    {
+      "nom": "WONE KHARDIATOU",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "07/11/2007"
+    },
+    {
+      "nom": "BA MAKHTAR",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/01/2005"
+    },
+    {
+      "nom": "BARRY MOUHAMADOU KORKA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "22/03/2009"
+    },
+    {
+      "nom": "DIAGNE ABDOURAHMANE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "21/04/2007"
+    },
+    {
+      "nom": "DIALLO ABDOUL KARIM",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "28/09/2007"
+    },
+    {
+      "nom": "DIENG CHEIKH AHMADOU MBACKE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "07/04/2008"
+    },
+    {
+      "nom": "DIOP AISSATOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "27/10/2007"
+    },
+    {
+      "nom": "DIOP SERIGNE MODOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "30/06/2006"
+    },
+    {
+      "nom": "DIOUF AWA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/10/2008"
+    },
+    {
+      "nom": "FALL YAYE ASTOU YANDE NDIAYE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "12/01/2007"
+    },
+    {
+      "nom": "FAYE KEVIN BRUNO MBART",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "05/10/2007"
+    },
+    {
+      "nom": "GNING ADAMA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "01/11/2008"
+    },
+    {
+      "nom": "GUEYE IBOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/04/2007"
+    },
+    {
+      "nom": "MBACKE SOKHNA MAGUETTE AFFE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/12/2007"
+    },
+    {
+      "nom": "MBAYE MOUHAMED FADEL",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/11/2008"
+    },
+    {
+      "nom": "NDIAYE MAREME",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "05/11/2006"
+    },
+    {
+      "nom": "SALL OUSMANE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "03/05/2008"
+    },
+    {
+      "nom": "SEYE KHADIM",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "17/11/2007"
+    },
+    {
+      "nom": "SOW NDEYE MARIEME",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "23/03/2008"
+    },
+    {
+      "nom": "SYLLA FODE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "29/08/2006"
+    },
+    {
+      "nom": "THIAM MOUHAMADOU FALILOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "06/08/2006"
+    }
+  ]
+}

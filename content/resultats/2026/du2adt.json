@@ -1,0 +1,354 @@
+{
+  "admis": [
+    {
+      "nom": "AMAR AMINATA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "26/01/2007"
+    },
+    {
+      "nom": "BAL FATOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "16/02/2008"
+    },
+    {
+      "nom": "COLY RACHEL REGINA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "16/02/2008"
+    },
+    {
+      "nom": "COULIBALY CHEIKH TIDIANE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "20/07/2007"
+    },
+    {
+      "nom": "DIALLO SYLLA BINTOU BA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "19/04/2008"
+    },
+    {
+      "nom": "DIANDY ALEXANDRINE PAULETTE AMINATA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "22/10/2008"
+    },
+    {
+      "nom": "DIONE ALPHONSE MOISE MOUNDOR",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "22/05/2007"
+    },
+    {
+      "nom": "DIOP SODA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "13/01/2007"
+    },
+    {
+      "nom": "DIOP MARIAMA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "07/03/2008"
+    },
+    {
+      "nom": "DIOP ADJA KHADY RINLE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "24/08/2008"
+    },
+    {
+      "nom": "DIOP FATIMATOU BINTOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "18/02/2008"
+    },
+    {
+      "nom": "DIOP MARAME",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "30/01/2007"
+    },
+    {
+      "nom": "FALL CIRE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "02/02/2006"
+    },
+    {
+      "nom": "FANE OUSMANE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "18/01/2007"
+    },
+    {
+      "nom": "FAYE FATOU KINE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "27/04/2007"
+    },
+    {
+      "nom": "FAYE GANA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "09/01/2005"
+    },
+    {
+      "nom": "LEYE ABDOULAYE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "10/12/2006"
+    },
+    {
+      "nom": "LO BINTOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "04/12/2006"
+    },
+    {
+      "nom": "MANGA HELENE YAFATOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "24/11/2007"
+    },
+    {
+      "nom": "MASSALY NASSIBA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "26/07/2007"
+    },
+    {
+      "nom": "MBACKE SALIOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "08/11/2008"
+    },
+    {
+      "nom": "MBAYE SODA SALIHOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "01/01/2008"
+    },
+    {
+      "nom": "MBOUP CHEIKH",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "18/08/2007"
+    },
+    {
+      "nom": "MBOW IBRA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "20/10/2004"
+    },
+    {
+      "nom": "NDIAYE KHADIJETOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "13/09/2008"
+    },
+    {
+      "nom": "NDIAYE MAME COUMBA NDAO",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "01/09/2007"
+    },
+    {
+      "nom": "NDIAYE AICHA GAYE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "06/04/2008"
+    },
+    {
+      "nom": "NDIAYE THIERNO",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "19/04/2008"
+    },
+    {
+      "nom": "NGOM YAKHAM",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "02/02/2008"
+    },
+    {
+      "nom": "NIANE ALIMATOU SADIYA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "03/10/2008"
+    },
+    {
+      "nom": "NIANG FATOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "18/04/2008"
+    },
+    {
+      "nom": "SABALY DAOUDA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "06/11/2004"
+    },
+    {
+      "nom": "SALL MARIEME ALY HOJEIGE FAYE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "20/06/2007"
+    },
+    {
+      "nom": "SAMAKE AÏCHA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "20/01/2006"
+    },
+    {
+      "nom": "SAMB MOUHAMADOU FALILOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "20/11/2008"
+    },
+    {
+      "nom": "SANE DIARIETOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "04/12/2007"
+    },
+    {
+      "nom": "SARR FATOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "17/03/2008"
+    },
+    {
+      "nom": "SECK KHADY",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "27/10/2004"
+    },
+    {
+      "nom": "SEMBENE CHEIKH TALIBOUYA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "26/05/2007"
+    },
+    {
+      "nom": "SEYDI MAME AWA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "01/02/2008"
+    },
+    {
+      "nom": "SIDIBE YAYE RAMATOULAYE",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "08/09/2007"
+    },
+    {
+      "nom": "SOUMARE DIADIE SILMAN",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "16/07/2007"
+    },
+    {
+      "nom": "SOW BOUN OUMAR",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "21/05/2006"
+    },
+    {
+      "nom": "SOW SEYKOU",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "03/05/2008"
+    },
+    {
+      "nom": "TANDIANG MAIMOUNA",
+      "filiere": "Urbanisme et Aménagement",
+      "dateNaissance": "24/01/2008"
+    },
+    {
+      "nom": "AGBOKOU ESSI MAEVA",
+      "filiere": "Architecture",
+      "dateNaissance": "08/06/2008"
+    },
+    {
+      "nom": "BA ZEYNAB",
+      "filiere": "Architecture",
+      "dateNaissance": "18/02/2007"
+    },
+    {
+      "nom": "CARLOS KEVIN JERÔME CHRISTOPHE WADJU",
+      "filiere": "Architecture",
+      "dateNaissance": "13/07/2006"
+    },
+    {
+      "nom": "CHARAHABIL RADHUYA",
+      "filiere": "Architecture",
+      "dateNaissance": "10/09/2007"
+    },
+    {
+      "nom": "DIAGNE MAGUETTE",
+      "filiere": "Architecture",
+      "dateNaissance": "24/06/2008"
+    },
+    {
+      "nom": "DIAGNE FATOU KINE",
+      "filiere": "Architecture",
+      "dateNaissance": "05/11/2007"
+    },
+    {
+      "nom": "DIAKHATE ADJA SEYNABOU",
+      "filiere": "Architecture",
+      "dateNaissance": "06/02/2008"
+    },
+    {
+      "nom": "DIALLO ABABACAR MBAYE",
+      "filiere": "Architecture",
+      "dateNaissance": "12/05/2006"
+    },
+    {
+      "nom": "DIONE NDEYE FATOU",
+      "filiere": "Architecture",
+      "dateNaissance": "15/05/2007"
+    },
+    {
+      "nom": "DIOUF NDEYE KHAR",
+      "filiere": "Architecture",
+      "dateNaissance": "15/12/2007"
+    },
+    {
+      "nom": "FALL NDEYE FATOU",
+      "filiere": "Architecture",
+      "dateNaissance": "22/02/2008"
+    },
+    {
+      "nom": "GOUDIABY PAPA SALOUM CISSE",
+      "filiere": "Architecture",
+      "dateNaissance": "12/12/2007"
+    },
+    {
+      "nom": "KHOUMA SODA",
+      "filiere": "Architecture",
+      "dateNaissance": "16/10/2007"
+    },
+    {
+      "nom": "LO AMINATA CHEIKH",
+      "filiere": "Architecture",
+      "dateNaissance": "23/06/2008"
+    },
+    {
+      "nom": "LO LAMINE",
+      "filiere": "Architecture",
+      "dateNaissance": "28/05/2007"
+    },
+    {
+      "nom": "MANE FATOUMATA",
+      "filiere": "Architecture",
+      "dateNaissance": "01/08/2007"
+    },
+    {
+      "nom": "NDOYE ALIA KANE",
+      "filiere": "Architecture",
+      "dateNaissance": "17/02/2008"
+    },
+    {
+      "nom": "SECK AISSATOU",
+      "filiere": "Architecture",
+      "dateNaissance": "15/10/2008"
+    },
+    {
+      "nom": "SEYE NDEYE FATOU",
+      "filiere": "Architecture",
+      "dateNaissance": "11/03/2008"
+    },
+    {
+      "nom": "SOW MOUHAMED",
+      "filiere": "Architecture",
+      "dateNaissance": "14/01/2008"
+    },
+    {
+      "nom": "SOW FATIMATOU",
+      "filiere": "Architecture",
+      "dateNaissance": "12/09/2007"
+    },
+    {
+      "nom": "SYLLA OUMOU KALSOUM",
+      "filiere": "Architecture",
+      "dateNaissance": "07/11/2007"
+    },
+    {
+      "nom": "THIAM KHADY GUEYE",
+      "filiere": "Architecture",
+      "dateNaissance": "15/11/2007"
+    },
+    {
+      "nom": "THIOMBANE AICHA",
+      "filiere": "Architecture",
+      "dateNaissance": "07/11/2007"
+    },
+    {
+      "nom": "TOURE KHADY",
+      "filiere": "Architecture",
+      "dateNaissance": "16/07/2007"
+    }
+  ]
+}

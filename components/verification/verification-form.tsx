@@ -19,12 +19,12 @@ async function action(
   formData: FormData
 ): Promise<VerifyCandidateResult> {
   const nom = String(formData.get("nom") ?? "");
-  const email = String(formData.get("email") ?? "");
-  return verifyCandidate({ nom, email });
+  const dateNaissance = String(formData.get("dateNaissance") ?? "");
+  return verifyCandidate({ nom, dateNaissance });
 }
 
 /**
- * Formulaire "Je suis admis" (/verification) : nom + email, vérifiés contre
+ * Formulaire "Je suis admis" (/verification) : nom + date de naissance, vérifiés contre
  * la liste importée par le département (lib/actions/inscriptions.ts). En
  * cas de succès, affiche le lien d'invitation WhatsApp du département
  * correspondant. Message d'erreur générique en cas d'échec — voir la note
@@ -40,9 +40,9 @@ export function VerificationForm() {
     return (
       <Card className="border-primary/30">
         <CardHeader>
-          <CardTitle>Inscription confirmée 🎉</CardTitle>
+          <CardTitle>Bienvenue parmi les admis 🎉</CardTitle>
           <CardDescription>
-            Vous êtes bien inscrit·e — département {result.departementNom}.
+            Votre admission est confirmée pour le département {result.departementNom}.
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -62,8 +62,8 @@ export function VerificationForm() {
       <CardHeader>
         <CardTitle>Je suis admis</CardTitle>
         <CardDescription>
-          Entrez le nom et l&apos;email utilisés lors de votre inscription au concours
-          pour récupérer le lien d&apos;invitation du groupe WhatsApp de votre
+          Entrez le nom et la date de naissance utilisés lors de votre inscription au
+          concours pour récupérer le lien d&apos;invitation du groupe WhatsApp de votre
           département.
         </CardDescription>
       </CardHeader>
@@ -74,8 +74,15 @@ export function VerificationForm() {
             <Input id="nom" name="nom" autoComplete="name" required autoFocus />
           </div>
           <div className="space-y-2">
-            <Label htmlFor="email">Email</Label>
-            <Input id="email" name="email" type="email" autoComplete="email" required />
+            <Label htmlFor="dateNaissance">Date de naissance</Label>
+            <Input
+              id="dateNaissance"
+              name="dateNaissance"
+              type="text"
+              inputMode="numeric"
+              placeholder="JJ/MM/AAAA"
+              required
+            />
           </div>
           {result && "error" in result && (
             <p className="text-destructive text-sm">{result.error}</p>
