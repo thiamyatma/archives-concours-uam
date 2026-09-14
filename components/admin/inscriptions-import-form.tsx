@@ -37,14 +37,31 @@ export function InscriptionsImportForm() {
   async function handleSubmit() {
     if (parsed.rows.length === 0) return;
     setSubmitting(true);
-    const result = await importInscriptions({ departementCode, rows: parsed.rows });
+    const groups = new Map<string, typeof parsed.rows>();
+    for (const row of parsed.rows) {
+      const code = row.departementCode?.toLowerCase() ?? departementCode;
+      const group = groups.get(code) ?? [];
+      group.push(row);
+      groups.set(code, group);
+    }
+
+    let imported = 0;
+    let result: Awaited<ReturnType<typeof importInscriptions>> = {
+      success: true,
+      imported: 0,
+    };
+    for (const [code, rows] of groups) {
+      result = await importInscriptions({ departementCode: code, rows });
+      if ("error" in result) break;
+      imported += result.imported;
+    }
     setSubmitting(false);
 
     if ("error" in result) {
       toast.error(result.error);
       return;
     }
-    toast.success(`${result.imported} inscription(s) importée(s).`);
+    toast.success(`${imported} inscription(s) importée(s).`);
     setText("");
     router.refresh();
   }
@@ -70,16 +87,14 @@ export function InscriptionsImportForm() {
 
         <div className="space-y-2">
           <Label htmlFor="inscriptions-text">
-            Liste des inscrits (une ligne par candidat : nom,email)
+            Liste principale (nom,date de naissance ou CSV complet)
           </Label>
           <Textarea
             id="inscriptions-text"
             rows={10}
             value={text}
             onChange={(e) => setText(e.target.value)}
-            placeholder={
-              "DIOP Fatou Awa,fatou.diop@example.com\nSARR Moussa,moussa.sarr@example.com"
-            }
+            placeholder={"DIOP Fatou Awa,18/02/2008\nSARR Moussa,03/05/2007"}
             className="font-mono text-sm"
           />
         </div>
@@ -113,8 +128,8 @@ export function InscriptionsImportForm() {
             : `Importer ${parsed.rows.length || ""} inscription(s)`}
         </Button>
         <p className="text-muted-foreground text-xs">
-          Un email déjà présent (même année) est mis à jour, pas dupliqué — un ré-import
-          corrige la liste.
+          Un candidat déjà présent (même nom et date, même année) est mis à jour, pas
+          dupliqué — un ré-import corrige la liste.
         </p>
       </CardContent>
     </Card>

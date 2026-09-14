@@ -2,59 +2,64 @@ import { describe, expect, it } from "vitest";
 import { parseInscriptionsInput } from "@/lib/inscriptions/parse";
 
 describe("parseInscriptionsInput", () => {
-  it("parse des lignes séparées par des virgules", () => {
+  it("parse une ligne nom/date", () => {
+    expect(parseInscriptionsInput("DIOP Fatou,18/02/2008")).toEqual({
+      rows: [{ nom: "DIOP Fatou", dateNaissance: "18/02/2008" }],
+      errors: [],
+    });
+  });
+
+  it("parse le CSV complet avec département et filière", () => {
+    expect(
+      parseInscriptionsInput(
+        "Département,Filière,Nom,Prénom,Date de naissance\nDGO,Management des Organisations,ADELAN,SARAH MAWOULI,21/02/2008"
+      )
+    ).toEqual({
+      rows: [
+        {
+          departementCode: "DGO",
+          filiere: "Management des Organisations",
+          nom: "ADELAN SARAH MAWOULI",
+          dateNaissance: "21/02/2008",
+        },
+      ],
+      errors: [],
+    });
+  });
+
+  it("accepte le point-virgule et la tabulation", () => {
+    expect(
+      parseInscriptionsInput("DIOP Fatou;18/02/2008\nSARR Moussa\t03/05/2007").rows
+    ).toHaveLength(2);
+  });
+
+  it("signale une date invalide sans bloquer les autres lignes", () => {
     const result = parseInscriptionsInput(
-      "DIOP Fatou Awa,fatou.diop@example.com\nSARR Moussa,moussa.sarr@example.com"
+      "DIOP Fatou,2008-02-18\nSARR Moussa,03/05/2007"
     );
-    expect(result.errors).toEqual([]);
-    expect(result.rows).toEqual([
-      { nom: "DIOP Fatou Awa", email: "fatou.diop@example.com" },
-      { nom: "SARR Moussa", email: "moussa.sarr@example.com" },
+    expect(result.rows).toEqual([{ nom: "SARR Moussa", dateNaissance: "03/05/2007" }]);
+    expect(result.errors).toEqual([
+      'Ligne 1 : date de naissance invalide ("2008-02-18").',
     ]);
   });
 
-  it("accepte le point-virgule et la tabulation comme séparateurs", () => {
-    const result = parseInscriptionsInput(
-      "DIOP Fatou;fatou@example.com\nSARR Moussa\tmoussa@example.com"
-    );
-    expect(result.rows).toHaveLength(2);
-  });
-
-  it("ignore une ligne d'en-tête en première position", () => {
-    const result = parseInscriptionsInput("nom,email\nDIOP Fatou,fatou@example.com");
-    expect(result.rows).toEqual([{ nom: "DIOP Fatou", email: "fatou@example.com" }]);
-    expect(result.errors).toEqual([]);
-  });
-
-  it("ignore les lignes vides", () => {
-    const result = parseInscriptionsInput(
-      "DIOP Fatou,fatou@example.com\n\n   \nSARR Moussa,moussa@example.com"
-    );
-    expect(result.rows).toHaveLength(2);
-  });
-
-  it("signale une ligne sans email valide sans bloquer les autres", () => {
-    const result = parseInscriptionsInput(
-      "DIOP Fatou,pas-un-email\nSARR Moussa,moussa@example.com"
-    );
-    expect(result.rows).toEqual([{ nom: "SARR Moussa", email: "moussa@example.com" }]);
-    expect(result.errors).toEqual(['Ligne 1 : email invalide ("pas-un-email").']);
-  });
-
   it("signale une ligne sans nom", () => {
-    const result = parseInscriptionsInput(",fatou@example.com");
-    expect(result.rows).toEqual([]);
-    expect(result.errors).toEqual(["Ligne 1 : nom manquant."]);
+    expect(parseInscriptionsInput(",18/02/2008").errors).toEqual([
+      "Ligne 1 : nom manquant.",
+    ]);
   });
 
-  it("signale une ligne à une seule colonne", () => {
-    const result = parseInscriptionsInput("DIOP Fatou");
-    expect(result.rows).toEqual([]);
-    expect(result.errors).toEqual(['Ligne 1 : format invalide (attendu "nom,email").']);
+  it("signale une ligne incomplète", () => {
+    expect(parseInscriptionsInput("DIOP Fatou").errors).toEqual([
+      'Ligne 1 : format invalide (attendu "nom,date de naissance").',
+    ]);
   });
 
-  it("renvoie un résultat vide pour un texte vide", () => {
-    const result = parseInscriptionsInput("");
-    expect(result).toEqual({ rows: [], errors: [] });
+  it("ignore les lignes vides et un en-tête", () => {
+    const result = parseInscriptionsInput(
+      "Département,Filière,Nom,Prénom,Date de naissance\n\nDGO,Management des Organisations,BA,ADAMA,25/09/2007"
+    );
+    expect(result.rows).toHaveLength(1);
+    expect(result.errors).toEqual([]);
   });
 });

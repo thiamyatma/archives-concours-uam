@@ -9,7 +9,8 @@ import { z } from "zod";
  */
 const candidatSchema = z.object({
   nom: z.string().min(1),
-  numero: z.string().min(1).optional(),
+  filiere: z.string().min(1).optional(),
+  dateNaissance: z.string().min(1).optional(),
 });
 
 export const resultatDepartementSchema = z
@@ -18,12 +19,10 @@ export const resultatDepartementSchema = z
   })
   .refine(
     (data) => {
-      const numeros = data.admis
-        .map((c) => c.numero)
-        .filter((n): n is string => n !== undefined);
-      return new Set(numeros).size === numeros.length;
+      const candidats = data.admis.map((c) => `${c.nom}:${c.dateNaissance ?? ""}`);
+      return new Set(candidats).size === candidats.length;
     },
-    { message: "Des numéros de candidat sont dupliqués.", path: ["admis"] }
+    { message: "Des candidats sont dupliqués.", path: ["admis"] }
   );
 
 export type ResultatDepartementInput = z.infer<typeof resultatDepartementSchema>;

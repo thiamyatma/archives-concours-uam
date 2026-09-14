@@ -3,16 +3,15 @@
  * inscriptions (voir components/admin/inscriptions-import-form.tsx). Pure
  * fonction, aucune E/S — testée unitairement (voir parse.test.ts).
  *
- * Format attendu : une ligne par candidat, "nom,email" — virgule,
- * point-virgule ou tabulation acceptés comme séparateur (les exports Excel
- * français utilisent souvent le point-virgule ; le presse-papier depuis un
- * tableur colle des tabulations). Une éventuelle ligne d'en-tête ("nom,
- * email") est détectée et ignorée silencieusement.
+ * Formats acceptés : "nom,date de naissance" pour un département sélectionné,
+ * ou le CSV complet "département,filière,nom,prénom,date de naissance".
  */
 
 export interface ParsedInscriptionRow {
   nom: string;
-  email: string;
+  dateNaissance: string;
+  filiere?: string;
+  departementCode?: string;
 }
 
 export interface ParseInscriptionsResult {
@@ -21,25 +20,19 @@ export interface ParseInscriptionsResult {
   errors: string[];
 }
 
-const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const DATE_RE = /^\d{2}[/-]\d{2}[/-]\d{4}$/;
 
-// Étiquettes de colonne courantes, pour détecter une ligne d'en-tête sans
-// dépendre de "l'email est invalide" (une vraie 1re ligne de données avec
-// un email mal saisi serait alors silencieusement ignorée au lieu d'être
-// signalée en erreur — piège vérifié par un test dédié).
+// Étiquettes de colonne courantes pour détecter l'en-tête du CSV complet.
 const HEADER_TOKENS = new Set([
   "nom",
-  "name",
-  "email",
-  "mail",
-  "e-mail",
-  "adresse email",
-  "adresse mail",
+  "département",
+  "departement",
+  "filière",
+  "filiere",
+  "prénom",
+  "prenom",
+  "date de naissance",
 ]);
-
-function looksLikeHeaderRow(nom: string, email: string): boolean {
-  return HEADER_TOKENS.has(nom.toLowerCase()) || HEADER_TOKENS.has(email.toLowerCase());
-}
 
 export function parseInscriptionsInput(text: string): ParseInscriptionsResult {
   const rows: ParsedInscriptionRow[] = [];
@@ -55,26 +48,34 @@ export function parseInscriptionsInput(text: string): ParseInscriptionsResult {
     const parts = line.split(/[,;\t]/).map((p) => p.trim());
 
     if (parts.length < 2) {
-      errors.push(`Ligne ${lineNumber} : format invalide (attendu "nom,email").`);
+      errors.push(
+        `Ligne ${lineNumber} : format invalide (attendu "nom,date de naissance").`
+      );
       return;
     }
 
-    const [nom, email] = parts;
+    if (lineNumber === 1 && parts.some((part) => HEADER_TOKENS.has(part.toLowerCase()))) {
+      return;
+    }
 
-    // Ligne d'en-tête probable ("nom,email") : seulement en première
-    // position, et seulement si les cellules ressemblent à des étiquettes.
-    if (lineNumber === 1 && looksLikeHeaderRow(nom, email)) return;
+    const isCompleteRow = parts.length >= 5;
+    const departementCode = isCompleteRow ? parts[0] : undefined;
+    const filiere = isCompleteRow ? parts[1] : undefined;
+    const nom = isCompleteRow ? `${parts[2]} ${parts[3]}`.trim() : parts[0];
+    const dateNaissance = isCompleteRow ? parts[4] : parts[1];
 
-    if (!nom) {
+    if (!nom || (isCompleteRow && (!departementCode || !filiere))) {
       errors.push(`Ligne ${lineNumber} : nom manquant.`);
       return;
     }
-    if (!EMAIL_RE.test(email)) {
-      errors.push(`Ligne ${lineNumber} : email invalide ("${email}").`);
+    if (!DATE_RE.test(dateNaissance)) {
+      errors.push(
+        `Ligne ${lineNumber} : date de naissance invalide ("${dateNaissance}").`
+      );
       return;
     }
 
-    rows.push({ nom, email });
+    rows.push({ nom, dateNaissance, filiere, departementCode });
   });
 
   return { rows, errors };

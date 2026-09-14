@@ -298,8 +298,8 @@ export interface Database {
           annee: number;
           nom: string;
           nom_normalise: string;
-          email: string;
-          email_normalise: string;
+          date_naissance: string;
+          date_naissance_normalisee: string;
           created_at: string;
         };
         Insert: {
@@ -308,8 +308,8 @@ export interface Database {
           annee: number;
           nom: string;
           nom_normalise: string;
-          email: string;
-          email_normalise: string;
+          date_naissance: string;
+          date_naissance_normalisee: string;
           created_at?: string;
         };
         Update: Partial<Database["public"]["Tables"]["concours_inscriptions"]["Insert"]>;

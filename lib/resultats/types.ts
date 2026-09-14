@@ -7,9 +7,8 @@
 
 export interface ResultatCandidat {
   nom: string;
-  /** Numéro de table/matricule du candidat, si connu. Optionnel : certains
-   * départements ne fournissent que des noms. */
-  numero?: string;
+  filiere?: string;
+  dateNaissance?: string;
 }
 
 export interface ResultatDepartement {

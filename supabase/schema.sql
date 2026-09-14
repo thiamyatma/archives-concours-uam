@@ -665,7 +665,7 @@ alter table public.contest_settings_history enable row level security;
 -- Vérification "Je suis admis" — inscriptions de contrôle (admin-only)
 -- =====================================================================
 -- Voir supabase/migrations/20260728000001_concours_inscriptions.sql pour
--- le détail. Liste (nom + email) fournie par département, importée depuis
+-- le détail. Liste (nom + date de naissance) fournie par département, importée depuis
 -- /admin/inscriptions, utilisée UNIQUEMENT pour vérifier qu'un candidat qui
 -- se déclare admis y figure avant de lui donner le lien WhatsApp de son
 -- département — jamais exposée publiquement.
@@ -676,16 +676,16 @@ create table if not exists public.concours_inscriptions (
   annee integer not null check (annee between 2000 and 2100),
   nom text not null,
   nom_normalise text not null,
-  email text not null,
-  email_normalise text not null,
+  date_naissance text not null,
+  date_naissance_normalisee text not null,
   created_at timestamptz not null default now()
 );
 
-create unique index if not exists concours_inscriptions_email_annee_idx
-  on public.concours_inscriptions (annee, email_normalise);
+create unique index if not exists concours_inscriptions_candidate_annee_idx
+  on public.concours_inscriptions (annee, nom_normalise, date_naissance_normalisee);
 
 create index if not exists concours_inscriptions_lookup_idx
-  on public.concours_inscriptions (annee, email_normalise, nom_normalise);
+  on public.concours_inscriptions (annee, nom_normalise, date_naissance_normalisee);
 
 create index if not exists concours_inscriptions_departement_idx
   on public.concours_inscriptions (departement_code, annee);

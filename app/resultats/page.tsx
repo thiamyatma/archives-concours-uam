@@ -9,7 +9,6 @@ import {
 import { getContestSettings } from "@/lib/contest/settings";
 import { DEPARTEMENTS } from "@/lib/departements";
 import { getResultatsPourAnnee } from "@/lib/resultats/data";
-
 // Contenu principalement git-versionné (content/resultats/**), mais le
 // titre dépend de `contest_settings.year` (admin) — même raison que "/"
 // (voir app/page.tsx) : revalider périodiquement plutôt que `force-dynamic`,
@@ -20,7 +19,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const { year } = await getContestSettings();
   return {
     title: `Résultats ${year}`,
-    description: `Résultats du concours d'entrée UAM ${year} par département : liste des candidats admis et recherche par nom.`,
+    description: `Liste principale des admis au concours d'entrée UAM ${year}, par département et filière.`,
   };
 }
 
@@ -36,7 +35,8 @@ export default async function ResultatsPage() {
       departementCode: r.departementCode,
       departementNom: departement?.nom ?? r.departementCode.toUpperCase(),
       nom: candidat.nom,
-      numero: candidat.numero,
+      numero: undefined,
+      filiere: candidat.filiere,
     }));
   });
 
@@ -47,8 +47,8 @@ export default async function ResultatsPage() {
           Résultats du concours {year}
         </h1>
         <p className="text-muted-foreground mx-auto max-w-2xl">
-          Retrouvez ci-dessous la liste des candidats admis, par département. Vous pouvez
-          aussi rechercher directement un nom ou un numéro de table.
+          Voici la liste principale des candidats admis en {year}, par département et par
+          filière. Vous pouvez aussi rechercher directement un nom.
         </p>
       </div>
 
@@ -97,18 +97,17 @@ export default async function ResultatsPage() {
                       <ol className="grid grid-cols-1 gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
                         {resultat.admis.map((candidat, index) => (
                           <li
-                            key={`${candidat.nom}-${candidat.numero ?? index}`}
+                            key={`${candidat.nom}-${candidat.dateNaissance ?? index}`}
                             className="flex items-baseline gap-2"
                           >
                             <span className="text-muted-foreground shrink-0 tabular-nums">
                               {index + 1}.
                             </span>
                             <span>
-                              {candidat.nom}
-                              {candidat.numero && (
-                                <span className="text-muted-foreground">
-                                  {" "}
-                                  — {candidat.numero}
+                              <span className="block">{candidat.nom}</span>
+                              {candidat.filiere && (
+                                <span className="text-muted-foreground block text-xs">
+                                  {candidat.filiere}
                                 </span>
                               )}
                             </span>
