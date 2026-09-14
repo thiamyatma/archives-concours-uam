@@ -2,6 +2,7 @@ import "server-only";
 import { createServiceClient } from "@/lib/supabase/service";
 import { normalizeBirthDate, normalizeSearchText } from "@/lib/text/normalize";
 import { DEPARTEMENTS } from "@/lib/departements";
+import { getResultatsDepartement } from "@/lib/resultats/data";
 import type { InscriptionsSummary } from "@/lib/inscriptions/types";
 
 export interface InscriptionMatch {
@@ -33,11 +34,25 @@ export async function findInscription(
       .eq("nom_normalise", normalizeSearchText(nom))
       .maybeSingle();
 
-    if (error || !data) return null;
-    return { departementCode: data.departement_code };
+    if (!error && data) return { departementCode: data.departement_code };
   } catch {
-    return null;
+    // La liste principale peut servir de source de secours avant l'import
+    // Supabase : elle provient du CSV publié dans content/resultats/2026.
   }
+
+  const candidats = DEPARTEMENTS;
+  for (const departement of candidats) {
+    const resultat = getResultatsDepartement(departement.code, annee);
+    const match = resultat?.admis.some(
+      (candidat) =>
+        normalizeSearchText(candidat.nom) === normalizeSearchText(nom) &&
+        normalizeBirthDate(candidat.dateNaissance ?? "") ===
+          normalizeBirthDate(dateNaissance)
+    );
+    if (match) return { departementCode: departement.code };
+  }
+
+  return null;
 }
 
 /** Nombre d'inscriptions importées par département pour une année (dashboard admin). */
