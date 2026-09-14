@@ -15,6 +15,7 @@ import type { ResultatDepartement } from "@/lib/resultats/types";
  */
 
 const CONTENT_ROOT = path.join(process.cwd(), "content", "resultats");
+const WAITLIST_ROOT = path.join(CONTENT_ROOT, "attente");
 
 /** Résultats d'un département pour une année, ou `null` si pas encore publiés. */
 export const getResultatsDepartement = cache(
@@ -33,6 +34,17 @@ export const getResultatsPourAnnee = cache((annee: number): ResultatDepartement[
   return DEPARTEMENTS.map((dep) => getResultatsDepartement(dep.code, annee)).filter(
     (r): r is ResultatDepartement => r !== null
   );
+});
+
+/** Liste d'attente affichable séparément, sans lien avec la vérification WhatsApp. */
+export const getListeAttentePourAnnee = cache((annee: number): ResultatDepartement[] => {
+  return DEPARTEMENTS.map((dep) => {
+    const filePath = path.join(WAITLIST_ROOT, String(annee), `${dep.code}.json`);
+    if (!fs.existsSync(filePath)) return null;
+    const raw = fs.readFileSync(filePath, "utf-8");
+    const parsed = resultatDepartementSchema.parse(JSON.parse(raw));
+    return { departementCode: dep.code, annee, admis: parsed.admis };
+  }).filter((r): r is ResultatDepartement => r !== null);
 });
 
 /** Années pour lesquelles au moins un fichier de résultats existe (triées desc). */

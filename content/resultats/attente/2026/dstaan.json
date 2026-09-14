@@ -1,0 +1,434 @@
+{
+  "admis": [
+    {
+      "nom": "THIANDOUM IBRAHIMA JUNIOR",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "15/12/2007"
+    },
+    {
+      "nom": "KANTE MOUSSA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "07/05/2006"
+    },
+    {
+      "nom": "FALL DAOUDA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "25/08/2007"
+    },
+    {
+      "nom": "SECK FALLOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "21/03/2007"
+    },
+    {
+      "nom": "DIOUF MAME DIARRA BOUSSO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "12/05/2008"
+    },
+    {
+      "nom": "DIA ALIOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/04/2008"
+    },
+    {
+      "nom": "SARR OUSMANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "29/01/2008"
+    },
+    {
+      "nom": "GUEYE NDEYE KHADY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/02/2008"
+    },
+    {
+      "nom": "DIENG AMY COLE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "19/01/2008"
+    },
+    {
+      "nom": "SAMBA MOUHAMED YAKHYA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "06/07/2007"
+    },
+    {
+      "nom": "SAMBA MAME NDAK",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "06/10/2008"
+    },
+    {
+      "nom": "KELLY ADAMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "04/11/2007"
+    },
+    {
+      "nom": "FAYE GAYE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "18/07/2007"
+    },
+    {
+      "nom": "SENE PIERRE ANTOINE MARIE DJIDIACK",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/12/2008"
+    },
+    {
+      "nom": "DIEDHIOU ISSA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/01/2008"
+    },
+    {
+      "nom": "FALL ADJI NENE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/10/2006"
+    },
+    {
+      "nom": "SOW KALIDOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "19/05/2005"
+    },
+    {
+      "nom": "NDIAYE MAME AMADOU ABDOU NDACK",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "29/02/2008"
+    },
+    {
+      "nom": "KONATE ADAMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/01/2007"
+    },
+    {
+      "nom": "TOURE NDEYE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "02/05/2007"
+    },
+    {
+      "nom": "FAYE MOUHAMETH",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/01/2008"
+    },
+    {
+      "nom": "DIA FATIMATA DITE RACKY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "07/12/2008"
+    },
+    {
+      "nom": "DIOP CHEIKH AHMED TIDIANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "20/06/2008"
+    },
+    {
+      "nom": "DIOUF FAMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/01/2008"
+    },
+    {
+      "nom": "FAYE OUMY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/04/2008"
+    },
+    {
+      "nom": "BARRY OUMOU SALAMATA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "02/12/2008"
+    },
+    {
+      "nom": "SYLLA ADAMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/01/2006"
+    },
+    {
+      "nom": "SARR ROKHAYATOU MIREILLE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "05/04/2008"
+    },
+    {
+      "nom": "GAYE NDEYE MATY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "10/09/2007"
+    },
+    {
+      "nom": "FALL MAME BOUSSO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "22/10/2007"
+    },
+    {
+      "nom": "SENE AMINATA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "16/06/2007"
+    },
+    {
+      "nom": "DIAKHABY SIRA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "22/09/2007"
+    },
+    {
+      "nom": "SOCK KHARE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/03/2008"
+    },
+    {
+      "nom": "SARR FALLOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "15/08/2006"
+    },
+    {
+      "nom": "KA BIGUE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/04/2005"
+    },
+    {
+      "nom": "NDIAYE MOUHAMADOU LAMINE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "18/04/2008"
+    },
+    {
+      "nom": "BA ALASSANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "27/06/2007"
+    },
+    {
+      "nom": "GAYE MOUHAMADOU SAKHIR",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "24/02/2005"
+    },
+    {
+      "nom": "DIOP NDEYE ANTA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "06/03/2007"
+    },
+    {
+      "nom": "SENE JEAN PAUL WAGANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "13/08/2007"
+    },
+    {
+      "nom": "THIAM SOKHNA BOURY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "15/02/2007"
+    },
+    {
+      "nom": "NIANG MAME DIARRA BOUSSO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "10/03/2008"
+    },
+    {
+      "nom": "GUEYE ARAME",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/10/2006"
+    },
+    {
+      "nom": "KANTE CHEIKH BETHIO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/11/2006"
+    },
+    {
+      "nom": "SADIO ABY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "28/08/2007"
+    },
+    {
+      "nom": "DIAKHATE AYMEROU NDIAYE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "06/01/2008"
+    },
+    {
+      "nom": "GATH BABA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/02/2007"
+    },
+    {
+      "nom": "GUEYE ASTOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "21/02/2008"
+    },
+    {
+      "nom": "DIA IBRAHIMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/11/2007"
+    },
+    {
+      "nom": "FALL MAME YARAME",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "06/03/2006"
+    },
+    {
+      "nom": "SARR AICHA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/09/2006"
+    },
+    {
+      "nom": "NDOUR NGONE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "28/03/2006"
+    },
+    {
+      "nom": "NDIAYE KHADIDIATOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "15/05/2007"
+    },
+    {
+      "nom": "MANDIANG OUSSEYNOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "07/03/2008"
+    },
+    {
+      "nom": "MBENGUE OUMY ADYA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "07/09/2008"
+    },
+    {
+      "nom": "DRAME THIANE OUSMANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "12/05/2008"
+    },
+    {
+      "nom": "DIAW FATIMA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "19/09/2007"
+    },
+    {
+      "nom": "SAMB MOUSTAPHA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "10/12/2007"
+    },
+    {
+      "nom": "FALL ALE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/07/2007"
+    },
+    {
+      "nom": "NDONG MOUHAMED",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/04/2006"
+    },
+    {
+      "nom": "SAGNE FELICITE IVETTE MAME NDEW",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "17/06/2008"
+    },
+    {
+      "nom": "LO NDEYE KHADY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/09/2007"
+    },
+    {
+      "nom": "SY ASSANE LAWALY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "14/03/2008"
+    },
+    {
+      "nom": "DIOP MATY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "16/02/2007"
+    },
+    {
+      "nom": "NDIAYE YANDE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "10/07/2006"
+    },
+    {
+      "nom": "DIONE MATAR",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "13/06/2007"
+    },
+    {
+      "nom": "DIENG MAODO MALICK",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "24/01/2007"
+    },
+    {
+      "nom": "SY ABDOUL KARIM",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/08/2006"
+    },
+    {
+      "nom": "DIENG MAME KHARY",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "24/01/2008"
+    },
+    {
+      "nom": "DIENE OUSMANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "19/02/2008"
+    },
+    {
+      "nom": "NDIONE VICTOR NDICK",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "29/10/2007"
+    },
+    {
+      "nom": "NDIAYE SEYNABOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "08/11/2008"
+    },
+    {
+      "nom": "NDIAYE CHEIKH AHMADOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "18/11/2006"
+    },
+    {
+      "nom": "NDIAYE PAPA GORGUI SELEMANE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "04/11/2006"
+    },
+    {
+      "nom": "DRAME BABACAR",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "05/01/2007"
+    },
+    {
+      "nom": "MBAYE YACINE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "03/11/2006"
+    },
+    {
+      "nom": "DIAKITE MOUHAMADOU LAMINE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "19/06/2007"
+    },
+    {
+      "nom": "MBAYE SOKHNA KHADIDIATOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "27/05/2008"
+    },
+    {
+      "nom": "KAMA AWA CHEIKH",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "26/05/2007"
+    },
+    {
+      "nom": "SECK FATOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "05/01/2007"
+    },
+    {
+      "nom": "KEBE MAME BOUSSO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "25/07/2007"
+    },
+    {
+      "nom": "THIAM MODOU",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/01/2007"
+    },
+    {
+      "nom": "THIAM ANDALA",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "04/10/2008"
+    },
+    {
+      "nom": "DIENG KHALILOU RAHMANE MENOUMBE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "04/02/2006"
+    },
+    {
+      "nom": "DIOP MBATHIO",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "01/10/2007"
+    },
+    {
+      "nom": "KEBE MBENE",
+      "filiere": "Sciences Agricoles et Alimentaires",
+      "dateNaissance": "04/04/2008"
+    }
+  ]
+}

@@ -1,0 +1,414 @@
+{
+  "admis": [
+    {
+      "nom": "SOW SAMBA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/05/2008"
+    },
+    {
+      "nom": "FALL MODOU NAR",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "26/10/2008"
+    },
+    {
+      "nom": "MBENGUE AWA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "05/12/2008"
+    },
+    {
+      "nom": "NDIAYE SEYDI ABABACAR",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "29/05/2008"
+    },
+    {
+      "nom": "COLY MARIE HELENE AGNES MARGUERITE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "16/11/2007"
+    },
+    {
+      "nom": "DJIBA RAMATOULAYE CHANTAL",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "20/02/2008"
+    },
+    {
+      "nom": "FAYE MOUHAMED OUSMANE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/05/2008"
+    },
+    {
+      "nom": "DIENG SERIGNE AHMED SOW",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "17/10/2005"
+    },
+    {
+      "nom": "DIENG MAME MATY LEYE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "13/03/2008"
+    },
+    {
+      "nom": "GUISSE ZEYNAB",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/07/2007"
+    },
+    {
+      "nom": "MBENGUE MARIETOU DIOP",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "24/06/2007"
+    },
+    {
+      "nom": "DEME ALIOUNE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "21/05/2007"
+    },
+    {
+      "nom": "NGUER MAIMOUNA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "02/01/2008"
+    },
+    {
+      "nom": "DIOUF SERIGNE FALLOU MBACKE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "13/11/2007"
+    },
+    {
+      "nom": "NIANG AMADOU SOULEYMANE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "26/09/2007"
+    },
+    {
+      "nom": "SENE JEAN AMATH",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "24/11/2006"
+    },
+    {
+      "nom": "BA DAYE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "04/10/2006"
+    },
+    {
+      "nom": "SECK FATOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "15/09/2007"
+    },
+    {
+      "nom": "DIOP YACINE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "10/03/2007"
+    },
+    {
+      "nom": "THIAM MAIMOUNA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "20/10/2007"
+    },
+    {
+      "nom": "THIAM KHADIDIATOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "06/06/2007"
+    },
+    {
+      "nom": "GUEYE FALLOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/09/2005"
+    },
+    {
+      "nom": "NDIAYE AWA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "07/10/2007"
+    },
+    {
+      "nom": "CISSE ADJI RAMA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "23/04/2007"
+    },
+    {
+      "nom": "DIENG MOUSLY",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "09/03/2005"
+    },
+    {
+      "nom": "NDIAYE NDIAGNA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "21/09/2005"
+    },
+    {
+      "nom": "NDOYE HABIB",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "03/10/2007"
+    },
+    {
+      "nom": "NGOM MOHAMED",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "07/03/2007"
+    },
+    {
+      "nom": "KENY MICHEL CREPIN",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "09/07/2007"
+    },
+    {
+      "nom": "SALL AWA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "28/11/2008"
+    },
+    {
+      "nom": "SARR OULIMATA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "07/07/2007"
+    },
+    {
+      "nom": "AW MADINA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "27/02/2008"
+    },
+    {
+      "nom": "WADE MOUHAMED SIDY LAMINE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "13/08/2007"
+    },
+    {
+      "nom": "DIOP AMINATA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "16/12/2007"
+    },
+    {
+      "nom": "DRAME MOUSTAPHA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/04/2008"
+    },
+    {
+      "nom": "NDOYE MADJIGUENE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "05/11/2007"
+    },
+    {
+      "nom": "DIAW AMINATA MARIE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "10/06/2007"
+    },
+    {
+      "nom": "SOUARE SOKHNA MAYE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "17/11/2006"
+    },
+    {
+      "nom": "GUEYE MAME AWA SECK",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "23/01/2008"
+    },
+    {
+      "nom": "GOUDIABY GNIMA FALLA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "08/04/2008"
+    },
+    {
+      "nom": "LO MOUHAMADOUL BACHIR",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "20/10/2006"
+    },
+    {
+      "nom": "DIA ADJA SALIMATA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/06/2008"
+    },
+    {
+      "nom": "NIANE MARIAMA DIEDHIOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "22/07/2007"
+    },
+    {
+      "nom": "SECK NDEYE ASTOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "27/09/2007"
+    },
+    {
+      "nom": "DIAGNE PAPE SORA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "15/12/2007"
+    },
+    {
+      "nom": "GUEYE KHADY DIAGNE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "02/02/2008"
+    },
+    {
+      "nom": "LADIANE ABDOU AZIZ",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "28/09/2006"
+    },
+    {
+      "nom": "LEYE COUMBA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "29/01/2008"
+    },
+    {
+      "nom": "SENE NDEYE AMINATA SIGUI",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "23/02/2008"
+    },
+    {
+      "nom": "DIA AISSATA MALOUM",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "16/03/2008"
+    },
+    {
+      "nom": "NDAO NDEYE AICHA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "22/10/2008"
+    },
+    {
+      "nom": "BARO FATOUMATA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "26/05/2006"
+    },
+    {
+      "nom": "SALIFOU FATIMATA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "19/01/2008"
+    },
+    {
+      "nom": "CISSE FATOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "09/01/2008"
+    },
+    {
+      "nom": "TALL AGUIBOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "12/08/2008"
+    },
+    {
+      "nom": "HANE FATOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "27/11/2006"
+    },
+    {
+      "nom": "DIOP AWA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "03/09/2006"
+    },
+    {
+      "nom": "NDIAYE MOUHAMETH",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "15/04/2007"
+    },
+    {
+      "nom": "GAYE YOUMA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "16/04/2007"
+    },
+    {
+      "nom": "FALL AIDA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "06/11/2008"
+    },
+    {
+      "nom": "GAKOU MBERRY",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "22/01/2008"
+    },
+    {
+      "nom": "THIAM JOSEPH BLAISE AMADOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "08/03/2008"
+    },
+    {
+      "nom": "THIAM CODOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "16/09/2007"
+    },
+    {
+      "nom": "DIOUF MAME FATY DIBOR DJILANE",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "11/02/2007"
+    },
+    {
+      "nom": "DIA SERIGNE FALLOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "26/08/2006"
+    },
+    {
+      "nom": "GUEYE ABABACAR SIDIKH",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "14/01/2008"
+    },
+    {
+      "nom": "SENE MOHAMED",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "17/02/2005"
+    },
+    {
+      "nom": "SARR AICHA",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "13/02/2008"
+    },
+    {
+      "nom": "BARRY AMADOU SADIO",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "15/03/2007"
+    },
+    {
+      "nom": "BA MAME ASTOU",
+      "filiere": "Mines et géologie",
+      "dateNaissance": "23/11/2007"
+    },
+    {
+      "nom": "NDIAYE NDEYE PENDA MATHURIN",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "05/02/2008"
+    },
+    {
+      "nom": "SENE MARIE BERNADETTE AUDREY",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "19/11/2007"
+    },
+    {
+      "nom": "SOUMARE SEYDI ALIOU",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "11/09/2007"
+    },
+    {
+      "nom": "DIENG OUMOU KHAYRY",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "12/09/2007"
+    },
+    {
+      "nom": "DIALLO RAYHANATOU",
+      "filiere": "Hydraulique et assainissement",
+      "dateNaissance": "12/02/2007"
+    },
+    {
+      "nom": "BALDE MAMADOU ALIOU",
+      "filiere": "Géomatique",
+      "dateNaissance": "29/07/2008"
+    },
+    {
+      "nom": "DIOUF AGNES GNILANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "28/09/2008"
+    },
+    {
+      "nom": "SALL OUSMANE",
+      "filiere": "Géomatique",
+      "dateNaissance": "20/10/2007"
+    },
+    {
+      "nom": "COULIBALY FAMA",
+      "filiere": "Géomatique",
+      "dateNaissance": "29/06/2007"
+    },
+    {
+      "nom": "POUYE SEYNABOU CISS",
+      "filiere": "Géomatique",
+      "dateNaissance": "04/12/2006"
+    },
+    {
+      "nom": "GUEYE ADJII SODA",
+      "filiere": "Environnement",
+      "dateNaissance": "20/10/2007"
+    },
+    {
+      "nom": "MBAYE AISSATA MOUCTAR",
+      "filiere": "Environnement",
+      "dateNaissance": "25/09/2007"
+    }
+  ]
+}
