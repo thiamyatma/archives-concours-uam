@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
-import { GraduationCap, Users } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { GraduationCap } from "lucide-react";
+import { Card, CardContent } from "@/components/ui/card";
 import {
   ResultatsSearch,
   type ResultatsSearchCandidat,
@@ -9,6 +8,7 @@ import {
 import { getContestSettings } from "@/lib/contest/settings";
 import { DEPARTEMENTS } from "@/lib/departements";
 import { getResultatsPourAnnee } from "@/lib/resultats/data";
+import { ResultatsDepartements } from "@/components/resultats/resultats-departements";
 // Contenu principalement git-versionné (content/resultats/**), mais le
 // titre dépend de `contest_settings.year` (admin) — même raison que "/"
 // (voir app/page.tsx) : revalider périodiquement plutôt que `force-dynamic`,
@@ -26,7 +26,6 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ResultatsPage() {
   const { year } = await getContestSettings();
   const resultats = getResultatsPourAnnee(year);
-  const parDepartement = new Map(resultats.map((r) => [r.departementCode, r]));
   const auMoinsUnPublie = resultats.length > 0;
 
   const candidatsPourRecherche: ResultatsSearchCandidat[] = resultats.flatMap((r) => {
@@ -37,6 +36,7 @@ export default async function ResultatsPage() {
       nom: candidat.nom,
       numero: undefined,
       filiere: candidat.filiere,
+      dateNaissance: candidat.dateNaissance,
     }));
   });
 
@@ -71,55 +71,7 @@ export default async function ResultatsPage() {
             <ResultatsSearch candidats={candidatsPourRecherche} />
           </div>
 
-          <div className="grid grid-cols-1 gap-5 lg:grid-cols-2">
-            {DEPARTEMENTS.map((departement) => {
-              const resultat = parDepartement.get(departement.code);
-
-              return (
-                <Card key={departement.code}>
-                  <CardHeader>
-                    <div className="flex items-center justify-between gap-2">
-                      <CardTitle className="text-xl">{departement.nom}</CardTitle>
-                      {resultat && (
-                        <Badge variant="outline" className="gap-1">
-                          <Users className="size-3" aria-hidden="true" />
-                          {resultat.admis.length}
-                        </Badge>
-                      )}
-                    </div>
-                  </CardHeader>
-                  <CardContent>
-                    {!resultat ? (
-                      <p className="text-muted-foreground text-sm">
-                        Résultats non encore publiés pour ce département.
-                      </p>
-                    ) : (
-                      <ol className="grid grid-cols-1 gap-x-6 gap-y-1.5 text-sm sm:grid-cols-2">
-                        {resultat.admis.map((candidat, index) => (
-                          <li
-                            key={`${candidat.nom}-${candidat.dateNaissance ?? index}`}
-                            className="flex items-baseline gap-2"
-                          >
-                            <span className="text-muted-foreground shrink-0 tabular-nums">
-                              {index + 1}.
-                            </span>
-                            <span>
-                              <span className="block">{candidat.nom}</span>
-                              {candidat.filiere && (
-                                <span className="text-muted-foreground block text-xs">
-                                  {candidat.filiere}
-                                </span>
-                              )}
-                            </span>
-                          </li>
-                        ))}
-                      </ol>
-                    )}
-                  </CardContent>
-                </Card>
-              );
-            })}
-          </div>
+          <ResultatsDepartements resultats={resultats} />
         </>
       )}
     </div>

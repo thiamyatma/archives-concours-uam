@@ -10,6 +10,7 @@ import { searchCandidats, type SearchableCandidat } from "@/lib/resultats/search
 export interface ResultatsSearchCandidat extends SearchableCandidat {
   departementNom: string;
   filiere?: string;
+  dateNaissance?: string;
 }
 
 /**
@@ -58,6 +59,11 @@ export function ResultatsSearch({ candidats }: { candidats: ResultatsSearchCandi
                     <p className="font-medium">{candidat.nom}</p>
                     {candidat.filiere && (
                       <p className="text-muted-foreground text-xs">{candidat.filiere}</p>
+                    )}
+                    {candidat.dateNaissance && (
+                      <p className="text-muted-foreground text-xs">
+                        Né(e) le {candidat.dateNaissance}
+                      </p>
                     )}
                   </div>
                   <Badge variant="secondary">{candidat.departementNom}</Badge>
