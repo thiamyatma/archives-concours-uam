@@ -10,9 +10,15 @@ import { getDepartementByCode } from "@/lib/departements";
 
 interface ResultatsDepartementsProps {
   resultats: ResultatDepartement[];
+  eyebrow?: string;
+  title?: string;
 }
 
-export function ResultatsDepartements({ resultats }: ResultatsDepartementsProps) {
+export function ResultatsDepartements({
+  resultats,
+  eyebrow = "Liste principale",
+  title = "Choisissez un département",
+}: ResultatsDepartementsProps) {
   const [departementCode, setDepartementCode] = useState<string | null>(null);
   const [filiere, setFiliere] = useState<string | null>(null);
 
@@ -138,9 +144,9 @@ export function ResultatsDepartements({ resultats }: ResultatsDepartementsProps)
   return (
     <section aria-labelledby="departements-title" className="space-y-5">
       <div className="border-b pb-4">
-        <p className="text-muted-foreground text-sm">Liste principale</p>
+        <p className="text-muted-foreground text-sm">{eyebrow}</p>
         <h2 id="departements-title" className="text-2xl font-semibold tracking-tight">
-          Choisissez un département
+          {title}
         </h2>
       </div>
       <div className="grid grid-cols-1 gap-5 sm:grid-cols-2">

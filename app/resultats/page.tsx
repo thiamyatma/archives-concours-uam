@@ -7,7 +7,7 @@ import {
 } from "@/components/resultats/resultats-search";
 import { getContestSettings } from "@/lib/contest/settings";
 import { DEPARTEMENTS } from "@/lib/departements";
-import { getResultatsPourAnnee } from "@/lib/resultats/data";
+import { getListeAttentePourAnnee, getResultatsPourAnnee } from "@/lib/resultats/data";
 import { ResultatsDepartements } from "@/components/resultats/resultats-departements";
 // Contenu principalement git-versionné (content/resultats/**), mais le
 // titre dépend de `contest_settings.year` (admin) — même raison que "/"
@@ -26,6 +26,7 @@ export async function generateMetadata(): Promise<Metadata> {
 export default async function ResultatsPage() {
   const { year } = await getContestSettings();
   const resultats = getResultatsPourAnnee(year);
+  const listeAttente = getListeAttentePourAnnee(year);
   const auMoinsUnPublie = resultats.length > 0;
 
   const candidatsPourRecherche: ResultatsSearchCandidat[] = resultats.flatMap((r) => {
@@ -72,6 +73,24 @@ export default async function ResultatsPage() {
           </div>
 
           <ResultatsDepartements resultats={resultats} />
+          {listeAttente.length > 0 && (
+            <div className="mt-16 border-t pt-12">
+              <div className="mb-8 space-y-2">
+                <h2 className="text-2xl font-semibold tracking-tight">
+                  Liste d&apos;attente
+                </h2>
+                <p className="text-muted-foreground text-sm">
+                  Cette liste est publiée à titre informatif uniquement et ne participe
+                  pas à la vérification WhatsApp.
+                </p>
+              </div>
+              <ResultatsDepartements
+                resultats={listeAttente}
+                eyebrow="Liste d'attente"
+                title="Choisissez un département"
+              />
+            </div>
+          )}
         </>
       )}
     </div>
