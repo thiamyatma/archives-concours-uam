@@ -1,7 +1,7 @@
 "use client";
 
-import { useActionState } from "react";
-import { MessageCircle } from "lucide-react";
+import { useActionState, useState } from "react";
+import { CalendarDays, MessageCircle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -12,6 +12,15 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Calendar } from "@/components/ui/calendar";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+
+function formatBirthDate(date: Date): string {
+  const day = String(date.getDate()).padStart(2, "0");
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  return `${day}/${month}/${date.getFullYear()}`;
+}
 import { verifyCandidate, type VerifyCandidateResult } from "@/lib/actions/inscriptions";
 
 async function action(
@@ -31,6 +40,7 @@ async function action(
  * de non-énumération dans verifyCandidate.
  */
 export function VerificationForm() {
+  const [birthDate, setBirthDate] = useState<Date>();
   const [result, formAction, pending] = useActionState<
     VerifyCandidateResult | null,
     FormData
@@ -75,12 +85,39 @@ export function VerificationForm() {
           </div>
           <div className="space-y-2">
             <Label htmlFor="dateNaissance">Date de naissance</Label>
-            <Input
+            <Popover>
+              <PopoverTrigger asChild>
+                <Button
+                  type="button"
+                  variant="outline"
+                  className={cn(
+                    "w-full justify-start text-left font-normal",
+                    !birthDate && "text-muted-foreground"
+                  )}
+                  aria-label="Choisir une date de naissance"
+                >
+                  <CalendarDays className="size-4" aria-hidden="true" />
+                  {birthDate ? formatBirthDate(birthDate) : "Choisir une date"}
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-auto p-0" align="start">
+                <Calendar
+                  mode="single"
+                  selected={birthDate}
+                  onSelect={setBirthDate}
+                  defaultMonth={birthDate ?? new Date(2008, 0)}
+                  captionLayout="dropdown"
+                  startMonth={new Date(1900, 0)}
+                  endMonth={new Date()}
+                  locale={{ code: "fr-FR" }}
+                />
+              </PopoverContent>
+            </Popover>
+            <input
               id="dateNaissance"
               name="dateNaissance"
-              type="text"
-              inputMode="numeric"
-              placeholder="JJ/MM/AAAA"
+              type="hidden"
+              value={birthDate ? formatBirthDate(birthDate) : ""}
               required
             />
           </div>
