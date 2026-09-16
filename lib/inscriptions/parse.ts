@@ -61,7 +61,7 @@ export function parseInscriptionsInput(text: string): ParseInscriptionsResult {
     const isCompleteRow = parts.length >= 5;
     const departementCode = isCompleteRow ? parts[0] : undefined;
     const filiere = isCompleteRow ? parts[1] : undefined;
-    const nom = isCompleteRow ? `${parts[2]} ${parts[3]}`.trim() : parts[0];
+    const nom = isCompleteRow ? `${parts[3]} ${parts[2]}`.trim() : parts[0];
     const dateNaissance = isCompleteRow ? parts[4] : parts[1];
 
     if (!nom || (isCompleteRow && (!departementCode || !filiere))) {
