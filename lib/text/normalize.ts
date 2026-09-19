@@ -10,6 +10,7 @@ export function normalizeSearchText(value: string): string {
     .normalize("NFD")
     .replace(/\p{Diacritic}/gu, "")
     .toLowerCase()
+    .replace(/\s+/g, " ")
     .trim();
 }
 

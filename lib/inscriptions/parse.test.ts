@@ -19,7 +19,7 @@ describe("parseInscriptionsInput", () => {
         {
           departementCode: "DGO",
           filiere: "Management des Organisations",
-          nom: "ADELAN SARAH MAWOULI",
+          nom: "SARAH MAWOULI ADELAN",
           dateNaissance: "21/02/2008",
         },
       ],
